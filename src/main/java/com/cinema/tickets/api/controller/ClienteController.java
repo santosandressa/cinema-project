@@ -11,7 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.logging.Logger;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1/cliente")
@@ -22,7 +26,7 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    Logger logger = Logger.getLogger(ClienteController.class.getName());
+    final Logger logger = Logger.getLogger(ClienteController.class.getName());
 
     @ApiOperation(value= "Cria um novo cliente")
     @PostMapping
@@ -31,5 +35,19 @@ public class ClienteController {
 
         cliente = clienteService.save(cliente);
         return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value= "Busca um cliente pelo id")
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> findById(@PathVariable String id) {
+        logger.info("Buscando um cliente pelo id");
+        Optional<Cliente> cliente = clienteService.findById(id);
+
+        if(!cliente.isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            cliente.get().add(linkTo(methodOn(ClienteController.class).findById(id)).withSelfRel());
+            return new ResponseEntity<>(cliente.get(), HttpStatus.OK);
+        }
     }
 }

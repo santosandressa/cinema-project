@@ -8,6 +8,8 @@ import com.cinema.tickets.domain.service.strategy.ClienteValidationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
@@ -17,8 +19,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     private ClienteValidationStrategy clienteValidationStrategy;
 
-
-
     @Override
     public Cliente save(Cliente cliente) {
 
@@ -26,5 +26,10 @@ public class ClienteServiceImpl implements ClienteService {
         this.clienteValidationStrategy.validate(cliente);
 
         return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public Optional<Cliente> findById(String id) {
+        return this.clienteRepository.findById(id);
     }
 }

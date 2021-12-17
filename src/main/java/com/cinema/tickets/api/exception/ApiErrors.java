@@ -22,7 +22,7 @@ import java.util.List;
 @ControllerAdvice
 public class ApiErrors extends ResponseEntityExceptionHandler {
 
-    Mensagem mensagem = new Mensagem();
+    final Mensagem mensagem = new Mensagem();
     @Autowired
     private MessageSource messageSource;
 
