@@ -1,20 +1,28 @@
 package com.cinema.tickets.domain.collection;
 
 
+import javax.validation.constraints.NotEmpty;
+
 public class Endereco {
 
+    @NotEmpty
     private String rua;
 
+    @NotEmpty
     private String cep;
 
+    @NotEmpty
     private String numero;
 
     private String complemento;
 
+    @NotEmpty
     private String bairro;
 
+    @NotEmpty
     private String cidade;
 
+    @NotEmpty
     private String estado;
 
     public Endereco() {

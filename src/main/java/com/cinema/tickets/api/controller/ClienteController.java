@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.logging.Logger;
 
 @RestController
@@ -25,10 +26,10 @@ public class ClienteController {
 
     @ApiOperation(value= "Cria um novo cliente")
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> create(@Valid @RequestBody Cliente cliente) {
         logger.info("Criando um novo cliente");
 
-        clienteService.save(cliente);
+        cliente = clienteService.save(cliente);
         return new ResponseEntity<>(cliente, HttpStatus.CREATED);
     }
 }

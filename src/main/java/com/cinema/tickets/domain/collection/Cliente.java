@@ -1,8 +1,14 @@
 package com.cinema.tickets.domain.collection;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Document(collection = "cliente")
 public class Cliente {
@@ -10,19 +16,29 @@ public class Cliente {
     @Id
     private String id;
 
+    @NotEmpty
     private String nome;
 
+    @CPF
+    @NotEmpty
     private String cpf;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @NotEmpty
     private String dataNascimento;
 
+    @NotEmpty
     private String celular;
 
+    @Email
+    @NotEmpty
     private String email;
 
+    @NotEmpty
+    @Size(min = 6, max = 12)
     private String senha;
 
+    @Valid
     private Endereco endereco;
 
     public Cliente() {
