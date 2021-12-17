@@ -20,12 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class ApiError extends ResponseEntityExceptionHandler {
+public class ApiErrors extends ResponseEntityExceptionHandler {
 
+    Mensagem mensagem = new Mensagem();
     @Autowired
     private MessageSource messageSource;
-
-    Mensagem  mensagem = new Mensagem();
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

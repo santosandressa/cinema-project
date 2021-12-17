@@ -117,7 +117,7 @@ public class ClienteControllerTest {
     }
 
     @Test
-    @DisplayName("Deve lançar erro ao cadastrar um cliente com dados já existentes")
+    @DisplayName("Deve lançar bad request ao cadastrar um cliente com dados já existentes")
     public void createClienteWithExistingEmail() throws Exception {
         Cliente cliente = createCliente();
 
@@ -139,6 +139,26 @@ public class ClienteControllerTest {
                 .andExpect(jsonPath("titulo").value(message));
     }
 
+    @Test
+    @DisplayName("Deve lançar bad request ao cadastrar um cliente com dados já existentes")
+    public void createClienteWithExistingCpf() throws Exception {
+        Cliente cliente = createCliente();
+
+        String json = new ObjectMapper().writeValueAsString(cliente);
+
+        String message = "CPF já cadastrado";
+
+        BDDMockito.given(service.save(Mockito.any(Cliente.class)))
+                .willThrow(new BusinessException(message));
 
 
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("titulo").value(message));
+    }
 }
