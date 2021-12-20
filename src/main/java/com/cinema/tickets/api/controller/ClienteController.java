@@ -24,6 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ClienteController {
 
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
+
     @Autowired
     private ClienteService clienteService;
 

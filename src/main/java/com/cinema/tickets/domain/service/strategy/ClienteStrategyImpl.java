@@ -7,23 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClienteStrategyImpl implements ClienteStrategy{
+public class ClienteStrategyImpl implements ClienteStrategy {
 
     @Autowired
     private ClienteRepository clienteRepository;
 
     @Override
     public void validate(Cliente cliente) {
+
         Boolean emailExists = clienteRepository.existsByEmail(cliente.getEmail());
-        if(emailExists){
+
+        if (emailExists) {
             throw new BusinessException("Email já cadastrado");
         }
 
         Boolean cpfExists = clienteRepository.existsByCpf(cliente.getCpf());
 
-        if(cpfExists){
+        if (cpfExists) {
             throw new BusinessException("CPF já cadastrado");
         }
     }
-
 }

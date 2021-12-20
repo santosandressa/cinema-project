@@ -23,6 +23,7 @@ import java.util.List;
 public class ApiErrors extends ResponseEntityExceptionHandler {
 
     final Mensagem mensagem = new Mensagem();
+
     @Autowired
     private MessageSource messageSource;
 

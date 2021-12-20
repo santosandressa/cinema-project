@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -80,27 +79,9 @@ public class ClienteControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(cliente);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
-        mockMvc.perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("nome").value(cliente.getNome()))
-                .andExpect(jsonPath("cpf").value(cliente.getCpf()))
-                .andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento()))
-                .andExpect(jsonPath("celular").value(cliente.getCelular()))
-                .andExpect(jsonPath("email").value(cliente.getEmail()))
-                .andExpect(jsonPath("senha").value(cliente.getSenha()))
-                .andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua()))
-                .andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep()))
-                .andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero()))
-                .andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento()))
-                .andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro()))
-                .andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade()))
-                .andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
+        mockMvc.perform(request).andExpect(status().isCreated()).andExpect(jsonPath("id").value("1")).andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
     }
 
     @Test
@@ -109,15 +90,10 @@ public class ClienteControllerTest {
         String json = new ObjectMapper().writeValueAsString(new Cliente());
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
 
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("campos", hasSize(6)));
+        mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("campos", hasSize(6)));
     }
 
     @Test
@@ -129,18 +105,12 @@ public class ClienteControllerTest {
 
         String message = "Email já cadastrado";
 
-        BDDMockito.given(service.save(any(Cliente.class)))
-                .willThrow(new BusinessException(message));
+        BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("titulo").value(message));
+        mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
 
     @Test
@@ -152,18 +122,12 @@ public class ClienteControllerTest {
 
         String message = "CPF já cadastrado";
 
-        BDDMockito.given(service.save(any(Cliente.class)))
-                .willThrow(new BusinessException(message));
+        BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("titulo").value(message));
+        mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
 
     @Test
@@ -171,11 +135,9 @@ public class ClienteControllerTest {
     public void clienteNotFound() throws Exception {
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API + "/{id}", "1")
-                .accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API + "/{id}", "1").accept(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(request)
-                .andExpect(status().isNotFound());
+        mockMvc.perform(request).andExpect(status().isNotFound());
     }
 
     @Test
@@ -216,26 +178,9 @@ public class ClienteControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(cliente);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
-        mockMvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("nome").value(cliente.getNome()))
-                .andExpect(jsonPath("cpf").value(cliente.getCpf()))
-                .andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento()))
-                .andExpect(jsonPath("celular").value(cliente.getCelular()))
-                .andExpect(jsonPath("email").value(cliente.getEmail()))
-                .andExpect(jsonPath("senha").value(cliente.getSenha()))
-                .andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua()))
-                .andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep()))
-                .andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero()))
-                .andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento()))
-                .andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro()))
-                .andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade()))
-                .andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
+        mockMvc.perform(request).andExpect(status().isOk()).andExpect(jsonPath("id").value("1")).andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
     }
 
 
@@ -245,12 +190,8 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
-
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
 }
