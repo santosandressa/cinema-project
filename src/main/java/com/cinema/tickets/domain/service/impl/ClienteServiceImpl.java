@@ -4,25 +4,35 @@ package com.cinema.tickets.domain.service.impl;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.service.ClienteService;
-import com.cinema.tickets.domain.service.strategy.ClienteStrategyImpl;
+import com.cinema.tickets.domain.service.strategy.ClienteStrategy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
-    private ClienteStrategyImpl clienteValidationStrategy;
+    private ClienteStrategy clienteValidationStrategy;
+
+    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     public Cliente save(Cliente cliente) {
-        this.clienteValidationStrategy.validate(cliente);
-        return clienteRepository.save(cliente);
+
+        if(clienteValidationStrategy != null) {
+            clienteValidationStrategy.validate(cliente);
+        }
+
+        return this.clienteRepository.save(cliente);
     }
 
     @Override

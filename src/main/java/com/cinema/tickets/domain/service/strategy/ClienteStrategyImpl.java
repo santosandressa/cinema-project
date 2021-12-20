@@ -15,13 +15,13 @@ public class ClienteStrategyImpl implements ClienteStrategy {
     @Override
     public void validate(Cliente cliente) {
 
-        Boolean emailExists = clienteRepository.existsByEmail(cliente.getEmail());
+        Boolean emailExists = this.clienteRepository.existsByEmail(cliente.getEmail());
 
         if (emailExists) {
             throw new BusinessException("Email já cadastrado");
         }
 
-        Boolean cpfExists = clienteRepository.existsByCpf(cliente.getCpf());
+        Boolean cpfExists = this.clienteRepository.existsByCpf(cliente.getCpf());
 
         if (cpfExists) {
             throw new BusinessException("CPF já cadastrado");
