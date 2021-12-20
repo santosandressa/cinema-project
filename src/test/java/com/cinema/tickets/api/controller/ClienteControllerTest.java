@@ -23,8 +23,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -161,5 +163,42 @@ public class ClienteControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("titulo").value(message));
+    }
+
+    @Test
+    @DisplayName("Deve lançar not found ao cadastrar um cliente com dados já existentes")
+    public void clienteNotFound() throws Exception {
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API + "/{id}", "1")
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Deve deletar um cliente")
+    public void deleteCliente() throws Exception {
+        Cliente cliente = new Cliente();
+        cliente.setId("1");
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isNoContent());
+    }
+
+
+    @Test
+    @DisplayName("Deve lançar not found ao deletar um cliente inexistente")
+    public void deleteClienteNotFound() throws Exception {
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isNotFound());
     }
 }

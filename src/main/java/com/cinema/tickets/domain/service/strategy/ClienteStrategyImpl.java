@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClienteValidationStrategy implements ClienteStrategy{
+public class ClienteStrategyImpl implements ClienteStrategy{
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -25,4 +25,5 @@ public class ClienteValidationStrategy implements ClienteStrategy{
             throw new BusinessException("CPF já cadastrado");
         }
     }
+
 }

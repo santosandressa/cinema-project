@@ -20,15 +20,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/api/v1/cliente")
 @CrossOrigin(origins = "*")
-@Api(value="Cliente Controller")
+@Api(value = "Cliente Controller")
 public class ClienteController {
 
+    final Logger logger = Logger.getLogger(ClienteController.class.getName());
     @Autowired
     private ClienteService clienteService;
 
-    final Logger logger = Logger.getLogger(ClienteController.class.getName());
-
-    @ApiOperation(value= "Cria um novo cliente")
+    @ApiOperation(value = "Cria um novo cliente")
     @PostMapping
     public ResponseEntity<Cliente> create(@Valid @RequestBody Cliente cliente) {
         logger.info("Criando um novo cliente");
@@ -37,17 +36,31 @@ public class ClienteController {
         return new ResponseEntity<>(cliente, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value= "Busca um cliente pelo id")
+    @ApiOperation(value = "Busca um cliente pelo id")
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable String id) {
         logger.info("Buscando um cliente pelo id");
         Optional<Cliente> cliente = clienteService.findById(id);
 
-        if(!cliente.isPresent()) {
+        if (!cliente.isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
             cliente.get().add(linkTo(methodOn(ClienteController.class).findById(id)).withSelfRel());
             return new ResponseEntity<>(cliente.get(), HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "Deleta um cliente pelo id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        logger.info("Deletando um cliente pelo id");
+        Optional<Cliente> cliente = clienteService.findById(id);
+
+        if (!cliente.isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            clienteService.delete(cliente.get());
+            return ResponseEntity.noContent().build();
         }
     }
 }

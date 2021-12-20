@@ -6,7 +6,9 @@ import java.util.Optional;
 
 public interface ClienteService {
 
-  Cliente save(Cliente cliente);
+    Cliente save(Cliente cliente);
 
-  Optional<Cliente> findById(String id);
+    Optional<Cliente> findById(String id);
+
+    void delete(Cliente cliente);
 }
