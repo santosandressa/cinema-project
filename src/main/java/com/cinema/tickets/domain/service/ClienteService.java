@@ -11,4 +11,6 @@ public interface ClienteService {
     Optional<Cliente> findById(String id);
 
     void delete(Cliente cliente);
+
+    Cliente update(Cliente cliente);
 }

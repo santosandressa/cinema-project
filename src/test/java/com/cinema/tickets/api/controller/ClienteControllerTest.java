@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,7 +76,7 @@ public class ClienteControllerTest {
 
         Cliente cliente = createCliente();
 
-        BDDMockito.given(service.save(Mockito.any(Cliente.class))).willReturn(cliente);
+        BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
 
         String json = new ObjectMapper().writeValueAsString(cliente);
 
@@ -128,7 +129,7 @@ public class ClienteControllerTest {
 
         String message = "Email já cadastrado";
 
-        BDDMockito.given(service.save(Mockito.any(Cliente.class)))
+        BDDMockito.given(service.save(any(Cliente.class)))
                 .willThrow(new BusinessException(message));
 
 
@@ -151,7 +152,7 @@ public class ClienteControllerTest {
 
         String message = "CPF já cadastrado";
 
-        BDDMockito.given(service.save(Mockito.any(Cliente.class)))
+        BDDMockito.given(service.save(any(Cliente.class)))
                 .willThrow(new BusinessException(message));
 
 
@@ -200,5 +201,56 @@ public class ClienteControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Deve atualizar um cliente")
+    public void updateCliente() throws Exception {
+
+        Cliente cliente = createCliente();
+        cliente.setId("1");
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
+        BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
+
+
+        String json = new ObjectMapper().writeValueAsString(cliente);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("id").value("1"))
+                .andExpect(jsonPath("nome").value(cliente.getNome()))
+                .andExpect(jsonPath("cpf").value(cliente.getCpf()))
+                .andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento()))
+                .andExpect(jsonPath("celular").value(cliente.getCelular()))
+                .andExpect(jsonPath("email").value(cliente.getEmail()))
+                .andExpect(jsonPath("senha").value(cliente.getSenha()))
+                .andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua()))
+                .andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep()))
+                .andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero()))
+                .andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento()))
+                .andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro()))
+                .andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade()))
+                .andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
+    }
+
+
+    @Test
+    @DisplayName("Deve lançar not found ao atualizar um cliente inexistente")
+    public void updateClienteNotFound() throws Exception {
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 }

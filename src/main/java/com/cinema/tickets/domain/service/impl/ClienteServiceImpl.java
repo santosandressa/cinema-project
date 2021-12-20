@@ -21,10 +21,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente save(Cliente cliente) {
-
-        ClienteStrategyImpl clienteValidationStrategy = new ClienteStrategyImpl();
         this.clienteValidationStrategy.validate(cliente);
-
         return clienteRepository.save(cliente);
     }
 
@@ -36,5 +33,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void delete(Cliente cliente) {
         this.clienteRepository.delete(cliente);
+    }
+
+    @Override
+    public Cliente update(Cliente cliente) {
+        return this.clienteRepository.save(cliente);
     }
 }

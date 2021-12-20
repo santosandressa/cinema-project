@@ -63,4 +63,22 @@ public class ClienteController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @ApiOperation(value = "Atualiza um cliente pelo id")
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable String id, @Valid @RequestBody Cliente cliente) {
+        logger.info("Atualizando um cliente pelo id");
+        Optional<Cliente> clienteExistente = clienteService.findById(id);
+
+        if (!clienteExistente.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            cliente.setId(id);
+            cliente = clienteService.update(cliente);
+            cliente.add(linkTo(methodOn(ClienteController.class).findById(id)).withSelfRel());
+
+            logger.info("Usuario atualizado com sucesso, retornando no corpo da requisicao o Usuario e Status OK");
+            return new ResponseEntity<>(cliente, HttpStatus.OK);
+        }
+    }
 }
