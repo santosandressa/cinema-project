@@ -9,6 +9,7 @@ import com.cinema.tickets.domain.service.strategy.ClienteStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +48,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente update(Cliente cliente) {
         return this.clienteRepository.save(cliente);
+    }
+
+    @Override
+    public List<Cliente> findAll() {
+        return this.clienteRepository.findAll();
     }
 }

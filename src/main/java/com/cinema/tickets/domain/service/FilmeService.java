@@ -12,4 +12,8 @@ public interface FilmeService {
     List<Filme> findAll();
 
     Optional<Filme> findById(String id);
+
+    Filme update(Filme filme);
+
+    void deleteById(String id);
 }

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@Controller
+
+@RestController
 @RequestMapping("/api/v1/filmes")
 @CrossOrigin(origins = "*")
 @Api(value = "Filme Controller")
@@ -35,23 +35,54 @@ public class FilmeController {
         return new ResponseEntity<>(filme, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Busca todos os filmes")
-    @GetMapping
-    public ResponseEntity<List<Filme>> buscarTodosFilmes() {
-        logger.info("Buscando todos os filmes");
-
-        List<Filme> filmes = filmeService.findAll();
-        return new ResponseEntity<>(filmes, HttpStatus.OK);
-    }
-
     @ApiOperation(value = "Busca um filme por id")
     @GetMapping("/{id}")
     public ResponseEntity<Filme> buscarFilmePorId(@PathVariable String id) {
         logger.info("Buscando filme por id");
-
         Optional<Filme> filme = filmeService.findById(id);
-
         return filme.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-}
+    @ApiOperation(value = "Busca todos os filmes")
+    @GetMapping
+    public ResponseEntity<List<Filme>> buscarTodosFilmes() {
+        logger.info("Buscando todos os filmes");
+        List<Filme> filmes = filmeService.findAll();
+        return new ResponseEntity<>(filmes, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Atualiza um filme")
+    @PutMapping("/{id}")
+    public ResponseEntity<Filme> atualizarFilme(@PathVariable String id, @Valid @RequestBody Filme filme) {
+        logger.info("Atualizando filme");
+        Optional<Filme> filmeExistente = filmeService.findById(id);
+
+        if (!filmeExistente.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        } else {
+            filme.setId(id);
+            filme = filmeService.save(filme);
+            logger.info("Filme atualizado com sucesso");
+            return new ResponseEntity<>(filme, HttpStatus.OK);
+        }
+    }
+
+
+        @ApiOperation(value = "Deleta um filme")
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deletarFilme(@PathVariable String id) {
+            logger.info("Deletando filme");
+            Optional<Filme> filmeExistente = filmeService.findById(id);
+
+            if (!filmeExistente.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                filmeService.deleteById(id);
+                logger.info("Filme deletado com sucesso");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        }
+
+    }
+

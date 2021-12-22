@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -33,6 +34,7 @@ public class ClienteController {
         logger.info("Criando um novo cliente");
 
         cliente = clienteService.save(cliente);
+
         return new ResponseEntity<>(cliente, HttpStatus.CREATED);
     }
 
@@ -44,6 +46,18 @@ public class ClienteController {
 
         return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @ApiOperation(value = "Busca todos os clientes")
+    @GetMapping
+    public ResponseEntity<List<Cliente>> findAllClientes(){
+        logger.info("Buscando todos os clientes");
+        List<Cliente> clientes = clienteService.findAll();
+
+        for (Cliente cliente : clientes) {
+        }
+        return new ResponseEntity<>(clientes, HttpStatus.OK);
+    }
+
 
     @ApiOperation(value = "Deleta um cliente pelo id")
     @DeleteMapping("/{id}")
