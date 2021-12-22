@@ -4,15 +4,15 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+
 @Document(collection = "cliente")
-public class Cliente extends RepresentationModel<Cliente> {
+public class Cliente {
 
     @Id
     private String id;
@@ -41,6 +41,17 @@ public class Cliente extends RepresentationModel<Cliente> {
 
     @Valid
     private Endereco endereco;
+
+    public Cliente(String id, String nome, String cpf, String dataNascimento, String celular, String email, String senha, Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.celular = celular;
+        this.email = email;
+        this.senha = senha;
+        this.endereco = endereco;
+    }
 
     public Cliente() {
     }

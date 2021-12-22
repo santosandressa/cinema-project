@@ -79,9 +79,14 @@ public class ClienteControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(cliente);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
 
-        mockMvc.perform(request).andExpect(status().isCreated()).andExpect(jsonPath("id").value("1")).andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
+        mockMvc.perform(request).andExpect(status().isCreated())
+                .andExpect(jsonPath("id").value("1"))
+                .andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
     }
 
     @Test

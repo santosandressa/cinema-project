@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@SuppressWarnings("unused")
 @Service
 public class ClienteServiceImpl implements ClienteService {
 

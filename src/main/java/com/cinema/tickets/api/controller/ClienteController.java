@@ -1,10 +1,12 @@
 package com.cinema.tickets.api.controller;
 
 
+
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.service.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.logging.Logger;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1/cliente")
@@ -43,12 +42,7 @@ public class ClienteController {
         logger.info("Buscando um cliente pelo id");
         Optional<Cliente> cliente = clienteService.findById(id);
 
-        if (!cliente.isPresent()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            cliente.get().add(linkTo(methodOn(ClienteController.class).findById(id)).withSelfRel());
-            return new ResponseEntity<>(cliente.get(), HttpStatus.OK);
-        }
+        return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @ApiOperation(value = "Deleta um cliente pelo id")
@@ -76,8 +70,6 @@ public class ClienteController {
         } else {
             cliente.setId(id);
             cliente = clienteService.update(cliente);
-            cliente.add(linkTo(methodOn(ClienteController.class).findById(id)).withSelfRel());
-
             logger.info("Usuario atualizado com sucesso, retornando no corpo da requisicao o Usuario e Status OK");
             return new ResponseEntity<>(cliente, HttpStatus.OK);
         }
