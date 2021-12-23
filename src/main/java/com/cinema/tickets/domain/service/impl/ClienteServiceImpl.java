@@ -5,7 +5,6 @@ import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.cinema.tickets.domain.service.strategy.ClienteStrategy;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class ClienteServiceImpl implements ClienteService {
     private final ClienteRepository clienteRepository;
 
     @Autowired
-    private ClienteStrategy clienteValidationStrategy;
+    ClienteStrategy clienteValidationStrategy;
 
     public ClienteServiceImpl(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
@@ -28,8 +27,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente save(Cliente cliente) {
 
-        if(clienteValidationStrategy != null) {
-           this.clienteValidationStrategy.validate(cliente);
+        if (clienteValidationStrategy != null) {
+            this.clienteValidationStrategy.validate(cliente);
         }
 
         return this.clienteRepository.save(cliente);
@@ -44,7 +43,11 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void delete(Cliente cliente) {
         Optional<Cliente> clienteId = this.clienteRepository.findById(cliente.getId());
-        this.clienteValidationStrategy.findById(clienteId.orElse(null).getId());
+
+        if (!clienteId.isPresent()) {
+            this.clienteValidationStrategy.findById(cliente.getId());
+        }
+
         this.clienteRepository.delete(cliente);
     }
 
