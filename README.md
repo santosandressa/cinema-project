@@ -1,6 +1,6 @@
 ### API Rest para Compra de ingressos de cinema
 
-
+____________________________________________________________________________________________________________
 #### - Documentação
 
 [Swagger](https://cinema-ingresso-app.herokuapp.com/swagger-ui/index.html)
