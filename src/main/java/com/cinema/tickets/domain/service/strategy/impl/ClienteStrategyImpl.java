@@ -1,10 +1,14 @@
-package com.cinema.tickets.domain.service.strategy;
+package com.cinema.tickets.domain.service.strategy.impl;
 
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
+import com.cinema.tickets.domain.service.strategy.ClienteStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class ClienteStrategyImpl implements ClienteStrategy {
@@ -27,4 +31,17 @@ public class ClienteStrategyImpl implements ClienteStrategy {
             throw new BusinessException("CPF já cadastrado");
         }
     }
+
+    @Override
+    public void findById(String id) {
+
+        Optional<Cliente> cliente = this.clienteRepository.findById(id);
+
+        if (!cliente.isPresent()) {
+            throw new NotFoundException("Cliente não encontrado");
+        }
+
+    }
+
+
 }

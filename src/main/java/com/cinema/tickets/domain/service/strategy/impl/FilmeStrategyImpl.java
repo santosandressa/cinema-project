@@ -1,7 +1,8 @@
-package com.cinema.tickets.domain.service.strategy;
+package com.cinema.tickets.domain.service.strategy.impl;
 
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.service.strategy.FilmeStrategy;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -29,7 +29,7 @@ public class ClienteServiceImpl implements ClienteService {
     public Cliente save(Cliente cliente) {
 
         if(clienteValidationStrategy != null) {
-            clienteValidationStrategy.validate(cliente);
+           this.clienteValidationStrategy.validate(cliente);
         }
 
         return this.clienteRepository.save(cliente);
@@ -37,11 +37,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> findById(String id) {
+        this.clienteValidationStrategy.findById(id);
         return this.clienteRepository.findById(id);
     }
 
     @Override
     public void delete(Cliente cliente) {
+        Optional<Cliente> clienteId = this.clienteRepository.findById(cliente.getId());
+        this.clienteValidationStrategy.findById(clienteId.orElse(null).getId());
         this.clienteRepository.delete(cliente);
     }
 
