@@ -55,7 +55,7 @@ public class ClienteServiceTest {
 
     @Test
     @DisplayName("Deve salvar um cliente")
-    public void saveClienteTest(){
+    public void saveClienteTest() {
         Cliente cliente = createCliente();
         cliente.setId("1");
 
@@ -81,8 +81,6 @@ public class ClienteServiceTest {
         assertThat(clienteSalvo.getEndereco().getCidade()).isEqualTo(cliente.getEndereco().getCidade());
         assertThat(clienteSalvo.getEndereco().getEstado()).isEqualTo(cliente.getEndereco().getEstado());
     }
-
-
 
 
 }

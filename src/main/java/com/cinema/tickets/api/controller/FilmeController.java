@@ -69,20 +69,20 @@ public class FilmeController {
     }
 
 
-        @ApiOperation(value = "Deleta um filme")
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deletarFilme(@PathVariable String id) {
-            logger.info("Deletando filme");
-            Optional<Filme> filmeExistente = filmeService.findById(id);
+    @ApiOperation(value = "Deleta um filme")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarFilme(@PathVariable String id) {
+        logger.info("Deletando filme");
+        Optional<Filme> filmeExistente = filmeService.findById(id);
 
-            if (!filmeExistente.isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                filmeService.deleteById(id);
-                logger.info("Filme deletado com sucesso");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+        if (!filmeExistente.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            filmeService.deleteById(id);
+            logger.info("Filme deletado com sucesso");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
+
+}
 

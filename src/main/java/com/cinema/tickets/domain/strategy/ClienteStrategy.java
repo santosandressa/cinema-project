@@ -1,4 +1,4 @@
-package com.cinema.tickets.domain.service.strategy;
+package com.cinema.tickets.domain.strategy;
 
 import com.cinema.tickets.domain.collection.Cliente;
 

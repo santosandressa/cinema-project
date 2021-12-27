@@ -3,7 +3,7 @@ package com.cinema.tickets.domain.service.impl;
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.repository.FilmeRepository;
 import com.cinema.tickets.domain.service.FilmeService;
-import com.cinema.tickets.domain.service.strategy.FilmeStrategy;
+import com.cinema.tickets.domain.strategy.FilmeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

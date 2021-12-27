@@ -1,14 +1,12 @@
 package com.cinema.tickets.api.controller;
 
 
-
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.service.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +40,7 @@ public class ClienteController {
         entity = clienteService.save(entity);
 
         ClienteDTO dto = clienteMapper.toDTO(entity);
-        return  new ResponseEntity<>(dto, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Busca um cliente pelo id")
@@ -57,7 +55,7 @@ public class ClienteController {
 
     @ApiOperation(value = "Busca todos os clientes")
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAllClientes(){
+    public ResponseEntity<List<Cliente>> findAllClientes() {
         logger.info("Buscando todos os clientes");
         List<Cliente> clientes = clienteService.findAll();
 

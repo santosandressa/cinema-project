@@ -1,10 +1,10 @@
-package com.cinema.tickets.domain.service.strategy.impl;
+package com.cinema.tickets.domain.strategy.impl;
 
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
-import com.cinema.tickets.domain.service.strategy.ClienteStrategy;
+import com.cinema.tickets.domain.strategy.ClienteStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
