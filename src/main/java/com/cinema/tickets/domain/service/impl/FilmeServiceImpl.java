@@ -14,14 +14,21 @@ import java.util.Optional;
 public class FilmeServiceImpl implements FilmeService {
 
     @Autowired
-    private FilmeStrategy filmeStrategy;
+    FilmeStrategy filmeStrategy;
 
     @Autowired
-    private FilmeRepository filmeRepository;
+    private final  FilmeRepository filmeRepository;
+
+    public FilmeServiceImpl(FilmeRepository filmeRepository) {
+        this.filmeRepository = filmeRepository;
+    }
 
     @Override
     public Filme save(Filme filme) {
-        filmeStrategy.validateFilme(filme);
+
+        if(filmeStrategy != null) {
+            filmeStrategy.validateFilme(filme);
+        }
         return this.filmeRepository.save(filme);
     }
 

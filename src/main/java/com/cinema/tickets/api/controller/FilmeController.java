@@ -1,5 +1,7 @@
 package com.cinema.tickets.api.controller;
 
+import com.cinema.tickets.api.dto.FilmeDTO;
+import com.cinema.tickets.api.mapper.FilmeMapper;
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.service.FilmeService;
 import io.swagger.annotations.Api;
@@ -24,15 +26,18 @@ public class FilmeController {
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
 
     @Autowired
-    private FilmeService filmeService;
+    FilmeService filmeService;
+
+    @Autowired
+    private FilmeMapper filmeMapper;
 
     @ApiOperation(value = "Cadastra um novo filme")
     @PostMapping
-    public ResponseEntity<Filme> cadastrarFilme(@Valid @RequestBody Filme filme) {
-        logger.info("Cadastrando Filme");
-
-        filme = filmeService.save(filme);
-        return new ResponseEntity<>(filme, HttpStatus.CREATED);
+    public ResponseEntity<FilmeDTO> cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
+        Filme entity = filmeMapper.toEntity(filmeDTO);
+        entity = filmeService.save(entity);
+        FilmeDTO dto = filmeMapper.toDTO(entity);
+       return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Busca um filme por id")
@@ -57,7 +62,7 @@ public class FilmeController {
         logger.info("Atualizando filme");
         Optional<Filme> filmeExistente = filmeService.findById(id);
 
-        if (!filmeExistente.isPresent()) {
+        if (filmeExistente.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         } else {
@@ -75,7 +80,7 @@ public class FilmeController {
         logger.info("Deletando filme");
         Optional<Filme> filmeExistente = filmeService.findById(id);
 
-        if (!filmeExistente.isPresent()) {
+        if (filmeExistente.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             filmeService.deleteById(id);

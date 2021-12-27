@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ClienteStrategyImpl implements ClienteStrategy {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    ClienteRepository clienteRepository;
 
     @Override
     public void validate(Cliente cliente) {
@@ -37,11 +37,9 @@ public class ClienteStrategyImpl implements ClienteStrategy {
 
         Optional<Cliente> cliente = this.clienteRepository.findById(id);
 
-        if (!cliente.isPresent()) {
+        if (cliente.isEmpty()) {
             throw new NotFoundException("Cliente não encontrado");
         }
-
     }
-
 
 }
