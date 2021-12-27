@@ -5,6 +5,7 @@ import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.service.ClienteService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,7 +35,7 @@ public class ClienteController {
     @Autowired
     private ClienteMapper clienteMapper;
 
-    @Operation(summary = "Cadastrar um cliente", description = "Cadastrar um cliente")
+    @Operation(summary = "Cadastrar um cliente")
     @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")
     @PostMapping
     public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO clienteDTO) {
@@ -47,8 +48,9 @@ public class ClienteController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Buscar um cliente pelo id", description = "Buscar um cliente pelo id")
+    @Operation(summary = "Buscar um cliente pelo id")
     @ApiResponse(responseCode = "200", description = "Cliente encontrado com sucesso", content = @Content(schema =  @Schema(implementation = Cliente.class)))
+    @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> findById(@PathVariable String id) {
         logger.info("Buscando um cliente pelo id");
@@ -58,6 +60,8 @@ public class ClienteController {
         return cliente.map(entity -> new ResponseEntity<>(clienteMapper.toDTO(entity), HttpStatus.OK)).orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Buscar todos os clientes")
+    @ApiResponse(responseCode = "200", description = "Lista de clientes encontrada com sucesso")
     @GetMapping
     public ResponseEntity<List<Cliente>> findAllClientes() {
         logger.info("Buscando todos os clientes");
@@ -66,7 +70,9 @@ public class ClienteController {
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
-
+    @Operation(summary = "Deletar um cliente pelo id")
+    @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    @ApiResponse(responseCode = "204", description = "Cliente removido com sucesso")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         logger.info("Deletando um cliente pelo id");
@@ -80,6 +86,9 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Atualizar um cliente pelo id")
+    @ApiResponse(responseCode = "400", description = "Cliente não encontrado, ou dados inválidos")
+    @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso")
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable String id, @Valid @RequestBody Cliente cliente) {
         logger.info("Atualizando um cliente pelo id");
