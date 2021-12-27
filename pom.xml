@@ -13,18 +13,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tickets</name>
 	<description>Demo project for Spring Boot</description>
-<!--	<properties>-->
-<!--		<java.version>11</java.version>-->
-<!--	</properties>-->
+	<properties>
+		<java.version>11</java.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -48,6 +50,7 @@
 			<artifactId>swagger-annotations</artifactId>
 			<version>2.1.11</version>
 		</dependency>
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -67,6 +70,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

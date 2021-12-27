@@ -2,6 +2,8 @@ package com.cinema.tickets.api.controller;
 
 
 
+import com.cinema.tickets.api.dto.ClienteDTO;
+import com.cinema.tickets.api.mapper.ClienteMapper;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.service.ClienteService;
 import io.swagger.annotations.Api;
@@ -28,23 +30,29 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private ClienteMapper clienteMapper;
+
     @ApiOperation(value = "Cria um novo cliente")
     @PostMapping
-    public ResponseEntity<Cliente> create(@Valid @RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO clienteDTO) {
         logger.info("Criando um novo cliente");
 
-        cliente = clienteService.save(cliente);
+        Cliente entity = clienteMapper.toEntity(clienteDTO);
+        entity = clienteService.save(entity);
 
-        return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+        ClienteDTO dto = clienteMapper.toDTO(entity);
+        return  new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Busca um cliente pelo id")
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable String id) {
+    public ResponseEntity<ClienteDTO> findById(@PathVariable String id) {
         logger.info("Buscando um cliente pelo id");
+
         Optional<Cliente> cliente = clienteService.findById(id);
 
-        return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
+        return cliente.map(entity -> new ResponseEntity<>(clienteMapper.toDTO(entity), HttpStatus.OK)).orElse(ResponseEntity.notFound().build());
     }
 
     @ApiOperation(value = "Busca todos os clientes")
@@ -53,8 +61,6 @@ public class ClienteController {
         logger.info("Buscando todos os clientes");
         List<Cliente> clientes = clienteService.findAll();
 
-        for (Cliente cliente : clientes) {
-        }
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
@@ -65,7 +71,7 @@ public class ClienteController {
         logger.info("Deletando um cliente pelo id");
         Optional<Cliente> cliente = clienteService.findById(id);
 
-        if (!cliente.isPresent()) {
+        if (cliente.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             clienteService.delete(cliente.get());
@@ -79,7 +85,7 @@ public class ClienteController {
         logger.info("Atualizando um cliente pelo id");
         Optional<Cliente> clienteExistente = clienteService.findById(id);
 
-        if (!clienteExistente.isPresent()) {
+        if (clienteExistente.isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
             cliente.setId(id);
