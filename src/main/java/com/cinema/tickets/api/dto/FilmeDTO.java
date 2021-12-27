@@ -1,35 +1,23 @@
-package com.cinema.tickets.domain.collection;
+package com.cinema.tickets.api.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotEmpty;
+public class FilmeDTO {
 
-@Document(collection = "filme")
-public class Filme {
-
-    @Id
     private String id;
 
-    @NotEmpty
     private String titulo;
 
-    @NotEmpty
     private String tituloOriginal;
 
-    @NotEmpty
     private String genero;
 
-    @NotEmpty
     private String diretor;
 
-    @NotEmpty
     private String sinopse;
 
-    @NotEmpty
     private String duracao;
 
-    public Filme(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
+    public FilmeDTO(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
         this.id = id;
         this.titulo = titulo;
         this.tituloOriginal = tituloOriginal;
@@ -39,7 +27,7 @@ public class Filme {
         this.duracao = duracao;
     }
 
-    public Filme() {
+    public FilmeDTO() {
     }
 
     public String getId() {

@@ -44,7 +44,7 @@ public class ClienteServiceImpl implements ClienteService {
     public void delete(Cliente cliente) {
         Optional<Cliente> clienteId = this.clienteRepository.findById(cliente.getId());
 
-        if (!clienteId.isPresent()) {
+        if (clienteId.isEmpty()) {
             this.clienteValidationStrategy.findById(cliente.getId());
         }
 

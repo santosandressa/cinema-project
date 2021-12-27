@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FilmeRepository extends MongoRepository<Filme, String> {
 
+    Boolean existsByTitulo(String titulo);
+
 }
