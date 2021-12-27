@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain.collection;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,31 +15,39 @@ import javax.validation.constraints.Size;
 @Document(collection = "cliente")
 public class Cliente {
 
+    @Schema(description = "Identificador único do cliente")
     @Id
     private String id;
 
+    @Schema(description = "Nome do cliente", example = "Ester Isadora Melissa Gomes", required = true)
     @NotEmpty
     private String nome;
 
+    @Schema(description = "Cpf do cliente", example = "042.952.896-55", required = true)
     @CPF
     @NotEmpty
     private String cpf;
 
+    @Schema(description = "Data de nascimento do cliente", example = "24/05/2001", required = true)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @NotEmpty
     private String dataNascimento;
 
+    @Schema(description = "Celular do cliente", example = "(44) 98244-7112", required = true)
     @NotEmpty
     private String celular;
 
+    @Schema(description = "Email do cliente", example = "esterisadoramelissagomess@dprf.gov.br", required = true)
     @Email
     @NotEmpty
     private String email;
 
+    @Schema(description= "Senha do cliente", example = "sOu5JTNBQ3", required = true)
     @NotEmpty
     @Size(min = 6, max = 12)
     private String senha;
 
+    @Schema(description = "Endereço do cliente")
     @Valid
     private Endereco endereco;
 

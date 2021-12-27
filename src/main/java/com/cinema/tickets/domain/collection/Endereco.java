@@ -1,27 +1,36 @@
 package com.cinema.tickets.domain.collection;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.NotEmpty;
 
 public class Endereco {
 
+    @Schema(description = "Rua do endereço", example = "Rua Rio Jacutinga", required = true)
     @NotEmpty
     private String rua;
 
+    @Schema(description = "Cep do endereço", example = "87043-643", required = true)
     @NotEmpty
     private String cep;
 
+    @Schema(description = "Numero do endereço", example = "292", required = true)
     @NotEmpty
     private String numero;
 
+    @Schema(description = "Complemento  do endereço", example = "casa")
     private String complemento;
 
+    @Schema(description = "Bairro do endereço", example = "Jardim Pinheiros II", required = true)
     @NotEmpty
     private String bairro;
 
+    @Schema(description = "Cidade do endereço", example = "Maringá", required = true)
     @NotEmpty
     private String cidade;
 
+    @Schema(description = "Estado do endereço", example = "PR", required = true)
     @NotEmpty
     private String estado;
 

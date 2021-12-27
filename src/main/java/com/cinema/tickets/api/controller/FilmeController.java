@@ -4,8 +4,6 @@ import com.cinema.tickets.api.dto.FilmeDTO;
 import com.cinema.tickets.api.mapper.FilmeMapper;
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.service.FilmeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/v1/filmes")
 @CrossOrigin(origins = "*")
-@Api(value = "Filme Controller")
 public class FilmeController {
 
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
@@ -31,7 +28,7 @@ public class FilmeController {
     @Autowired
     private FilmeMapper filmeMapper;
 
-    @ApiOperation(value = "Cadastra um novo filme")
+
     @PostMapping
     public ResponseEntity<FilmeDTO> cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
         Filme entity = filmeMapper.toEntity(filmeDTO);
@@ -40,7 +37,6 @@ public class FilmeController {
        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Busca um filme por id")
     @GetMapping("/{id}")
     public ResponseEntity<Filme> buscarFilmePorId(@PathVariable String id) {
         logger.info("Buscando filme por id");
@@ -48,7 +44,6 @@ public class FilmeController {
         return filme.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @ApiOperation(value = "Busca todos os filmes")
     @GetMapping
     public ResponseEntity<List<Filme>> buscarTodosFilmes() {
         logger.info("Buscando todos os filmes");
@@ -56,7 +51,6 @@ public class FilmeController {
         return new ResponseEntity<>(filmes, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Atualiza um filme")
     @PutMapping("/{id}")
     public ResponseEntity<Filme> atualizarFilme(@PathVariable String id, @Valid @RequestBody Filme filme) {
         logger.info("Atualizando filme");
@@ -74,7 +68,6 @@ public class FilmeController {
     }
 
 
-    @ApiOperation(value = "Deleta um filme")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFilme(@PathVariable String id) {
         logger.info("Deletando filme");
