@@ -1,20 +1,29 @@
 package com.cinema.tickets.api.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class FilmeDTO {
 
+    @Schema(description = "Identificador único do filme")
     private String id;
 
+    @Schema(description = "Nome do filme", example = "O Poderoso Chefão")
     private String titulo;
 
+    @Schema(description = "The GodFather" )
     private String tituloOriginal;
 
+    @Schema(description = "Genero", example = "Ação")
     private String genero;
 
+    @Schema(description = "Diretor", example = "Francis Ford Coppola")
     private String diretor;
 
+    @Schema(description = "Sinopse", example = "Um homem que se torna o mestre do crime")
     private String sinopse;
 
+    @Schema(description = "Duração", example = "175min")
     private String duracao;
 
     public FilmeDTO(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
