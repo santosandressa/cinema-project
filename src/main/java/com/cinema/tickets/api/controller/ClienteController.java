@@ -5,7 +5,6 @@ import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.service.ClienteService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,8 +37,9 @@ public class ClienteController {
 
     @Operation(summary = "Cadastrar um cliente")
     @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Cliente com dados inválidos")
     @PostMapping
-    public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<ClienteDTO> create( @RequestBody @Valid ClienteDTO clienteDTO) {
         logger.info("Criando um novo cliente");
 
         Cliente entity = clienteMapper.toEntity(clienteDTO);

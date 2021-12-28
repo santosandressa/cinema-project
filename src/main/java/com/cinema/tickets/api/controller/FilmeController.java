@@ -7,6 +7,7 @@ import com.cinema.tickets.domain.service.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +31,7 @@ public class FilmeController {
 
 
     @PostMapping
-    public ResponseEntity<FilmeDTO> cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
+    public ResponseEntity<FilmeDTO> cadastrarFilme(@Validated @RequestBody FilmeDTO filmeDTO) {
         Filme entity = filmeMapper.toEntity(filmeDTO);
         entity = filmeService.save(entity);
         FilmeDTO dto = filmeMapper.toDTO(entity);

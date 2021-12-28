@@ -42,4 +42,12 @@ public class ClienteStrategyImpl implements ClienteStrategy {
         }
     }
 
+    @Override
+    public void validateEndereco(Cliente cliente) {
+        if (cliente.getEndereco() == null) {
+            throw new BusinessException("Endereço não informado");
+        }
+    }
+
 }
+

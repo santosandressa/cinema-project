@@ -7,4 +7,7 @@ public interface ClienteStrategy {
     void validate(Cliente cliente);
 
     void findById(String id);
+
+    void validateEndereco (Cliente cliente);
+
 }
