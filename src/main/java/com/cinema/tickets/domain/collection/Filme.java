@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain.collection;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,25 +9,25 @@ import javax.validation.constraints.NotEmpty;
 @Document(collection = "filme")
 public class Filme {
 
-    @Id
+    @Schema(description = "Identificador único do filme")
     private String id;
 
-    @NotEmpty
+    @Schema(description = "Nome do filme", example = "O Poderoso Chefão")
     private String titulo;
 
-    @NotEmpty
+    @Schema(description = "The GodFather" )
     private String tituloOriginal;
 
-    @NotEmpty
+    @Schema(description = "Genero", example = "Ação")
     private String genero;
 
-    @NotEmpty
+    @Schema(description = "Diretor", example = "Francis Ford Coppola")
     private String diretor;
 
-    @NotEmpty
+    @Schema(description = "Sinopse", example = "Um homem que se torna o mestre do crime")
     private String sinopse;
 
-    @NotEmpty
+    @Schema(description = "Duração", example = "175min")
     private String duracao;
 
     public Filme(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
