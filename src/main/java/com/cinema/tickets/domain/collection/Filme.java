@@ -15,7 +15,7 @@ public class Filme {
     @Schema(description = "Nome do filme", example = "O Poderoso Chefão")
     private String titulo;
 
-    @Schema(description = "The GodFather" )
+    @Schema(description = "Nome Original", example = "The Godfather")
     private String tituloOriginal;
 
     @Schema(description = "Genero", example = "Ação")
@@ -27,7 +27,7 @@ public class Filme {
     @Schema(description = "Sinopse", example = "Um homem que se torna o mestre do crime")
     private String sinopse;
 
-    @Schema(description = "Duração", example = "175min")
+    @Schema(description = "Duração", example = "175 min")
     private String duracao;
 
     public Filme(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
