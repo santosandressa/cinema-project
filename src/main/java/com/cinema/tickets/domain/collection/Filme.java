@@ -1,10 +1,7 @@
 package com.cinema.tickets.domain.collection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotEmpty;
 
 @Document(collection = "filme")
 public class Filme {

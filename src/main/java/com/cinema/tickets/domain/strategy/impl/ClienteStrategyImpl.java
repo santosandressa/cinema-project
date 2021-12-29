@@ -30,6 +30,10 @@ public class ClienteStrategyImpl implements ClienteStrategy {
         if (cpfExists) {
             throw new BusinessException("CPF já cadastrado");
         }
+
+        if (cliente.getEndereco() == null) {
+            throw new BusinessException("Endereço não informado");
+        }
     }
 
     @Override
@@ -39,13 +43,6 @@ public class ClienteStrategyImpl implements ClienteStrategy {
 
         if (cliente.isEmpty()) {
             throw new NotFoundException("Cliente não encontrado");
-        }
-    }
-
-    @Override
-    public void validateEndereco(Cliente cliente) {
-        if (cliente.getEndereco() == null) {
-            throw new BusinessException("Endereço não informado");
         }
     }
 

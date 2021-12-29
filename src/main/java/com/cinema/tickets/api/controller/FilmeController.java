@@ -7,7 +7,6 @@ import com.cinema.tickets.domain.service.FilmeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +25,14 @@ public class FilmeController {
 
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
 
-    @Autowired
-    FilmeService filmeService;
+    private final FilmeService filmeService;
 
-    @Autowired
-    private FilmeMapper filmeMapper;
+    private final FilmeMapper filmeMapper;
+
+    public FilmeController(FilmeService filmeService, FilmeMapper filmeMapper) {
+        this.filmeService = filmeService;
+        this.filmeMapper = filmeMapper;
+    }
 
     @Operation(summary = "Cadastrar filme")
     @ApiResponse(responseCode = "201", description = "Filme cadastrado com sucesso")
@@ -98,6 +100,5 @@ public class FilmeController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
-
 }
 

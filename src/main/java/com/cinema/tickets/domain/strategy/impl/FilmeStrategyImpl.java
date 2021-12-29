@@ -7,6 +7,8 @@ import com.cinema.tickets.domain.strategy.FilmeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class FilmeStrategyImpl implements FilmeStrategy {
 
@@ -15,9 +17,9 @@ public class FilmeStrategyImpl implements FilmeStrategy {
 
     @Override
     public void validateFilme(Filme filme) {
-        Boolean filmeExistsByNome = filmeRepository.existsByTitulo(filme.getTitulo());
+        Optional<Filme> filmeExistsByNome = filmeRepository.findByTitulo(filme.getTitulo());
 
-        if (filmeExistsByNome) {
+        if (filmeExistsByNome.isEmpty()) {
             throw new BusinessException("Filme já existe");
         }
     }

@@ -5,7 +5,7 @@ import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.cinema.tickets.domain.strategy.ClienteStrategy;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +15,10 @@ import java.util.Optional;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-    @Autowired
     private final ClienteRepository clienteRepository;
 
     @Autowired
     ClienteStrategy clienteValidationStrategy;
-
-    @Autowired
-    ModelMapper modelMapper;
 
     public ClienteServiceImpl(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
@@ -34,8 +30,6 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteValidationStrategy != null) {
             this.clienteValidationStrategy.validate(cliente);
         }
-
-        this.clienteValidationStrategy.validateEndereco(cliente);
 
         return this.clienteRepository.save(cliente);
     }

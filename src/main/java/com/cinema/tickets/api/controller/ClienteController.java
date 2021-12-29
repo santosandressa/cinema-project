@@ -10,11 +10,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,11 +27,13 @@ public class ClienteController {
 
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+    private final ClienteMapper clienteMapper;
 
-    @Autowired
-    private ClienteMapper clienteMapper;
+    public ClienteController(ClienteService clienteService, ClienteMapper clienteMapper) {
+        this.clienteService = clienteService;
+        this.clienteMapper = clienteMapper;
+    }
 
     @Operation(summary = "Cadastrar um cliente")
     @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")
@@ -43,7 +43,7 @@ public class ClienteController {
         logger.info("Criando um novo cliente");
 
         Cliente entity = clienteMapper.toEntity(clienteDTO);
-        entity = clienteService.save(entity);
+        entity = this.clienteService.save(entity);
 
         ClienteDTO dto = clienteMapper.toDTO(entity);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
