@@ -1,10 +1,11 @@
 package com.cinema.tickets.domain.collection;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Ingresso {
 
-    private String codigo;
+    private String id;
 
     private Date data;
 
@@ -12,6 +13,7 @@ public class Ingresso {
 
     private Double valor;
 
+    @Size(max = 5)
     private Integer quantidade;
 
     private Sala sala;
