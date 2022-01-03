@@ -1,17 +1,23 @@
 package com.cinema.tickets.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.NotEmpty;
 
 public class PoltronaDTO {
 
+    @Schema(description = "Identificador da poltrona")
     private String id;
 
+    @Schema(description = "Identificador da cadeira", example = "A1")
     @NotEmpty
     private String cadeira;
 
+    @Schema(description = "Identificador da fileira", example = "A")
     @NotEmpty
     private String fileira;
 
+    @Schema(description = "Status da poltrona", example = "DISPONIVEL")
     @NotEmpty
     private String status;
 
