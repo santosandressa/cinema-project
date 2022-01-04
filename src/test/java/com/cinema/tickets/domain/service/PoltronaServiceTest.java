@@ -1,8 +1,9 @@
 package com.cinema.tickets.domain.service;
 
-import com.cinema.tickets.domain.collection.Poltrona;
-import com.cinema.tickets.domain.repository.PoltronaRepository;
-import com.cinema.tickets.domain.service.impl.PoltronaServiceImpl;
+import com.cinema.tickets.common.config.domain.collection.Poltrona;
+import com.cinema.tickets.common.config.domain.repository.PoltronaRepository;
+import com.cinema.tickets.common.config.domain.service.PoltronaService;
+import com.cinema.tickets.common.config.domain.service.impl.PoltronaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

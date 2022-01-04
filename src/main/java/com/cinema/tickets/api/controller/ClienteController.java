@@ -3,13 +3,15 @@ package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
-import com.cinema.tickets.domain.collection.Cliente;
-import com.cinema.tickets.domain.service.ClienteService;
+import com.cinema.tickets.common.config.domain.collection.Cliente;
+
+import com.cinema.tickets.common.config.domain.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

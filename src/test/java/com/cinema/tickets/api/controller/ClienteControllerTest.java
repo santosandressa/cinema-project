@@ -1,10 +1,10 @@
 package com.cinema.tickets.api.controller;
 
 
-import com.cinema.tickets.domain.collection.Cliente;
-import com.cinema.tickets.domain.collection.Endereco;
-import com.cinema.tickets.domain.exception.BusinessException;
-import com.cinema.tickets.domain.service.ClienteService;
+import com.cinema.tickets.common.config.domain.collection.Cliente;
+import com.cinema.tickets.common.config.domain.collection.Endereco;
+import com.cinema.tickets.common.config.domain.exception.BusinessException;
+import com.cinema.tickets.common.config.domain.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

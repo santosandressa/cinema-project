@@ -1,6 +1,7 @@
 package com.cinema.tickets.domain.repository;
 
-import com.cinema.tickets.domain.collection.Poltrona;
+import com.cinema.tickets.common.config.domain.collection.Poltrona;
+import com.cinema.tickets.common.config.domain.repository.PoltronaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

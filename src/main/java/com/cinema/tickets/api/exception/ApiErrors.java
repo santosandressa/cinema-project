@@ -1,7 +1,7 @@
 package com.cinema.tickets.api.exception;
 
-import com.cinema.tickets.domain.exception.BusinessException;
-import com.cinema.tickets.domain.exception.NotFoundException;
+import com.cinema.tickets.common.config.domain.exception.BusinessException;
+import com.cinema.tickets.common.config.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

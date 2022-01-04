@@ -1,7 +1,8 @@
 package com.cinema.tickets.domain.repository;
 
-import com.cinema.tickets.domain.collection.Cliente;
-import com.cinema.tickets.domain.collection.Endereco;
+import com.cinema.tickets.common.config.domain.collection.Cliente;
+import com.cinema.tickets.common.config.domain.collection.Endereco;
+import com.cinema.tickets.common.config.domain.repository.ClienteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

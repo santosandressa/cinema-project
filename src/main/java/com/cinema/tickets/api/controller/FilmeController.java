@@ -2,8 +2,8 @@ package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.api.dto.FilmeDTO;
 import com.cinema.tickets.api.mapper.FilmeMapper;
-import com.cinema.tickets.domain.collection.Filme;
-import com.cinema.tickets.domain.service.FilmeService;
+import com.cinema.tickets.common.config.domain.collection.Filme;
+import com.cinema.tickets.common.config.domain.service.FilmeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

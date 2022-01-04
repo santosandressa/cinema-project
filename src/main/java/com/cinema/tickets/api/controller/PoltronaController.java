@@ -2,8 +2,8 @@ package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.api.dto.PoltronaDTO;
 import com.cinema.tickets.api.mapper.PoltronaMapper;
-import com.cinema.tickets.domain.collection.Poltrona;
-import com.cinema.tickets.domain.service.PoltronaService;
+import com.cinema.tickets.common.config.domain.collection.Poltrona;
+import com.cinema.tickets.common.config.domain.service.PoltronaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
