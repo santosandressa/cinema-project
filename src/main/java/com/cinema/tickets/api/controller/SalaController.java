@@ -1,6 +1,6 @@
 package com.cinema.tickets.api.controller;
 
-import com.cinema.tickets.common.config.domain.service.impl.SalaService;
+import com.cinema.tickets.domain.service.impl.SalaService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

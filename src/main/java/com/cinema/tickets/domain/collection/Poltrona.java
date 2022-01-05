@@ -1,27 +1,33 @@
-package com.cinema.tickets.api.dto;
+package com.cinema.tickets.domain.collection;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 
-public class PoltronaDTO {
+@Document
+public class Poltrona {
 
-    @Schema(description = "Identificador da poltrona")
+    @Id
     private String id;
 
-    @Schema(description = "Identificador da cadeira", example = "A1")
     @NotEmpty
     private String[] cadeira;
 
-    @Schema(description = "Identificador da fileira", example = "A")
     @NotEmpty
     private String[] fileira;
 
-    @Schema(description = "Status da poltrona", example = "DISPONIVEL")
     @NotEmpty
     private String status;
 
-    public PoltronaDTO() {
+
+    public Poltrona(){}
+
+    public Poltrona(String id, @NotEmpty String[] cadeira, @NotEmpty String[] fileira, String status) {
+        this.id = id;
+        this.cadeira = cadeira;
+        this.fileira = fileira;
+        this.status = status;
     }
 
     public String getId() {

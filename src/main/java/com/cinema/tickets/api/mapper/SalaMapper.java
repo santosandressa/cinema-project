@@ -1,7 +1,7 @@
 package com.cinema.tickets.api.mapper;
 
 import com.cinema.tickets.api.dto.SalaDTO;
-import com.cinema.tickets.common.config.domain.collection.Sala;
+import com.cinema.tickets.domain.collection.Sala;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

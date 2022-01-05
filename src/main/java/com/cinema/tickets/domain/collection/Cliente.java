@@ -1,9 +1,9 @@
-package com.cinema.tickets.api.dto;
+package com.cinema.tickets.domain.collection;
 
-
-import com.cinema.tickets.domain.collection.Endereco;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
@@ -11,9 +11,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class ClienteDTO {
+
+@Document(collection = "cliente")
+public class Cliente {
 
     @Schema(description = "Identificador único do cliente")
+    @Id
     private String id;
 
     @Schema(description = "Nome do cliente", example = "Ester Isadora Melissa Gomes", required = true)
@@ -39,7 +42,7 @@ public class ClienteDTO {
     @NotEmpty
     private String email;
 
-    @Schema(description = "Senha do cliente", example = "sOu5JTNBQ3", required = true)
+    @Schema(description= "Senha do cliente", example = "sOu5JTNBQ3", required = true)
     @NotEmpty
     @Size(min = 6, max = 12)
     private String senha;
@@ -48,7 +51,18 @@ public class ClienteDTO {
     @Valid
     private Endereco endereco;
 
-    public ClienteDTO() {
+    public Cliente(String id, String nome, String cpf, String dataNascimento, String celular, String email, String senha, Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.celular = celular;
+        this.email = email;
+        this.senha = senha;
+        this.endereco = endereco;
+    }
+
+    public Cliente() {
     }
 
     public String getId() {
@@ -114,4 +128,5 @@ public class ClienteDTO {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+
 }

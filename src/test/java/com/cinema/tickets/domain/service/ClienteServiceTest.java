@@ -1,10 +1,9 @@
 package com.cinema.tickets.domain.service;
 
-import com.cinema.tickets.common.config.domain.collection.Cliente;
-import com.cinema.tickets.common.config.domain.collection.Endereco;
-import com.cinema.tickets.common.config.domain.repository.ClienteRepository;
-import com.cinema.tickets.common.config.domain.service.ClienteService;
-import com.cinema.tickets.common.config.domain.service.impl.ClienteServiceImpl;
+import com.cinema.tickets.domain.collection.Cliente;
+import com.cinema.tickets.domain.collection.Endereco;
+import com.cinema.tickets.domain.repository.ClienteRepository;
+import com.cinema.tickets.domain.service.impl.ClienteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
