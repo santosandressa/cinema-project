@@ -11,17 +11,24 @@ public class PoltronaDTO {
 
     @Schema(description = "Identificador da cadeira", example = "A1")
     @NotEmpty
-    private String[] cadeira;
+    private String cadeira;
 
     @Schema(description = "Identificador da fileira", example = "A")
     @NotEmpty
-    private String[] fileira;
+    private String fileira;
 
     @Schema(description = "Status da poltrona", example = "DISPONIVEL")
     @NotEmpty
     private String status;
 
     public PoltronaDTO() {
+    }
+
+    public PoltronaDTO(String id, String cadeira, String fileira, String status) {
+        this.id = id;
+        this.cadeira = cadeira;
+        this.fileira = fileira;
+        this.status = status;
     }
 
     public String getId() {
@@ -32,19 +39,19 @@ public class PoltronaDTO {
         this.id = id;
     }
 
-    public String[] getCadeira() {
+    public String getCadeira() {
         return cadeira;
     }
 
-    public void setCadeira(String[] cadeira) {
+    public void setCadeira(String cadeira) {
         this.cadeira = cadeira;
     }
 
-    public String[] getFileira() {
+    public String getFileira() {
         return fileira;
     }
 
-    public void setFileira(String[] fileira) {
+    public void setFileira(String fileira) {
         this.fileira = fileira;
     }
 

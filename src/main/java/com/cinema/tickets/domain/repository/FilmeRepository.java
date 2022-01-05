@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface FilmeRepository extends MongoRepository<Filme, String> {
 
     Optional<Filme> findByTitulo(String titulo);
+
+     Boolean existsByTitulo(String titulo);
 }

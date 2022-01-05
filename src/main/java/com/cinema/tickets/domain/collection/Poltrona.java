@@ -12,23 +12,15 @@ public class Poltrona {
     private String id;
 
     @NotEmpty
-    private String[] cadeira;
+    private String cadeira;
 
     @NotEmpty
-    private String[] fileira;
+    private String fileira;
 
     @NotEmpty
     private String status;
 
-
     public Poltrona(){}
-
-    public Poltrona(String id, @NotEmpty String[] cadeira, @NotEmpty String[] fileira, String status) {
-        this.id = id;
-        this.cadeira = cadeira;
-        this.fileira = fileira;
-        this.status = status;
-    }
 
     public String getId() {
         return id;
@@ -38,19 +30,19 @@ public class Poltrona {
         this.id = id;
     }
 
-    public String[] getCadeira() {
+    public String getCadeira() {
         return cadeira;
     }
 
-    public void setCadeira(String[] cadeira) {
+    public void setCadeira(String cadeira) {
         this.cadeira = cadeira;
     }
 
-    public String[] getFileira() {
+    public String getFileira() {
         return fileira;
     }
 
-    public void setFileira(String[] fileira) {
+    public void setFileira(String fileira) {
         this.fileira = fileira;
     }
 

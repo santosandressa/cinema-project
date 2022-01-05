@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PoltronaRepository extends MongoRepository<Poltrona, String> {
 
-    Boolean existsByFileiraAndCadeira(String[] fileira, String[] cadeira);
+    Boolean existsByFileiraAndCadeira(String fileira, String cadeira);
 
 
 }

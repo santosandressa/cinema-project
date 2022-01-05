@@ -1,6 +1,7 @@
 package com.cinema.tickets.api.controller;
 
 
+import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.collection.Endereco;
 import com.cinema.tickets.domain.exception.BusinessException;
@@ -45,6 +46,29 @@ public class ClienteControllerTest {
     @MockBean
     ClienteService service;
 
+    private ClienteDTO createClienteDTO(){
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setNome("Luana Antonella Santos");
+        clienteDTO.setCpf("459.623.359-45");
+        clienteDTO.setDataNascimento("04/08/1963");
+        clienteDTO.setCelular("(48) 99853-5719");
+        clienteDTO.setEmail("luanaantonellasantos_@trbvm.com");
+        clienteDTO.setSenha("4hj1L0NkbJ");
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua dos Gaviões");
+        endereco.setCep("85800-000");
+        endereco.setNumero("585");
+        endereco.setComplemento("Apto. 5");
+        endereco.setBairro("Cidade Universitária Pedra Branca");
+        endereco.setCidade("Palhoça");
+        endereco.setEstado("Santa Catarina");
+
+        clienteDTO.setEndereco(endereco);
+
+        return clienteDTO;
+    }
+
     private Cliente createCliente() {
         Cliente clienteSalvo = new Cliente();
         clienteSalvo.setId("1");
@@ -73,11 +97,13 @@ public class ClienteControllerTest {
     @DisplayName("Deve cadastrar um cliente")
     public void shouldCreateCliente() throws Exception {
 
+        ClienteDTO clienteDTO = createClienteDTO();
+
         Cliente cliente = createCliente();
 
         BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
 
-        String json = new ObjectMapper().writeValueAsString(cliente);
+        String json = new ObjectMapper().writeValueAsString(clienteDTO);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +112,19 @@ public class ClienteControllerTest {
 
         mockMvc.perform(request).andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
+                .andExpect(jsonPath("nome").value(clienteDTO.getNome()))
+                .andExpect(jsonPath("cpf").value(clienteDTO.getCpf()))
+                .andExpect(jsonPath("dataNascimento").value(clienteDTO.getDataNascimento()))
+                .andExpect(jsonPath("celular").value(clienteDTO.getCelular()))
+                .andExpect(jsonPath("email").value(clienteDTO.getEmail()))
+                .andExpect(jsonPath("senha").value(clienteDTO.getSenha()))
+                .andExpect(jsonPath("endereco.rua").value(clienteDTO.getEndereco().getRua()))
+                .andExpect(jsonPath("endereco.cep").value(clienteDTO.getEndereco().getCep()))
+                .andExpect(jsonPath("endereco.numero").value(clienteDTO.getEndereco().getNumero()))
+                .andExpect(jsonPath("endereco.complemento").value(clienteDTO.getEndereco().getComplemento()))
+                .andExpect(jsonPath("endereco.bairro").value(clienteDTO.getEndereco().getBairro()))
+                .andExpect(jsonPath("endereco.cidade").value(clienteDTO.getEndereco().getCidade()))
+                .andExpect(jsonPath("endereco.estado").value(clienteDTO.getEndereco().getEstado()));
     }
 
     @Test
@@ -104,9 +142,11 @@ public class ClienteControllerTest {
     @Test
     @DisplayName("Deve lançar bad request ao cadastrar um cliente com dados já existentes")
     public void createClienteWithExistingEmail() throws Exception {
-        Cliente cliente = createCliente();
 
-        String json = new ObjectMapper().writeValueAsString(cliente);
+        ClienteDTO clienteDTO = createClienteDTO();
+
+
+        String json = new ObjectMapper().writeValueAsString(clienteDTO);
 
         String message = "Email já cadastrado";
 
@@ -168,24 +208,6 @@ public class ClienteControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @DisplayName("Deve atualizar um cliente")
-    public void updateCliente() throws Exception {
-
-        Cliente cliente = createCliente();
-        cliente.setId("1");
-
-        BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
-        BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
-
-
-        String json = new ObjectMapper().writeValueAsString(cliente);
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
-
-        mockMvc.perform(request).andExpect(status().isOk()).andExpect(jsonPath("id").value("1")).andExpect(jsonPath("nome").value(cliente.getNome())).andExpect(jsonPath("cpf").value(cliente.getCpf())).andExpect(jsonPath("dataNascimento").value(cliente.getDataNascimento())).andExpect(jsonPath("celular").value(cliente.getCelular())).andExpect(jsonPath("email").value(cliente.getEmail())).andExpect(jsonPath("senha").value(cliente.getSenha())).andExpect(jsonPath("endereco.rua").value(cliente.getEndereco().getRua())).andExpect(jsonPath("endereco.cep").value(cliente.getEndereco().getCep())).andExpect(jsonPath("endereco.numero").value(cliente.getEndereco().getNumero())).andExpect(jsonPath("endereco.complemento").value(cliente.getEndereco().getComplemento())).andExpect(jsonPath("endereco.bairro").value(cliente.getEndereco().getBairro())).andExpect(jsonPath("endereco.cidade").value(cliente.getEndereco().getCidade())).andExpect(jsonPath("endereco.estado").value(cliente.getEndereco().getEstado()));
     }
 
 
