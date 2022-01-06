@@ -1,15 +1,21 @@
 package com.cinema.tickets.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class SalaDTO {
 
+    @Schema(description = "Identificador da sala", example = "61d742af8769e66ebac6c293")
     private String id;
 
+    @Schema(description = "Numeração da sala", example = "1")
     private Integer numSala;
 
+    @Schema(description = "Boolean que indica se a sala tem sessão 3D", example = "true")
     private Boolean sala3D;
 
+    @Schema(description = "Capacidade da sala", example = "216")
     private Integer capacidade;
 
     private List<PoltronaDTO> poltrona;

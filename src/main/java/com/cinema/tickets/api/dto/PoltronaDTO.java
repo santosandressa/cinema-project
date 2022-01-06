@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 public class PoltronaDTO {
 
-    @Schema(description = "Identificador da poltrona")
+    @Schema(description = "Identificador da poltrona", example = "61d6e4b64027c3715ee97dea")
     private String id;
 
     @Schema(description = "Identificador da cadeira", example = "A1")
@@ -21,6 +21,7 @@ public class PoltronaDTO {
     @NotEmpty
     private String status;
 
+    @Schema(description = "Poltronara especial", example = "Normal")
     private String especiais;
 
     public PoltronaDTO() {
