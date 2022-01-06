@@ -21,14 +21,9 @@ public class PoltronaDTO {
     @NotEmpty
     private String status;
 
-    public PoltronaDTO() {
-    }
+    private String especiais;
 
-    public PoltronaDTO(String id, String cadeira, String fileira, String status) {
-        this.id = id;
-        this.cadeira = cadeira;
-        this.fileira = fileira;
-        this.status = status;
+    public PoltronaDTO() {
     }
 
     public String getId() {
@@ -61,5 +56,13 @@ public class PoltronaDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEspeciais() {
+        return especiais;
+    }
+
+    public void setEspeciais(String especiais) {
+        this.especiais = especiais;
     }
 }

@@ -18,24 +18,27 @@ public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
 
+
     @Autowired
     ClienteStrategy clienteValidationStrategy;
 
     public ClienteServiceImpl(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
+
     }
 
     @Override
     public Cliente save(Cliente cliente) {
-
         log.info("Salvando novo cliente " + cliente.getNome());
 
         if (clienteValidationStrategy != null) {
             this.clienteValidationStrategy.validate(cliente);
         }
 
+
         return this.clienteRepository.save(cliente);
     }
+
 
     @Override
     public Optional<Cliente> findById(String id) {
@@ -69,4 +72,8 @@ public class ClienteServiceImpl implements ClienteService {
         return this.clienteRepository.findAll();
     }
 
+    @Override
+    public Optional<Cliente> findClienteByEmail(String email) {
+        return  clienteRepository.findByEmail(email);
+    }
 }

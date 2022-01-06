@@ -54,6 +54,8 @@ public class PoltronaControllerTest {
         poltrona.setCadeira("A1");
         poltrona.setFileira("A");
         poltrona.setStatus("DISPONIVEL");
+
+
         return poltrona;
     }
 

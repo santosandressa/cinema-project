@@ -51,6 +51,7 @@ public class ClienteController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+
     @Operation(summary = "Buscar um cliente pelo id")
     @ApiResponse(responseCode = "200", description = "Cliente encontrado com sucesso", content = @Content(schema =  @Schema(implementation = Cliente.class)))
     @ApiResponse(responseCode = "404", description = "Cliente não encontrado")

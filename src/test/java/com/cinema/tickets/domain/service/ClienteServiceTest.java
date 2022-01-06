@@ -27,7 +27,6 @@ public class ClienteServiceTest {
 
     @BeforeEach
     public void setUp() {
-
         clienteService = new ClienteServiceImpl(clienteRepository);
     }
 

@@ -20,6 +20,9 @@ public class Poltrona {
     @NotEmpty
     private String status;
 
+    @NotEmpty
+    private String especiais;
+
     public Poltrona(){}
 
     public String getId() {
@@ -52,5 +55,13 @@ public class Poltrona {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEspeciais() {
+        return especiais;
+    }
+
+    public void setEspeciais(String especiais) {
+        this.especiais = especiais;
     }
 }

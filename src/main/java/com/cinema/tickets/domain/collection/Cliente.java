@@ -1,8 +1,10 @@
 package com.cinema.tickets.domain.collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +12,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+
 
 
 @Document(collection = "cliente")
@@ -45,6 +49,7 @@ public class Cliente {
     @Schema(description= "Senha do cliente", example = "sOu5JTNBQ3", required = true)
     @NotEmpty
     @Size(min = 6, max = 12)
+    @JsonIgnore
     private String senha;
 
     @Schema(description = "Endereço do cliente")
@@ -63,6 +68,7 @@ public class Cliente {
     }
 
     public Cliente() {
+
     }
 
     public String getId() {
@@ -128,5 +134,4 @@ public class Cliente {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-
 }

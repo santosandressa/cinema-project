@@ -1,9 +1,10 @@
 package com.cinema.tickets.api.dto;
 
-import java.util.Date;
 import java.util.List;
 
 public class SalaDTO {
+
+    private String id;
 
     private Integer numSala;
 
@@ -13,21 +14,16 @@ public class SalaDTO {
 
     private List<PoltronaDTO> poltrona;
 
-    private Integer poltronaReservada;
-
-    private Date data;
-
     public SalaDTO() {
 
     }
 
-    public SalaDTO(Integer numSala, Boolean sala3D, Integer capacidade, List<PoltronaDTO> poltrona, Integer poltronaReservada, Date data) {
-        this.numSala = numSala;
-        this.sala3D = sala3D;
-        this.capacidade = capacidade;
-        this.poltrona = poltrona;
-        this.poltronaReservada = poltronaReservada;
-        this.data = data;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getNumSala() {
@@ -62,19 +58,4 @@ public class SalaDTO {
         this.poltrona = poltrona;
     }
 
-    public Integer getPoltronaReservada() {
-        return poltronaReservada;
-    }
-
-    public void setPoltronaReservada(Integer poltronaReservada) {
-        this.poltronaReservada = poltronaReservada;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
 }

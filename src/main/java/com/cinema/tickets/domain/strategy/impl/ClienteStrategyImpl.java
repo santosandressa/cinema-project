@@ -13,6 +13,7 @@ import java.util.Optional;
 @Component
 public class ClienteStrategyImpl implements ClienteStrategy {
 
+
     @Autowired
     ClienteRepository clienteRepository;
 
@@ -45,6 +46,8 @@ public class ClienteStrategyImpl implements ClienteStrategy {
             throw new NotFoundException("Cliente não encontrado");
         }
     }
+
+
 
 }
 

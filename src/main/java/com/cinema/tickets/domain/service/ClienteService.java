@@ -16,4 +16,6 @@ public interface ClienteService {
     Cliente update(Cliente cliente);
 
     List<Cliente> findAll();
+
+    Optional<Cliente> findClienteByEmail(String email);
 }
