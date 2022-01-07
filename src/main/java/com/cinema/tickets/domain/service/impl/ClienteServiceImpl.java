@@ -23,6 +23,7 @@ public class ClienteServiceImpl implements ClienteService {
     ClienteStrategy clienteValidationStrategy;
 
     public ClienteServiceImpl(ClienteRepository clienteRepository) {
+
         this.clienteRepository = clienteRepository;
 
     }
@@ -34,7 +35,6 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteValidationStrategy != null) {
             this.clienteValidationStrategy.validate(cliente);
         }
-
 
         return this.clienteRepository.save(cliente);
     }
@@ -74,6 +74,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> findClienteByEmail(String email) {
+        log.info("Buscando cliente pelo email" + email);
         return  clienteRepository.findByEmail(email);
     }
 }

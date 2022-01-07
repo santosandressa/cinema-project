@@ -30,6 +30,7 @@ public class ClienteController {
     final Logger logger = Logger.getLogger(ClienteController.class.getName());
 
     private final ClienteService clienteService;
+
     private final ClienteMapper clienteMapper;
 
     public ClienteController(ClienteService clienteService, ClienteMapper clienteMapper) {
@@ -45,9 +46,11 @@ public class ClienteController {
         logger.info("Criando um novo cliente");
 
         Cliente entity = clienteMapper.toEntity(clienteDTO);
+
         entity = this.clienteService.save(entity);
 
         ClienteDTO dto = clienteMapper.toDTO(entity);
+
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
@@ -69,6 +72,7 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<Cliente>> findAllClientes() {
         logger.info("Buscando todos os clientes");
+
         List<Cliente> clientes = clienteService.findAll();
 
         return new ResponseEntity<>(clientes, HttpStatus.OK);
@@ -80,12 +84,15 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         logger.info("Deletando um cliente pelo id");
+
         Optional<Cliente> cliente = clienteService.findById(id);
 
         if (cliente.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+
             clienteService.delete(cliente.get());
+
             return ResponseEntity.noContent().build();
         }
     }
@@ -94,17 +101,28 @@ public class ClienteController {
     @ApiResponse(responseCode = "400", description = "Cliente não encontrado, ou dados inválidos")
     @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso")
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable String id, @Valid @RequestBody Cliente cliente) {
-        logger.info("Atualizando um cliente pelo id");
+    public ResponseEntity<ClienteDTO> update(@PathVariable String id, @Valid @RequestBody ClienteDTO clienteDTO) {
+        logger.info("Atualizando um cliente pelo id" + id);
+
         Optional<Cliente> clienteExistente = clienteService.findById(id);
 
         if (clienteExistente.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+
+            logger.info("Cliente não encontrado");
+
+            return ResponseEntity.notFound().build();
+
         } else {
-            cliente.setId(id);
-            cliente = clienteService.update(cliente);
-            logger.info("Usuario atualizado com sucesso, retornando no corpo da requisicao o Usuario e Status OK");
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
+            Cliente entity = clienteMapper.toEntity(clienteDTO);
+
+            entity.setId(id);
+
+            entity = clienteService.update(entity);
+
+            ClienteDTO dto = clienteMapper.toDTO(entity);
+
+            logger.info("Usuario atualizado com sucesso");
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         }
     }
 }

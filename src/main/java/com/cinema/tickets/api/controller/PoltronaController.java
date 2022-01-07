@@ -69,13 +69,15 @@ public class PoltronaController {
         Optional<Poltrona> poltrona = this.poltronaService.findById(id);
 
         if(poltrona.isEmpty()){
-            return ResponseEntity.badRequest().build();
+            logger.info("Poltrona não encontrada");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         } else {
             poltronaDTO.setId(id);
 
             Poltrona entity = poltronaMapper.toEntity(poltronaDTO);
 
-            entity = this.poltronaService.save(entity);
+            entity = this.poltronaService.update(entity);
 
             PoltronaDTO dto = poltronaMapper.toDTO(entity);
 

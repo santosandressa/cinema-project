@@ -39,10 +39,15 @@ public class FilmeController {
     @ApiResponse(responseCode = "400", description = "Erro ao cadastrar filme")
     @PostMapping
     public ResponseEntity<FilmeDTO> cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
+
         logger.info("Cadastrando filme");
+
         Filme entity = filmeMapper.toEntity(filmeDTO);
+
         entity = filmeService.save(entity);
+
         FilmeDTO dto = filmeMapper.toDTO(entity);
+
        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
@@ -51,8 +56,11 @@ public class FilmeController {
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<Filme> buscarFilmePorId(@PathVariable String id) {
+
         logger.info("Buscando filme por id");
+
         Optional<Filme> filme = filmeService.findById(id);
+
         return filme.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -61,7 +69,9 @@ public class FilmeController {
     @GetMapping
     public ResponseEntity<List<Filme>> buscarTodosFilmes() {
         logger.info("Buscando todos os filmes");
+
         List<Filme> filmes = filmeService.findAll();
+
         return new ResponseEntity<>(filmes, HttpStatus.OK);
     }
 
@@ -69,7 +79,7 @@ public class FilmeController {
     @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     @PutMapping("/{id}")
-    public ResponseEntity<Filme> atualizarFilme(@PathVariable String id, @Valid @RequestBody Filme filme) {
+    public ResponseEntity<FilmeDTO> atualizarFilme(@PathVariable String id, @Valid @RequestBody FilmeDTO filmeDTO) {
         logger.info("Atualizando filme");
         Optional<Filme> filmeExistente = filmeService.findById(id);
 
@@ -77,10 +87,16 @@ public class FilmeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         } else {
-            filme.setId(id);
-            filme = filmeService.save(filme);
+            Filme entity = filmeMapper.toEntity(filmeDTO);
+            entity.setId(id);
+
+            entity = filmeService.update(entity);
+
+            FilmeDTO dto = filmeMapper.toDTO(entity);
+
             logger.info("Filme atualizado com sucesso");
-            return new ResponseEntity<>(filme, HttpStatus.OK);
+
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         }
     }
 

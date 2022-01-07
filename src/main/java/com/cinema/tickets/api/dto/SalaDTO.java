@@ -2,6 +2,7 @@ package com.cinema.tickets.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class SalaDTO {
@@ -10,12 +11,15 @@ public class SalaDTO {
     private String id;
 
     @Schema(description = "Numeração da sala", example = "1")
+    @NotNull
     private Integer numSala;
 
     @Schema(description = "Boolean que indica se a sala tem sessão 3D", example = "true")
+    @NotNull
     private Boolean sala3D;
 
     @Schema(description = "Capacidade da sala", example = "216")
+    @NotNull
     private Integer capacidade;
 
     private List<PoltronaDTO> poltrona;

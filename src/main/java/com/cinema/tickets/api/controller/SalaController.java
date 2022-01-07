@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class SalaController {
         log.info("Requisição Post para salvar sala " + salaDTO.getNumSala());
 
         Sala entity = getSala(salaDTO);
+
         entity= this.salaService.save(entity);
 
         SalaDTO dto = getSalaDTO(entity);
@@ -77,14 +79,25 @@ public class SalaController {
     @ApiResponse(responseCode = "200", description = "Sala atualizada")
     @ApiResponse(responseCode = "400", description = "Sala com dados inválidos")
     @PutMapping("/{id}")
-    public ResponseEntity<SalaDTO> atualizar(@PathVariable String id, @RequestBody SalaDTO salaDTO) {
+    public ResponseEntity<SalaDTO> atualizar(@PathVariable String id, @Valid @RequestBody SalaDTO salaDTO) {
         log.info("Atualizando sala " + salaDTO.getNumSala());
+        Optional<Sala> salaExistente = this.salaService.findById(id);
 
-        Sala entity = getSala(salaDTO);
-        entity= this.salaService.save(entity);
-        SalaDTO dto = getSalaDTO(entity);
+        if(salaExistente.isPresent()){
+            Sala entity = getSala(salaDTO);
 
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+            entity.setId(id);
+
+            entity= this.salaService.save(entity);
+
+            SalaDTO dto = getSalaDTO(entity);
+
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        } else {
+            log.info("Sala não encontrada");
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
     }
 

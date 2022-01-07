@@ -4,6 +4,7 @@ package com.cinema.tickets.domain.collection;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,13 @@ public class Sala {
     @Id
     private String id;
 
+    @NotNull
     private Integer numSala;
 
+    @NotNull
     private Boolean sala3D;
 
+    @NotNull
     private Integer capacidade;
 
     private List<Poltrona> poltrona = new ArrayList<>();

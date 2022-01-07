@@ -3,7 +3,7 @@ package com.cinema.tickets.domain.collection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "filme")
+@Document(collection = "filmes")
 public class Filme {
 
     @Schema(description = "Identificador único do filme")

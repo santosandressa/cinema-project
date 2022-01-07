@@ -3,6 +3,7 @@ package com.cinema.tickets.domain.service.impl;
 import com.cinema.tickets.domain.collection.Poltrona;
 import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.PoltronaRepository;
 import com.cinema.tickets.domain.repository.SalaRepository;
 import com.cinema.tickets.domain.service.SalaService;
@@ -20,7 +21,6 @@ public class SalaServiceImpl implements SalaService {
     private  final SalaRepository salaRepository;
     private  final PoltronaRepository poltronaRepository;
 
-
     public SalaServiceImpl(SalaRepository salaRepository, PoltronaRepository poltronaRepository) {
         this.salaRepository = salaRepository;
         this.poltronaRepository = poltronaRepository;
@@ -36,9 +36,7 @@ public class SalaServiceImpl implements SalaService {
         }
 
         List<Poltrona> poltrona =  poltronaRepository.findAll();
-
         sala.setPoltrona(poltrona);
-
         return salaRepository.save(sala);
     }
 
@@ -51,12 +49,26 @@ public class SalaServiceImpl implements SalaService {
     @Override
     public Optional<Sala> findById(String id) {
         log.info("Buscando Sala por id: " + id);
-        return salaRepository.findById(id);
+
+        Optional<Sala> salaId = salaRepository.findById(id);
+
+        if (salaId.isEmpty()){
+            throw new NotFoundException("Sala não encontrada");
+        }
+        return salaId;
     }
 
     @Override
     public Sala update(Sala sala) {
         log.info("Atualizando Sala: " + sala.getNumSala());
-        return salaRepository.save(sala);
+
+        Optional<Sala> salaId = salaRepository.findById(sala.getId());
+
+        if (salaId.isEmpty() || salaId.get().getId() == null) {
+            throw new NotFoundException("Sala não encontrada");
+        } else {
+            sala.setId(salaId.get().getId());
+            return salaRepository.save(sala);
+        }
     }
 }
