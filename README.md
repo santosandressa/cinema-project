@@ -14,3 +14,9 @@ O primeiro acesso pode demorar alguns segundos
 [Postman](https://documenter.getpostman.com/view/14453763/UVXeqcrW#57e68af7-fbd2-441b-ada5-a44642cfaa68)
 
 
+## Tecnologias
+- Spring Boot 
+- MongoDB
+- Spring Security 
+- JWT
+- JUnit5
