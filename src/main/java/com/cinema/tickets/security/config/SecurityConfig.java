@@ -62,7 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PRIVATE_MATCHERS_ADMIN = {
             "/api/v1/cliente/deletar/{id}",
-            "/api/v1/cliente/atualizar/{id}",
             "/api/v1/cliente/{id}",
             "api/v1/cliente/listar",
             "api/v1/filme/cadastrar",

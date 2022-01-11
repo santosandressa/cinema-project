@@ -6,6 +6,7 @@ import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.service.SalaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class SalaController {
     @Autowired
     SalaMapper salaMapper;
 
-    @Operation(summary = "Criar sala")
+    @Operation(summary = "Criar sala", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "201", description = "Sala criada com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao criar sala")
     @PostMapping("/cadastrar")
@@ -75,7 +76,7 @@ public class SalaController {
         return new ResponseEntity<>(salas, HttpStatus.OK);
     }
 
-    @Operation(summary = "Atualizar sala")
+    @Operation(summary = "Atualizar sala", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Sala atualizada")
     @ApiResponse(responseCode = "400", description = "Sala com dados inválidos")
     @PutMapping("/atualizar/{id}")

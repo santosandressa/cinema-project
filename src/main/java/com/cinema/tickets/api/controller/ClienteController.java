@@ -73,7 +73,7 @@ public class ClienteController {
     }
 
 
-    @Operation(summary = "Buscar um cliente pelo id")
+    @Operation(summary = "Buscar um cliente pelo id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Cliente encontrado com sucesso", content = @Content(schema = @Schema(implementation = Cliente.class)))
     @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     @GetMapping("/{id}")
@@ -96,7 +96,7 @@ public class ClienteController {
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
-    @Operation(summary = "Deletar um cliente pelo id")
+    @Operation(summary = "Deletar um cliente pelo id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     @ApiResponse(responseCode = "204", description = "Cliente removido com sucesso")
     @DeleteMapping("/{id}")
@@ -145,6 +145,7 @@ public class ClienteController {
     }
 
 
+    @Operation(summary = "Salvar um role", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/role/salvar")
     public ResponseEntity<Role> salvarRole(@RequestBody Role role) {
         log.info("Criando um novo role");
@@ -154,6 +155,7 @@ public class ClienteController {
         return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Adiciona um role ao Cliente", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/role/addCliente")
     public ResponseEntity<?> addClienteRole(@RequestBody String email, String nomeRole) {
         log.info("Adicionando um cliente a um role");

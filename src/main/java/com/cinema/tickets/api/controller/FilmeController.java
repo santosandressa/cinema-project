@@ -6,6 +6,7 @@ import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.service.FilmeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class FilmeController {
         this.filmeMapper = filmeMapper;
     }
 
-    @Operation(summary = "Cadastrar filme")
+    @Operation(summary = "Cadastrar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "201", description = "Filme cadastrado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao cadastrar filme")
     @PostMapping("/cadastrar")
@@ -75,7 +76,7 @@ public class FilmeController {
         return new ResponseEntity<>(filmes, HttpStatus.OK);
     }
 
-    @Operation(summary = "Atualizar filme")
+    @Operation(summary = "Atualizar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     @PutMapping("/atualizar/{id}")
@@ -100,7 +101,7 @@ public class FilmeController {
         }
     }
 
-    @Operation(summary = "Deletar filme")
+    @Operation(summary = "Deletar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "204", description = "Filme deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     @DeleteMapping("/deletar/{id}")
