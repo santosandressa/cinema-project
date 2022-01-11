@@ -36,7 +36,7 @@ public class SalaController {
     @Operation(summary = "Criar sala")
     @ApiResponse(responseCode = "201", description = "Sala criada com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao criar sala")
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<SalaDTO> salvar(@RequestBody SalaDTO salaDTO) {
         log.info("Requisição Post para salvar sala " + salaDTO.getNumSala());
 

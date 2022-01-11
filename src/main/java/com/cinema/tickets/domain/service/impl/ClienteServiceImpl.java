@@ -1,31 +1,44 @@
 package com.cinema.tickets.domain.service.impl;
 
-import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.collection.Cliente;
+import com.cinema.tickets.domain.collection.Role;
+import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.repository.ClienteRepository;
+import com.cinema.tickets.domain.repository.RoleRepository;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.cinema.tickets.domain.strategy.ClienteStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
-public class ClienteServiceImpl implements ClienteService {
+public class ClienteServiceImpl implements ClienteService, UserDetailsService {
 
     final Logger log = Logger.getLogger(ClienteServiceImpl.class.getName());
 
     private final ClienteRepository clienteRepository;
 
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     ClienteStrategy clienteValidationStrategy;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository) {
-
+    public ClienteServiceImpl(ClienteRepository clienteRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.clienteRepository = clienteRepository;
-
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,6 +48,8 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteValidationStrategy != null) {
             this.clienteValidationStrategy.validate(cliente);
         }
+
+        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
         return this.clienteRepository.save(cliente);
     }
@@ -74,7 +89,61 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> findClienteByEmail(String email) {
-        log.info("Buscando cliente pelo email" + email);
-        return  clienteRepository.findByEmail(email);
+        log.info("Buscando cliente pelo email " + email);
+        return clienteRepository.findByEmail(email);
+    }
+
+    @Override
+    public Role saveRole(Role role) {
+
+        log.info("Salvando nova role " + role.getNome());
+
+        Role roleExistente = this.roleRepository.findByNome(role.getNome());
+
+        if (roleExistente != null) {
+            throw new BusinessException("Role já existente");
+        }
+
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public void addRole(String email, String nomeRole) {
+        Optional<Cliente> cliente = this.clienteRepository.findByEmail(email);
+
+        Role role = this.roleRepository.findByNome(nomeRole);
+
+        log.info("Adicionando " + role.getNome() + " ao cliente " + (cliente.orElse(null) != null ? cliente.orElse(null).getNome() : null));
+
+        if (cliente.isPresent()) {
+            cliente.orElse(null).getRoles().add(role);
+            this.clienteRepository.save(cliente.orElse(null));
+            log.info("Role adicionado com sucesso");
+        }
+    }
+
+    @Override
+    public Role findRoleByNome(String nomeRole) {
+        log.info("Buscando role pelo nome " + nomeRole);
+        return this.roleRepository.findByNome(nomeRole);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Cliente> cliente = this.clienteRepository.findByEmail(email);
+
+        if(cliente.isEmpty()) {
+            log.info("Cliente não encontrado");
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        } else {
+            log.info("Cliente " + cliente.get().getEmail() + " encontrado");
+        }
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        cliente.get().getRoles().forEach(role ->
+                authorities.add(new SimpleGrantedAuthority(role.getNome())));
+
+        return new org.springframework.security.core.userdetails.User(cliente.get().getEmail(), cliente.get().getSenha(), authorities);
     }
 }

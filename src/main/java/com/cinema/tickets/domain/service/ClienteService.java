@@ -1,6 +1,7 @@
 package com.cinema.tickets.domain.service;
 
 import com.cinema.tickets.domain.collection.Cliente;
+import com.cinema.tickets.domain.collection.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,10 @@ public interface ClienteService {
     List<Cliente> findAll();
 
     Optional<Cliente> findClienteByEmail(String email);
+
+    Role saveRole(Role role);
+
+    void addRole(String email, String nomeRole);
+
+    Role findRoleByNome(String nomeRole);
 }

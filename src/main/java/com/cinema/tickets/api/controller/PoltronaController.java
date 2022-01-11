@@ -36,7 +36,7 @@ public class PoltronaController {
     @Operation(summary = "Cria uma poltrona")
     @ApiResponse(responseCode = "201", description = "Poltrona criada com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao criar poltrona")
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<PoltronaDTO> salvar(@Valid @RequestBody PoltronaDTO poltronaDTO) {
 
         logger.info("Criando poltrona");

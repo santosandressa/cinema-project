@@ -37,7 +37,7 @@ public class FilmeController {
     @Operation(summary = "Cadastrar filme")
     @ApiResponse(responseCode = "201", description = "Filme cadastrado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao cadastrar filme")
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<FilmeDTO> cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
 
         logger.info("Cadastrando filme");

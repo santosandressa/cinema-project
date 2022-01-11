@@ -12,8 +12,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 @Document(collection = "cliente")
@@ -56,7 +56,13 @@ public class Cliente {
     @Valid
     private Endereco endereco;
 
-    public Cliente(String id, String nome, String cpf, String dataNascimento, String celular, String email, String senha, Endereco endereco) {
+    private Collection<Role> roles = new ArrayList<>();
+
+    public Cliente() {
+
+    }
+
+    public Cliente(String id, String nome, String cpf, String dataNascimento, String celular, String email, String senha, Endereco endereco, Collection<Role> roles) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -65,10 +71,7 @@ public class Cliente {
         this.email = email;
         this.senha = senha;
         this.endereco = endereco;
-    }
-
-    public Cliente() {
-
+        this.roles = roles;
     }
 
     public String getId() {
@@ -133,5 +136,13 @@ public class Cliente {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }

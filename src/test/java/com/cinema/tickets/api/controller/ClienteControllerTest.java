@@ -161,9 +161,9 @@ public class ClienteControllerTest {
     @Test
     @DisplayName("Deve lançar bad request ao cadastrar um cliente com dados já existentes")
     public void createClienteWithExistingCpf() throws Exception {
-        Cliente cliente = createCliente();
+        ClienteDTO clienteDTO = createClienteDTO();
 
-        String json = new ObjectMapper().writeValueAsString(cliente);
+        String json = new ObjectMapper().writeValueAsString(clienteDTO);
 
         String message = "CPF já cadastrado";
 
