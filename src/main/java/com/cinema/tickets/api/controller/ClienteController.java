@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +85,7 @@ public class ClienteController {
         return cliente.map(entity -> new ResponseEntity<>(clienteMapper.toDTO(entity), HttpStatus.OK)).orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Buscar todos os clientes")
+    @Operation(summary = "Buscar todos os clientes", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Lista de clientes encontrada com sucesso")
     @GetMapping("/listar")
     public ResponseEntity<List<Cliente>> findAllClientes() {
@@ -218,16 +219,4 @@ public class ClienteController {
         }
 
     }
-
-//    @PostMapping("/login")
-//    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
-//    @Operation(summary = "Login", description = "Realiza o login do usuário")
-//    public ResponseEntity<Cliente> login(@RequestBody String email, String senha){
-//        log.info("Fazendo login");
-//
-//        Cliente cliente = clienteService.login(email, senha);
-//
-//        return new ResponseEntity<>(cliente, HttpStatus.OK);
-//    }
-
 }
