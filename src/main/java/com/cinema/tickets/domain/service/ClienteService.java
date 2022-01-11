@@ -25,4 +25,6 @@ public interface ClienteService {
     void addRole(String email, String nomeRole);
 
     Role findRoleByNome(String nomeRole);
+
+    Cliente login(String email, String senha);
 }

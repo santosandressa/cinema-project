@@ -65,11 +65,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/cliente/atualizar/{id}",
             "/api/v1/cliente/{id}",
             "api/v1/cliente/listar",
-
+            "api/v1/filme/cadastrar",
+            "api/v1/filme/deletar/{id}",
+            "api/v1/filme/atualizar/{id}",
+            "api/v1/poltrona/cadastrar",
+            "api/v1/poltrona/atualizar/{id}",
+            "api/v1/sala/cadastrar",
+            "api/v1/sala/atualizar/{id}",
     };
-
-
-
 
     @Bean
     @Override
@@ -89,7 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+
+        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/cliente/login");
 
         http.authorizeRequests()
                 .antMatchers(GET, PUBLIC_MATCHERS_GET).permitAll()

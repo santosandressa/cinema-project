@@ -78,7 +78,7 @@ public class FilmeController {
     @Operation(summary = "Atualizar filme")
     @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<FilmeDTO> atualizarFilme(@PathVariable String id, @Valid @RequestBody FilmeDTO filmeDTO) {
         logger.info("Atualizando filme");
         Optional<Filme> filmeExistente = filmeService.findById(id);
@@ -103,7 +103,7 @@ public class FilmeController {
     @Operation(summary = "Deletar filme")
     @ApiResponse(responseCode = "204", description = "Filme deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarFilme(@PathVariable String id) {
         logger.info("Deletando filme");
         Optional<Filme> filmeExistente = filmeService.findById(id);

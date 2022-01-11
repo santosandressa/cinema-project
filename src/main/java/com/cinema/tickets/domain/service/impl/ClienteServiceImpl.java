@@ -51,6 +51,8 @@ public class ClienteServiceImpl implements ClienteService, UserDetailsService {
 
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
+
+
         return this.clienteRepository.save(cliente);
     }
 
@@ -126,6 +128,22 @@ public class ClienteServiceImpl implements ClienteService, UserDetailsService {
     public Role findRoleByNome(String nomeRole) {
         log.info("Buscando role pelo nome " + nomeRole);
         return this.roleRepository.findByNome(nomeRole);
+    }
+
+    @Override
+    public Cliente login(String email, String senha) {
+        log.info("Buscando cliente pelo email " + email);
+        Optional<Cliente> cliente = this.clienteRepository.findByEmail(email);
+
+        if (cliente.isPresent()) {
+            if (passwordEncoder.matches(senha, cliente.get().getSenha())) {
+                return cliente.get();
+            }
+        } else {
+            throw new BusinessException("Cliente não encontrado");
+        }
+
+        return null;
     }
 
     @Override

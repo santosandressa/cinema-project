@@ -63,7 +63,7 @@ public class PoltronaController {
         return poltrona.map(entity -> new ResponseEntity<>(poltronaMapper.toDTO(entity), HttpStatus.OK)).orElseThrow(() -> new NotFoundException("Poltrona não encontrada"));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<PoltronaDTO> update(@PathVariable String id,@RequestBody PoltronaDTO poltronaDTO) {
         logger.info("Atualizando poltrona");
         Optional<Poltrona> poltrona = this.poltronaService.findById(id);

@@ -78,7 +78,7 @@ public class SalaController {
     @Operation(summary = "Atualizar sala")
     @ApiResponse(responseCode = "200", description = "Sala atualizada")
     @ApiResponse(responseCode = "400", description = "Sala com dados inválidos")
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<SalaDTO> atualizar(@PathVariable String id, @Valid @RequestBody SalaDTO salaDTO) {
         log.info("Atualizando sala " + salaDTO.getNumSala());
         Optional<Sala> salaExistente = this.salaService.findById(id);

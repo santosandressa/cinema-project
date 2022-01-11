@@ -64,6 +64,8 @@ public class ClienteController {
 
         entity = this.clienteService.save(entity);
 
+        clienteService.addRole(entity.getEmail(), "ROLE_USER");
+
         ClienteDTO dto = clienteMapper.toDTO(entity);
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
@@ -168,53 +170,64 @@ public class ClienteController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader(AUTHORIZATION);
 
-            if(authHeader != null && authHeader.startsWith("Bearer ")){
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-                try {
-                    String refreshToken = authHeader.substring("Bearer ".length());
+            try {
+                String refreshToken = authHeader.substring("Bearer ".length());
 
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes(StandardCharsets.UTF_8));
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes(StandardCharsets.UTF_8));
 
-                    JWTVerifier verifier = JWT.require(algorithm).build();
+                JWTVerifier verifier = JWT.require(algorithm).build();
 
-                    DecodedJWT decodedJWT = verifier.verify(refreshToken);
+                DecodedJWT decodedJWT = verifier.verify(refreshToken);
 
-                    String email = decodedJWT.getSubject();
+                String email = decodedJWT.getSubject();
 
-                    Optional<Cliente> cliente = clienteService.findClienteByEmail(email);
+                Optional<Cliente> cliente = clienteService.findClienteByEmail(email);
 
-                    String accessToken = JWT.create()
-                            .withSubject(cliente.get().getEmail())
-                            .withExpiresAt(new java.util.Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                            .withIssuer("auth0")
-                            .withIssuer(request.getRequestURL().toString())
-                            .withClaim("roles", cliente.get().getRoles().stream().map(Role::getNome).collect(Collectors.toList()))
-                            .sign(algorithm);
+                String accessToken = JWT.create()
+                        .withSubject(cliente.get().getEmail())
+                        .withExpiresAt(new java.util.Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                        .withIssuer("auth0")
+                        .withIssuer(request.getRequestURL().toString())
+                        .withClaim("roles", cliente.get().getRoles().stream().map(Role::getNome).collect(Collectors.toList()))
+                        .sign(algorithm);
 
-                    Map<String, String>  tokens = new HashMap<>();
-                    tokens.put("accessToken", accessToken);
-                    tokens.put("refreshToken", refreshToken);
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("accessToken", accessToken);
+                tokens.put("refreshToken", refreshToken);
 
-                    response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
-                    log.info("Token gerado: " + accessToken);
+                log.info("Token gerado: " + accessToken);
 
-                } catch (Exception e) {
-                    log.info("Error: " + e.getMessage());
-                    response.setHeader("error", e.getMessage());
-                    response.setStatus(FORBIDDEN.value());
+            } catch (Exception e) {
+                log.info("Error: " + e.getMessage());
+                response.setHeader("error", e.getMessage());
+                response.setStatus(FORBIDDEN.value());
 
-                    Map<String, String> error = new HashMap<>();
-                    error.put("error", e.getMessage());
-                    response.setContentType(APPLICATION_JSON_VALUE);
+                Map<String, String> error = new HashMap<>();
+                error.put("error", e.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
 
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
-                }
-            } else {
-                throw new BusinessException("Refresh token is missing");
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
+        } else {
+            throw new BusinessException("Refresh token is missing");
+        }
 
+    }
+
+    @PostMapping("/login")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @Operation(summary = "Login", description = "Realiza o login do usuário")
+    public ResponseEntity<Cliente> login(@RequestBody String email, String senha){
+        log.info("Fazendo login");
+
+        Cliente cliente = clienteService.login(email, senha);
+
+        return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
 
 }
