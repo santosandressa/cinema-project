@@ -219,15 +219,15 @@ public class ClienteController {
 
     }
 
-    @PostMapping("/login")
-    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
-    @Operation(summary = "Login", description = "Realiza o login do usuário")
-    public ResponseEntity<Cliente> login(@RequestBody String email, String senha){
-        log.info("Fazendo login");
-
-        Cliente cliente = clienteService.login(email, senha);
-
-        return new ResponseEntity<>(cliente, HttpStatus.OK);
-    }
+//    @PostMapping("/login")
+//    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+//    @Operation(summary = "Login", description = "Realiza o login do usuário")
+//    public ResponseEntity<Cliente> login(@RequestBody String email, String senha){
+//        log.info("Fazendo login");
+//
+//        Cliente cliente = clienteService.login(email, senha);
+//
+//        return new ResponseEntity<>(cliente, HttpStatus.OK);
+//    }
 
 }
