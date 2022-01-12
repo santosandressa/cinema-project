@@ -1,6 +1,7 @@
 package com.cinema.tickets.api.controller;
 
 
+import com.cinema.tickets.annotations.WithMockAdmin;
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.collection.Endereco;
@@ -101,11 +102,13 @@ public class ClienteControllerTest {
 
         Cliente cliente = createCliente();
 
+        service.addRole("luanaantonellasantos_@trbvm.com", "ROLE_ADMIN");
+
         BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
 
         String json = new ObjectMapper().writeValueAsString(clienteDTO);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -133,7 +136,7 @@ public class ClienteControllerTest {
         String json = new ObjectMapper().writeValueAsString(new Cliente());
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("campos", hasSize(6)));
@@ -153,7 +156,7 @@ public class ClienteControllerTest {
         BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
@@ -170,54 +173,56 @@ public class ClienteControllerTest {
         BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
 
     @Test
-    @DisplayName("Deve lançar not found ao cadastrar um cliente com dados já existentes")
+    @DisplayName("Deve lançar bad request ao cadastrar um cliente com dados já existentes")
     public void clienteNotFound() throws Exception {
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API + "/{id}", "1").accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).accept(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(request).andExpect(status().isNotFound());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
 
     @Test
+    @WithMockAdmin
     @DisplayName("Deve deletar um cliente")
     public void deleteCliente() throws Exception {
         Cliente cliente = new Cliente();
-        cliente.setId("1");
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/deletar/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNoContent());
     }
 
 
     @Test
+    @WithMockAdmin
     @DisplayName("Deve lançar not found ao deletar um cliente inexistente")
     public void deleteClienteNotFound() throws Exception {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CLIENTE_API.concat("/deletar/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNotFound());
     }
 
 
     @Test
+    @WithMockAdmin
     @DisplayName("Deve lançar not found ao atualizar um cliente inexistente")
     public void updateClienteNotFound() throws Exception {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/" + "1")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/atualizar/" + "7")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isBadRequest());
     }

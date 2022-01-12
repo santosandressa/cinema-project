@@ -99,7 +99,7 @@ public class ClienteController {
     @Operation(summary = "Deletar um cliente pelo id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     @ApiResponse(responseCode = "204", description = "Cliente removido com sucesso")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         log.info("Deletando um cliente pelo id");
 
@@ -122,15 +122,6 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> update(@PathVariable String id, @Valid @RequestBody ClienteDTO clienteDTO) {
         log.info("Atualizando um cliente pelo id" + id);
 
-        Optional<Cliente> clienteExistente = clienteService.findById(id);
-
-        if (clienteExistente.isEmpty()) {
-
-            log.info("Cliente não encontrado");
-
-            return ResponseEntity.notFound().build();
-
-        } else {
             Cliente entity = clienteMapper.toEntity(clienteDTO);
 
             entity.setId(id);
@@ -141,7 +132,6 @@ public class ClienteController {
 
             log.info("Usuario atualizado com sucesso");
             return new ResponseEntity<>(dto, HttpStatus.OK);
-        }
     }
 
 
