@@ -1,5 +1,6 @@
 package com.cinema.tickets.api.controller;
 
+import com.cinema.tickets.annotations.WithMockAdmin;
 import com.cinema.tickets.api.dto.FilmeDTO;
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.service.FilmeService;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,7 +40,7 @@ public class FilmeControllerTest {
     @MockBean
     FilmeService filmeService;
 
-    private FilmeDTO createFilmeDTO(){
+    private FilmeDTO createFilmeDTO() {
         FilmeDTO filmeDTO = new FilmeDTO();
         filmeDTO.setTitulo("Percy Jackson e o mar de monstros");
         filmeDTO.setTituloOriginal("Percy Jackson and the Sea of Monsters");
@@ -49,7 +52,7 @@ public class FilmeControllerTest {
         return filmeDTO;
     }
 
-    private Filme createFilme(){
+    private Filme createFilme() {
         Filme filme = new Filme();
         filme.setId("1");
         filme.setTitulo("Percy Jackson e o mar de monstros");
@@ -63,6 +66,7 @@ public class FilmeControllerTest {
     }
 
     @Test
+    @WithMockAdmin
     @DisplayName("Debe cadastrar um filme")
     public void shouldCreateFilme() throws Exception {
 
@@ -74,7 +78,7 @@ public class FilmeControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(filmeDTO);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(FILME_API)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(FILME_API.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -90,6 +94,19 @@ public class FilmeControllerTest {
                 .andExpect(jsonPath("$.duracao").value(filmeDTO.getDuracao()));
     }
 
+    @Test
+    @DisplayName("Deve deletar um filme")
+    @WithMockAdmin
+    public void shouldDeleteFilme() throws Exception {
+
+        Filme filme = createFilme();
+
+        BDDMockito.given(filmeService.findById(any(String.class))).willReturn(Optional.of(filme));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(FILME_API.concat("/deletar/" + "1"));
+
+        mockMvc.perform(request).andExpect(status().isNoContent());
+    }
 
 
 }

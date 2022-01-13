@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,22 +25,24 @@ public class ClienteServiceTest {
 
     ClienteService clienteService;
 
+    @MockBean
     RoleRepository roleRepository;
 
+    @MockBean
     PasswordEncoder passwordEncoder;
 
     @MockBean
     ClienteRepository clienteRepository;
 
+
     @BeforeEach
     public void setUp() {
-
-
         clienteService = new ClienteServiceImpl(clienteRepository, roleRepository, passwordEncoder);
     }
 
     private Cliente createCliente() {
         Cliente clienteSalvo = new Cliente();
+        clienteSalvo.setId("1");
         clienteSalvo.setNome("Luana Antonella Santos");
         clienteSalvo.setCpf("459.623.359-45");
         clienteSalvo.setDataNascimento("04/08/1963");
@@ -58,6 +61,8 @@ public class ClienteServiceTest {
 
         clienteSalvo.setEndereco(endereco);
 
+        clienteSalvo.setSenha(passwordEncoder.encode(clienteSalvo.getSenha()));
+
         return clienteSalvo;
     }
 
@@ -65,29 +70,27 @@ public class ClienteServiceTest {
     @DisplayName("Deve salvar um cliente")
     public void saveClienteTest() {
         Cliente cliente = createCliente();
-        cliente.setId("1");
 
         when(clienteRepository.existsByEmail(Mockito.anyString())).thenReturn(false);
+
         when(clienteRepository.existsByCpf(Mockito.anyString())).thenReturn(false);
 
-        when(clienteRepository.save(cliente)).thenReturn(cliente);
+        clienteService.save(cliente);
 
-        Cliente clienteSalvo = clienteService.save(cliente);
-
-        assertThat(clienteSalvo.getId()).isNotNull();
-        assertThat(clienteSalvo.getNome()).isEqualTo(cliente.getNome());
-        assertThat(clienteSalvo.getCpf()).isEqualTo(cliente.getCpf());
-        assertThat(clienteSalvo.getDataNascimento()).isEqualTo(cliente.getDataNascimento());
-        assertThat(clienteSalvo.getCelular()).isEqualTo(cliente.getCelular());
-        assertThat(clienteSalvo.getEmail()).isEqualTo(cliente.getEmail());
-        assertThat(clienteSalvo.getSenha()).isEqualTo(cliente.getSenha());
-        assertThat(clienteSalvo.getEndereco().getRua()).isEqualTo(cliente.getEndereco().getRua());
-        assertThat(clienteSalvo.getEndereco().getCep()).isEqualTo(cliente.getEndereco().getCep());
-        assertThat(clienteSalvo.getEndereco().getNumero()).isEqualTo(cliente.getEndereco().getNumero());
-        assertThat(clienteSalvo.getEndereco().getComplemento()).isEqualTo(cliente.getEndereco().getComplemento());
-        assertThat(clienteSalvo.getEndereco().getBairro()).isEqualTo(cliente.getEndereco().getBairro());
-        assertThat(clienteSalvo.getEndereco().getCidade()).isEqualTo(cliente.getEndereco().getCidade());
-        assertThat(clienteSalvo.getEndereco().getEstado()).isEqualTo(cliente.getEndereco().getEstado());
+        assertThat(cliente.getId()).isNotNull();
+        assertThat(cliente.getNome()).isEqualTo(cliente.getNome());
+        assertThat(cliente.getCpf()).isEqualTo(cliente.getCpf());
+        assertThat(cliente.getDataNascimento()).isEqualTo(cliente.getDataNascimento());
+        assertThat(cliente.getCelular()).isEqualTo(cliente.getCelular());
+        assertThat(cliente.getEmail()).isEqualTo(cliente.getEmail());
+        assertThat(cliente.getSenha()).isEqualTo(cliente.getSenha());
+        assertThat(cliente.getEndereco().getRua()).isEqualTo(cliente.getEndereco().getRua());
+        assertThat(cliente.getEndereco().getCep()).isEqualTo(cliente.getEndereco().getCep());
+        assertThat(cliente.getEndereco().getNumero()).isEqualTo(cliente.getEndereco().getNumero());
+        assertThat(cliente.getEndereco().getComplemento()).isEqualTo(cliente.getEndereco().getComplemento());
+        assertThat(cliente.getEndereco().getBairro()).isEqualTo(cliente.getEndereco().getBairro());
+        assertThat(cliente.getEndereco().getCidade()).isEqualTo(cliente.getEndereco().getCidade());
+        assertThat(cliente.getEndereco().getEstado()).isEqualTo(cliente.getEndereco().getEstado());
     }
 
 

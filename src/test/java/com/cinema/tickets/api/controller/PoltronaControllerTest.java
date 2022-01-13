@@ -1,5 +1,7 @@
 package com.cinema.tickets.api.controller;
 
+import com.cinema.tickets.annotations.WithMockAdmin;
+import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.dto.PoltronaDTO;
 import com.cinema.tickets.domain.collection.Poltrona;
 import com.cinema.tickets.domain.service.PoltronaService;
@@ -21,6 +23,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,6 +64,7 @@ public class PoltronaControllerTest {
     }
 
     @Test
+    @WithMockAdmin
     @DisplayName("Deve cadastrar uma poltrona")
     public void shoudCreatePoltrona() throws Exception{
 
@@ -71,7 +76,7 @@ public class PoltronaControllerTest {
 
        String json =  new ObjectMapper().writeValueAsString(poltronaDTO);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(String.valueOf(json));
@@ -86,10 +91,11 @@ public class PoltronaControllerTest {
 
     @Test
     @DisplayName("Deve retornar bad request ao tentar cadastrar uma poltrona com dados inválidos")
+    @WithMockAdmin
     public void shouldReturnBadRequestWhenCreatePoltronaWithInvalidData() throws Exception{
         String json = new ObjectMapper().writeValueAsString(new PoltronaDTO());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);

@@ -1,6 +1,7 @@
 package com.cinema.tickets.api.controller;
 
 
+import com.cinema.tickets.annotations.WithMockAdmin;
 import com.cinema.tickets.api.dto.SalaDTO;
 import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.service.SalaService;
@@ -19,8 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,6 +62,7 @@ public class SalaControllerTest {
 
     @Test
     @DisplayName("Deve cadastrar uma sala")
+    @WithMockAdmin
     public void shouldCreateSala() throws Exception{
         SalaDTO salaDTO = createSalaDTO();
 
@@ -72,7 +72,7 @@ public class SalaControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(salaDTO);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(SALA_URL)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(SALA_URL.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -87,29 +87,5 @@ public class SalaControllerTest {
                 .andExpect(jsonPath("$.poltrona").value(sala.getPoltrona()));
     }
 
-    @Test
-    @DisplayName("Deve retornar uma sala")
-    public void shouldReturnSala() throws Exception {
-        SalaDTO salaDTO = createSalaDTO();
-
-        Sala sala = createSala();
-
-        BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.of(sala));
-
-        String json = new ObjectMapper().writeValueAsString(salaDTO);
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(SALA_URL + "/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("$.numSala").value(salaDTO.getNumSala()))
-                .andExpect(jsonPath("$.sala3D").value(salaDTO.getSala3D()))
-                .andExpect(jsonPath("$.capacidade").value(salaDTO.getCapacidade()))
-                .andExpect(jsonPath("$.poltrona").value(sala.getPoltrona()));
-    }
 
 }

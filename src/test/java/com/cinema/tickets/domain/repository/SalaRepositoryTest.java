@@ -45,9 +45,8 @@ public class SalaRepositoryTest {
     @Test
     @DisplayName("Deve encontrar uma sala pelo numero 3D")
     public void findSalaByIdNotFound(){
+        Optional<Sala> salaOptional = salaRepository.findById("6");
 
-        Optional<Sala> salaOptional = salaRepository.findById("1");
-
-        assertThat(salaOptional.isPresent()).isTrue();
+        assertThat(salaOptional.isPresent()).isFalse();
     }
 }
