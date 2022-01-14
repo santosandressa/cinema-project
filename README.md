@@ -21,4 +21,4 @@ O primeiro acesso pode demorar alguns segundos
 - JWT
 - JUnit5
 
-[![CircleCI](https://circleci.com/gh/santosandressa/cinema-project/tree/circleci-project-setup.svg?style=svg)](https://circleci.com/gh/santosandressa/cinema-project/tree/circleci-project-setup)
+[![CircleCI](https://circleci.com/gh/santosandressa/cinema-project/tree/develop.svg?style=svg)](https://circleci.com/gh/santosandressa/cinema-project/tree/develop)
