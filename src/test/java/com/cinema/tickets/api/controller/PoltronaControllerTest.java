@@ -1,9 +1,10 @@
 package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.annotations.WithMockAdmin;
-import com.cinema.tickets.api.dto.ClienteDTO;
+
 import com.cinema.tickets.api.dto.PoltronaDTO;
 import com.cinema.tickets.domain.collection.Poltrona;
+import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.service.PoltronaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -103,5 +105,106 @@ public class PoltronaControllerTest {
         mvc.perform(request)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("campos", hasSize(3)));
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve retornar bad request ao tentar cadastrar uma poltrona com dados inválidos")
+    public void shouldReturnBadRequestWhenCreatePoltronaWithInvalidData2() throws Exception{
+        String json = new ObjectMapper().writeValueAsString(new PoltronaDTO());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("campos", hasSize(3)));
+    }
+
+    @Test
+    @DisplayName("Deve buscar uma poltrona por id")
+    public void shouldGetPoltronaById() throws Exception{
+
+        Poltrona poltrona = createPoltrona();
+
+        BDDMockito.given(service.findById(Mockito.anyString())).willReturn(Optional.of(poltrona));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(POLTRONA_URL.concat("/1"));
+
+        mvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve retornar not found ao tentar buscar uma poltrona por id")
+    public void shouldReturnNotFoundWhenGetPoltronaById() throws Exception{
+
+        BDDMockito.given(service.findById(Mockito.anyString())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(POLTRONA_URL.concat("/1"));
+
+        mvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Deve buscar todas as poltronas")
+    public void shouldGetAllPoltronas() throws Exception{
+
+        Poltrona poltrona = createPoltrona();
+        List<Poltrona> poltronas = List.of(poltrona);
+
+        BDDMockito.given(service.findAll()).willReturn(poltronas);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(POLTRONA_URL);
+
+        mvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("deve atualizar uma poltrona")
+    @WithMockAdmin
+    public void shouldUpdatePoltrona() throws Exception{
+
+        PoltronaDTO poltronaDTO = createPoltronaDTO();
+
+        Poltrona poltrona = createPoltrona();
+
+        BDDMockito.given(service.findById(Mockito.anyString())).willReturn(Optional.of(poltrona));
+
+        BDDMockito.given(service.update(Mockito.any(Poltrona.class))).willReturn(poltrona);
+
+        String json = new ObjectMapper().writeValueAsString(poltronaDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(POLTRONA_URL.concat("/atualizar/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("deve retornar bad request ao tentar atualizar uma poltrona que não existe")
+    @WithMockAdmin
+    public void shouldReturnBadRequestWhenUpdatePoltrona() throws Exception{
+
+        String json = new ObjectMapper().writeValueAsString(createPoltronaDTO());
+
+        BDDMockito.given(service.findById(Mockito.any(String.class))).willReturn(Optional.empty());
+
+        BDDMockito.given(service.update(Mockito.any(Poltrona.class))).willThrow(new BusinessException("Poltrona não encontrada, ou dados inválidos"));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(POLTRONA_URL.concat("/atualizar/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 }

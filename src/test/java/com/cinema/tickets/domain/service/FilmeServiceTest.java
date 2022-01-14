@@ -3,6 +3,7 @@ package com.cinema.tickets.domain.service;
 import com.cinema.tickets.domain.collection.Filme;
 import com.cinema.tickets.domain.repository.FilmeRepository;
 import com.cinema.tickets.domain.service.impl.FilmeServiceImpl;
+import com.cinema.tickets.domain.strategy.FilmeStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,13 @@ public class FilmeServiceTest {
     @MockBean
     FilmeRepository filmeRepository;
 
+    @MockBean
+    FilmeStrategy filmeStrategy;
+
     @BeforeEach
     public void setUp() {
-        filmeService = new FilmeServiceImpl(filmeRepository);
+
+        filmeService = new FilmeServiceImpl(filmeStrategy, filmeRepository);
     }
 
     private Filme createFilme(){

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +23,14 @@ import java.util.logging.Logger;
 public class PoltronaController {
 
     final Logger logger = Logger.getLogger(PoltronaController.class.getName());
-    private final PoltronaService poltronaService;
-    @Autowired
-    PoltronaMapper poltronaMapper;
 
-    public PoltronaController(PoltronaService poltronaService) {
+    private final PoltronaService poltronaService;
+
+   private final PoltronaMapper poltronaMapper;
+
+    public PoltronaController(PoltronaService poltronaService, PoltronaMapper poltronaMapper) {
         this.poltronaService = poltronaService;
+        this.poltronaMapper = poltronaMapper;
     }
 
     @Operation(summary = "Cria uma poltrona", security = @SecurityRequirement(name = "bearerAuth"))
@@ -68,24 +69,16 @@ public class PoltronaController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<PoltronaDTO> update(@PathVariable String id, @RequestBody PoltronaDTO poltronaDTO) {
         logger.info("Atualizando poltrona");
-        Optional<Poltrona> poltrona = this.poltronaService.findById(id);
 
-        if (poltrona.isEmpty()) {
-            logger.info("Poltrona não encontrada");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Poltrona entity = poltronaMapper.toEntity(poltronaDTO);
 
-        } else {
-            poltronaDTO.setId(id);
+        poltronaDTO.setId(id);
 
-            Poltrona entity = poltronaMapper.toEntity(poltronaDTO);
+        entity = this.poltronaService.update(entity);
 
-            entity = this.poltronaService.update(entity);
-
-            PoltronaDTO dto = poltronaMapper.toDTO(entity);
+        PoltronaDTO dto = poltronaMapper.toDTO(entity);
 
             return new ResponseEntity<>(dto, HttpStatus.OK);
-        }
     }
-
 
 }

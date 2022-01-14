@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -67,7 +68,7 @@ public class FilmeControllerTest {
 
     @Test
     @WithMockAdmin
-    @DisplayName("Debe cadastrar um filme")
+    @DisplayName("Deve cadastrar um filme")
     public void shouldCreateFilme() throws Exception {
 
         FilmeDTO filmeDTO = createFilmeDTO();
@@ -106,6 +107,89 @@ public class FilmeControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(FILME_API.concat("/deletar/" + "1"));
 
         mockMvc.perform(request).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("deve buscar um filme por id")
+    public void shouldGetFilmeById() throws Exception{
+
+        Filme filme = createFilme();
+
+        BDDMockito.given(filmeService.findById(any(String.class))).willReturn(Optional.of(filme));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(FILME_API.concat( "/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve retornar not found ao buscar um filme por id que não existe")
+    public void shouldNotFoundFilmeById() throws Exception{
+
+        BDDMockito.given(filmeService.findById(any(String.class))).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(FILME_API.concat("/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    @DisplayName("Deve buscar todos os filmes")
+    public void shouldGetAllFilmes() throws Exception{
+
+        Filme filme = createFilme();
+
+        BDDMockito.given(filmeService.findAll()).willReturn(List.of(filme));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(FILME_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve retornar not found ao deletar um filme que não existe")
+    @WithMockAdmin
+    public void shouldReturnNotFoundDeleteFilme() throws Exception{
+
+        BDDMockito.given(filmeService.findById(any(String.class))).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(FILME_API.concat("/deletar/" + "1"));
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Deve  atualizar um filme")
+    @WithMockAdmin
+    public void shouldUpdateFilme() throws Exception{
+        FilmeDTO filmeDTO = createFilmeDTO();
+
+        Filme filme = createFilme();
+
+        BDDMockito.given(filmeService.findById(any(String.class))).willReturn(Optional.of(filme));
+
+        BDDMockito.given(filmeService.update(any(Filme.class))).willReturn(filme);
+
+        String json = new ObjectMapper().writeValueAsString(filmeDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(FILME_API.concat("/atualizar/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
     }
 
 

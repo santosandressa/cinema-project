@@ -5,12 +5,12 @@ import com.cinema.tickets.domain.collection.Endereco;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.repository.RoleRepository;
 import com.cinema.tickets.domain.service.impl.ClienteServiceImpl;
+import com.cinema.tickets.domain.strategy.ClienteStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,10 +34,13 @@ public class ClienteServiceTest {
     @MockBean
     ClienteRepository clienteRepository;
 
+    @MockBean
+    ClienteStrategy clienteValidationStrategy;
 
     @BeforeEach
     public void setUp() {
-        clienteService = new ClienteServiceImpl(clienteRepository, roleRepository, passwordEncoder);
+
+        clienteService = new ClienteServiceImpl(clienteRepository, roleRepository, passwordEncoder, clienteValidationStrategy);
     }
 
     private Cliente createCliente() {

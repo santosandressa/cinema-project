@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +50,7 @@ public class ClienteControllerTest {
     @MockBean
     ClienteService service;
 
-    private ClienteDTO createClienteDTO(){
+    private ClienteDTO createClienteDTO() {
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setNome("Luana Antonella Santos");
         clienteDTO.setCpf("459.623.359-45");
@@ -98,8 +97,8 @@ public class ClienteControllerTest {
         return clienteSalvo;
     }
 
-    public Role createRole(){
-        Role  role = new Role();
+    public Role createRole() {
+        Role role = new Role();
         role.setId("1");
         role.setNome("ROLE_ADMIN");
 
@@ -235,6 +234,8 @@ public class ClienteControllerTest {
 
         Cliente cliente = new Cliente();
 
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
+
         BDDMockito.given(service.update(any(Cliente.class))).willReturn(cliente);
 
         String json = new ObjectMapper().writeValueAsString(clienteDTO);
@@ -253,9 +254,15 @@ public class ClienteControllerTest {
     @DisplayName("Deve lançar bad request ao atualizar um cliente inexistente")
     public void updateClienteBadRequest() throws Exception {
 
+        String json = new ObjectMapper().writeValueAsString(createClienteDTO());
+
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/atualizar/" + "7")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+        BDDMockito.given(service.update(any(Cliente.class))).willThrow(new BusinessException("Cliente não encontrado, ou dados inválidos"));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/atualizar" + "/7"))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .content(json);
 
         mockMvc.perform(request).andExpect(status().isBadRequest());
     }
@@ -304,7 +311,7 @@ public class ClienteControllerTest {
     @Test
     @WithMockAdmin
     @DisplayName("Deve salvar um role")
-    public void shoulSaveARole() throws Exception{
+    public void shoulSaveARole() throws Exception {
 
         Role role = createRole();
 

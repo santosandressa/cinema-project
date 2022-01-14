@@ -19,6 +19,7 @@ public class SalaServiceImpl implements SalaService {
     final Logger log = Logger.getLogger(SalaServiceImpl.class.getName());
 
     private  final SalaRepository salaRepository;
+
     private  final PoltronaRepository poltronaRepository;
 
     public SalaServiceImpl(SalaRepository salaRepository, PoltronaRepository poltronaRepository) {
@@ -64,8 +65,9 @@ public class SalaServiceImpl implements SalaService {
 
         Optional<Sala> salaId = salaRepository.findById(sala.getId());
 
-        if (salaId.isEmpty() || salaId.get().getId() == null) {
-            throw new NotFoundException("Sala não encontrada");
+        if (salaId.isEmpty()) {
+            log.info("Sala não encontrada");
+            throw new BusinessException("Sala não encontrada, ou dados inválidos");
         } else {
             List<Poltrona> poltrona =  poltronaRepository.findAll();
             sala.setPoltrona(poltrona);

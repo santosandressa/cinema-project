@@ -7,7 +7,6 @@ import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.repository.RoleRepository;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.cinema.tickets.domain.strategy.ClienteStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,13 +27,13 @@ public class ClienteServiceImpl implements ClienteService{
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    ClienteStrategy clienteValidationStrategy;
+    private final ClienteStrategy clienteValidationStrategy;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ClienteStrategy clienteValidationStrategy) {
         this.clienteRepository = clienteRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.clienteValidationStrategy = clienteValidationStrategy;
     }
 
     @Override
@@ -74,6 +73,13 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public Cliente update(Cliente cliente) {
         log.info("Atualizando cliente");
+
+        Optional<Cliente> clienteId = this.clienteRepository.findById(cliente.getId());
+
+        if (clienteId.isEmpty()) {
+            throw new BusinessException("Cliente não encontrado, ou dados inválidos");
+        }
+
         return this.clienteRepository.save(cliente);
     }
 

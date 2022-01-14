@@ -4,6 +4,8 @@ package com.cinema.tickets.api.controller;
 import com.cinema.tickets.annotations.WithMockAdmin;
 import com.cinema.tickets.api.dto.SalaDTO;
 import com.cinema.tickets.domain.collection.Sala;
+import com.cinema.tickets.domain.exception.BusinessException;
+
 import com.cinema.tickets.domain.service.SalaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -139,11 +141,16 @@ public class SalaControllerTest {
     @DisplayName("Deve retornar bad request quando nao encontrar uma sala")
     public void shouldThrowBadRequestUpdateSala() throws Exception{
 
+        String json = new ObjectMapper().writeValueAsString(createSalaDTO());
+
         BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.empty());
+
+        BDDMockito.given(salaService.update(any(Sala.class))).willThrow(new BusinessException("Sala não encontrada, ou dados inválidos"));
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(SALA_URL.concat("/atualizar/1"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
 
 
         mockMvc.perform(request)

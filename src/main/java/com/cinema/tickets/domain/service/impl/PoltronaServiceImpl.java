@@ -16,7 +16,7 @@ public class PoltronaServiceImpl implements PoltronaService {
 
     private final PoltronaRepository poltronaRepository;
 
-    Logger log= Logger.getLogger(PoltronaServiceImpl.class.getName());
+    final  Logger log= Logger.getLogger(PoltronaServiceImpl.class.getName());
 
     public PoltronaServiceImpl(PoltronaRepository poltronaRepository) {
         this.poltronaRepository = poltronaRepository;

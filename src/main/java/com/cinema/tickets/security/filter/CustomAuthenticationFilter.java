@@ -13,10 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
+
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,7 +31,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    Logger log = Logger.getLogger(CustomAuthenticationFilter.class.getName());
+
+    final Logger log = Logger.getLogger(CustomAuthenticationFilter.class.getName());
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -86,13 +87,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         log.info("Token gerado: " + accessToken);
         log.info("Refresh Token: " + refreshToken);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        log.info("Usuário ou senha inválidos");
-
-        failureHandler().onAuthenticationFailure(request, response, failed);
     }
 
     @Bean

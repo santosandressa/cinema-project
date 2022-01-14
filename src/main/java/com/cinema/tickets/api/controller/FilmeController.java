@@ -49,7 +49,7 @@ public class FilmeController {
 
         FilmeDTO dto = filmeMapper.toDTO(entity);
 
-       return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Buscar filme por id")
@@ -78,28 +78,23 @@ public class FilmeController {
 
     @Operation(summary = "Atualizar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso")
-    @ApiResponse(responseCode = "404", description = "Filme não encontrado")
+    @ApiResponse(responseCode = "400", description = "Filme não encontrado, ou dados inválidos")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<FilmeDTO> atualizarFilme(@PathVariable String id, @Valid @RequestBody FilmeDTO filmeDTO) {
         logger.info("Atualizando filme");
-        Optional<Filme> filmeExistente = filmeService.findById(id);
 
-        if (filmeExistente.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Filme entity = filmeMapper.toEntity(filmeDTO);
+        entity.setId(id);
 
-        } else {
-            Filme entity = filmeMapper.toEntity(filmeDTO);
-            entity.setId(id);
+        entity = filmeService.update(entity);
 
-            entity = filmeService.update(entity);
+        FilmeDTO dto = filmeMapper.toDTO(entity);
 
-            FilmeDTO dto = filmeMapper.toDTO(entity);
+        logger.info("Filme atualizado com sucesso");
 
-            logger.info("Filme atualizado com sucesso");
-
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
 
     @Operation(summary = "Deletar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "204", description = "Filme deletado com sucesso")

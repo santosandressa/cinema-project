@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +24,15 @@ public class SalaController {
 
     private final SalaService salaService;
 
+    private final SalaMapper salaMapper;
+
     final Logger log = Logger.getLogger(SalaController.class.getName());
 
-    public SalaController(SalaService salaService) {
+    public SalaController(SalaService salaService, SalaMapper salaMapper) {
         this.salaService = salaService;
+        this.salaMapper = salaMapper;
     }
 
-    @Autowired
-    SalaMapper salaMapper;
 
     @Operation(summary = "Criar sala", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "201", description = "Sala criada com sucesso")
