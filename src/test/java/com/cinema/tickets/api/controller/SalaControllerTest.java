@@ -21,6 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,5 +90,86 @@ public class SalaControllerTest {
                 .andExpect(jsonPath("$.poltrona").value(sala.getPoltrona()));
     }
 
+    @Test
+    @DisplayName("Deve listar todas as salas")
+    public void shouldListAllSala() throws Exception {
+        List<Sala> sala = List.of(createSala());
 
+        BDDMockito.given(salaService.findAll()).willReturn(sala);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(SALA_URL.concat("/buscar"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve buscar uma sala por id")
+    public void shouldGetSalaById() throws Exception {
+        Sala sala = createSala();
+
+        BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.of(sala));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(SALA_URL.concat("/buscar/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve retornar not found ao buscar uma sala por id")
+    public void shouldNotGetSalaById() throws Exception {
+
+        BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(SALA_URL.concat("/buscar/7"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve retornar bad request quando nao encontrar uma sala")
+    public void shouldThrowBadRequestUpdateSala() throws Exception{
+
+        BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(SALA_URL.concat("/atualizar/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve atualizar uma sala")
+    public void shouldUpdateSala() throws Exception{
+        SalaDTO salaDTO = createSalaDTO();
+
+        Sala sala = createSala();
+
+        BDDMockito.given(salaService.findById(any(String.class))).willReturn(Optional.of(sala));
+
+        BDDMockito.given(salaService.update(any(Sala.class))).willReturn(sala);
+
+        String json = new ObjectMapper().writeValueAsString(salaDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(SALA_URL.concat("/atualizar/" + "1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
 }

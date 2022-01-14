@@ -41,11 +41,11 @@ public class SalaController {
     public ResponseEntity<SalaDTO> salvar(@RequestBody SalaDTO salaDTO) {
         log.info("Requisição Post para salvar sala " + salaDTO.getNumSala());
 
-        Sala entity = getSala(salaDTO);
+        Sala entity = salaMapper.dtoToSala(salaDTO);
 
         entity= this.salaService.save(entity);
 
-        SalaDTO dto = getSalaDTO(entity);
+        SalaDTO dto = salaMapper.salaToDTO(entity);
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
@@ -54,22 +54,25 @@ public class SalaController {
     @Operation(summary = "Buscar sala por id")
     @ApiResponse(responseCode = "200", description = "Sala encontrada")
     @ApiResponse(responseCode = "404", description = "Sala não encontrada")
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<SalaDTO> buscar(@PathVariable String id) {
         log.info("Buscando sala " + id);
         Optional<Sala> entity = this.salaService.findById(id);
 
         if (entity.isPresent()) {
-            SalaDTO dto = getSalaDTO(entity.get());
+            log.info("Sala " + id + " encontrada");
+            SalaDTO dto = salaMapper.salaToDTO(entity.get());
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }
+
+        log.info("Sala não encontrada");
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(summary="Listar salas")
     @ApiResponse(responseCode = "200", description = "Lista de salas")
     @ApiResponse(responseCode = "404", description = "Lista de salas vazia")
-    @GetMapping
+    @GetMapping("/buscar")
     public ResponseEntity<List<Sala>> buscarTodas(){
         log.info("Buscando todas as salas");
         List<Sala> salas = this.salaService.findAll();
@@ -82,31 +85,18 @@ public class SalaController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<SalaDTO> atualizar(@PathVariable String id, @Valid @RequestBody SalaDTO salaDTO) {
         log.info("Atualizando sala " + salaDTO.getNumSala());
-        Optional<Sala> salaExistente = this.salaService.findById(id);
+        Sala entity = salaMapper.dtoToSala(salaDTO);
 
-        if(salaExistente.isPresent()){
-            Sala entity = getSala(salaDTO);
+        entity.setId(id);
 
-            entity.setId(id);
+        entity = this.salaService.update(entity);
 
-            entity= this.salaService.save(entity);
 
-            SalaDTO dto = getSalaDTO(entity);
+        SalaDTO dto = salaMapper.salaToDTO(entity);
 
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        } else {
-            log.info("Sala não encontrada");
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(dto, HttpStatus.OK);
 
     }
 
-    private SalaDTO getSalaDTO(Sala entity) {
-        return salaMapper.salaToDTO(entity);
-    }
 
-    private Sala getSala(SalaDTO salaDTO) {
-        return salaMapper.dtoToSala(salaDTO);
-    }
 }

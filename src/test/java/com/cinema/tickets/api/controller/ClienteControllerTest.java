@@ -5,6 +5,7 @@ import com.cinema.tickets.annotations.WithMockAdmin;
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.collection.Endereco;
+import com.cinema.tickets.domain.collection.Role;
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -92,6 +96,14 @@ public class ClienteControllerTest {
         clienteSalvo.setEndereco(endereco);
 
         return clienteSalvo;
+    }
+
+    public Role createRole(){
+        Role  role = new Role();
+        role.setId("1");
+        role.setNome("ROLE_ADMIN");
+
+        return role;
     }
 
     @Test
@@ -217,8 +229,29 @@ public class ClienteControllerTest {
 
     @Test
     @WithMockAdmin
-    @DisplayName("Deve lançar not found ao atualizar um cliente inexistente")
-    public void updateClienteNotFound() throws Exception {
+    @DisplayName("Deve atualizar um cliente")
+    public void updateCliente() throws Exception {
+        ClienteDTO clienteDTO = createClienteDTO();
+
+        Cliente cliente = new Cliente();
+
+        BDDMockito.given(service.update(any(Cliente.class))).willReturn(cliente);
+
+        String json = new ObjectMapper().writeValueAsString(clienteDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CLIENTE_API.concat("/atualizar" + "/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve lançar bad request ao atualizar um cliente inexistente")
+    public void updateClienteBadRequest() throws Exception {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
@@ -226,4 +259,67 @@ public class ClienteControllerTest {
 
         mockMvc.perform(request).andExpect(status().isBadRequest());
     }
+
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve buscar um cliente pelo id")
+    public void shouldGetClienteById() throws Exception {
+
+        Cliente cliente = createCliente();
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve lançar not found ao buscar um cliente inexistente")
+    public void shouldThrowNotFoundGetClienteById() throws Exception {
+
+        BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve buscar todos os clientes")
+    public void shouldGetTodosClientes() throws Exception {
+
+        List<Cliente> clientes = new ArrayList<>();
+
+        BDDMockito.given(service.findAll()).willReturn(clientes);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/listar")).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    @WithMockAdmin
+    @DisplayName("Deve salvar um role")
+    public void shoulSaveARole() throws Exception{
+
+        Role role = createRole();
+
+        BDDMockito.given(service.saveRole(any(Role.class))).willReturn(role);
+
+        String json = new ObjectMapper().writeValueAsString(role);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/role/salvar"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(role.getId()))
+                .andExpect(jsonPath("$.nome").value(role.getNome()));
+    }
+
 }

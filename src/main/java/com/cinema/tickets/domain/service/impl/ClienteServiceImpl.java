@@ -47,8 +47,6 @@ public class ClienteServiceImpl implements ClienteService{
 
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
-
-
         return this.clienteRepository.save(cliente);
     }
 

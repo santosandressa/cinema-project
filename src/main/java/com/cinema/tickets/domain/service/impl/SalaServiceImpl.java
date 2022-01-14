@@ -67,6 +67,8 @@ public class SalaServiceImpl implements SalaService {
         if (salaId.isEmpty() || salaId.get().getId() == null) {
             throw new NotFoundException("Sala não encontrada");
         } else {
+            List<Poltrona> poltrona =  poltronaRepository.findAll();
+            sala.setPoltrona(poltrona);
             sala.setId(salaId.get().getId());
             return salaRepository.save(sala);
         }
