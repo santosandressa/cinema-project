@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {
             "/api/v1/cliente/cadastrar",
+            "/api/v1/cliente/atualizar/{id}",
             "/api/v1/login",
             "/api/v1/cliente/token/refresh",
             "/api/v1/sala/buscar",
