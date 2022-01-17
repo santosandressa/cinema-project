@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface RoleRepository extends MongoRepository<Role, String> {
 
     Role findByNome(String nome);
+
+    Boolean existsByNome(String nome);
 }

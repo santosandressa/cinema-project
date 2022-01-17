@@ -5,17 +5,25 @@ import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.strategy.ClienteStrategy;
 import com.cinema.tickets.domain.collection.Cliente;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Component
 public class ClienteStrategyImpl implements ClienteStrategy {
 
+    private final ClienteRepository clienteRepository;
 
-    @Autowired
-    ClienteRepository clienteRepository;
+    final Logger log = Logger.getLogger(ClienteStrategyImpl.class.getName());
+
+    public ClienteStrategyImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     public void validate(Cliente cliente) {
@@ -46,7 +54,6 @@ public class ClienteStrategyImpl implements ClienteStrategy {
             throw new NotFoundException("Cliente não encontrado");
         }
     }
-
 
 
 }

@@ -84,6 +84,7 @@ public class FilmeController {
         logger.info("Atualizando filme");
 
         Filme entity = filmeMapper.toEntity(filmeDTO);
+
         entity.setId(id);
 
         entity = filmeService.update(entity);

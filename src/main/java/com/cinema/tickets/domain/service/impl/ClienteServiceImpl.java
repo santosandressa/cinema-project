@@ -3,6 +3,7 @@ package com.cinema.tickets.domain.service.impl;
 import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.collection.Role;
 import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.repository.RoleRepository;
 import com.cinema.tickets.domain.service.ClienteService;
@@ -27,21 +28,21 @@ public class ClienteServiceImpl implements ClienteService{
 
     private final PasswordEncoder passwordEncoder;
 
-    private final ClienteStrategy clienteValidationStrategy;
+    private final ClienteStrategy clienteStrategy;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ClienteStrategy clienteValidationStrategy) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ClienteStrategy clienteStrategy) {
         this.clienteRepository = clienteRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.clienteValidationStrategy = clienteValidationStrategy;
+        this.clienteStrategy = clienteStrategy;
     }
 
     @Override
     public Cliente save(Cliente cliente) {
         log.info("Salvando novo cliente " + cliente.getNome());
 
-        if (clienteValidationStrategy != null) {
-            this.clienteValidationStrategy.validate(cliente);
+        if (clienteStrategy != null) {
+            this.clienteStrategy.validate(cliente);
         }
 
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
@@ -53,21 +54,21 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public Optional<Cliente> findById(String id) {
         log.info("Buscando cliente pelo id");
-        this.clienteValidationStrategy.findById(id);
+        this.clienteStrategy.findById(id);
         return this.clienteRepository.findById(id);
     }
 
     @Override
-    public void delete(Cliente cliente) {
-        Optional<Cliente> clienteId = this.clienteRepository.findById(cliente.getId());
+    public void delete(String id) {
+        Optional<Cliente> clienteId = this.clienteRepository.findById(id);
 
         log.info("Deletando cliente");
 
-        if (clienteId.isEmpty()) {
-            this.clienteValidationStrategy.findById(cliente.getId());
+        if(clienteId.isEmpty()) {
+            throw new NotFoundException("Cliente não encontrado");
         }
 
-        this.clienteRepository.delete(cliente);
+        this.clienteRepository.deleteById(id);
     }
 
     @Override
@@ -100,9 +101,9 @@ public class ClienteServiceImpl implements ClienteService{
 
         log.info("Salvando nova role " + role.getNome());
 
-        Role roleExistente = this.roleRepository.findByNome(role.getNome());
+       Boolean roleExistente = roleRepository.existsByNome(role.getNome());
 
-        if (roleExistente != null) {
+        if (roleExistente) {
             throw new BusinessException("Role já existente");
         }
 

@@ -2,7 +2,6 @@ package com.cinema.tickets.api.exception;
 
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -25,8 +24,11 @@ public class ApiErrors extends ResponseEntityExceptionHandler {
 
     final Mensagem mensagem = new Mensagem();
 
-    @Autowired
-    private MessageSource messageSource;
+    private final  MessageSource messageSource;
+
+    public ApiErrors(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

@@ -109,7 +109,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         } else {
 
-            clienteService.delete(cliente.get());
+            clienteService.delete(id);
 
             return ResponseEntity.noContent().build();
         }

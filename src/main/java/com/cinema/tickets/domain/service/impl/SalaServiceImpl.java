@@ -30,9 +30,9 @@ public class SalaServiceImpl implements SalaService {
     @Override
     public Sala save(Sala sala) {
         log.info("Salvando Sala: " + sala.getNumSala());
-        Optional<Sala> salaNumero = salaRepository.findByNumSala(sala.getNumSala());
+        Boolean salaNumero = salaRepository.existsByNumSala(sala.getNumSala());
 
-        if (salaNumero.isPresent()) {
+        if (salaNumero) {
             throw new BusinessException("Sala já cadastrada");
         }
 
@@ -65,7 +65,7 @@ public class SalaServiceImpl implements SalaService {
 
         Optional<Sala> salaId = salaRepository.findById(sala.getId());
 
-        if (salaId.isEmpty()) {
+        if (salaId.isEmpty() || sala.getId() == null){
             log.info("Sala não encontrada");
             throw new BusinessException("Sala não encontrada, ou dados inválidos");
         } else {

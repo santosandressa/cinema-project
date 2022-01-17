@@ -12,7 +12,7 @@ public interface ClienteService {
 
     Optional<Cliente> findById(String id);
 
-    void delete(Cliente cliente);
+    void delete(String id);
 
     Cliente update(Cliente cliente);
 
