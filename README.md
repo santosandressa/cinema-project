@@ -2,6 +2,9 @@
 API Rest para Compra de ingressos de cinema
 
 
+[![CircleCI](https://circleci.com/gh/santosandressa/cinema-project/tree/develop.svg?style=svg)](https://circleci.com/gh/santosandressa/cinema-project/tree/develop)
+
+
 ## Documentação 
 
  
@@ -21,4 +24,3 @@ O primeiro acesso pode demorar alguns segundos
 - JWT
 - JUnit5
 
-[![CircleCI](https://circleci.com/gh/santosandressa/cinema-project/tree/develop.svg?style=svg)](https://circleci.com/gh/santosandressa/cinema-project/tree/develop)
