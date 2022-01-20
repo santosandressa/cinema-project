@@ -76,8 +76,6 @@ public class FilmeServiceImpl implements FilmeService {
         if(filmeOptional.isEmpty()) {
             throw new NotFoundException("Filme não encontrado");
         }
-
-
         this.filmeRepository.deleteById(id);
 
         log.info("Filme deletado com sucesso");

@@ -27,16 +27,6 @@ public class Filme {
     @Schema(description = "Duração", example = "175 min")
     private String duracao;
 
-    public Filme(String id, String titulo, String tituloOriginal, String genero, String diretor, String sinopse, String duracao) {
-        this.id = id;
-        this.titulo = titulo;
-        this.tituloOriginal = tituloOriginal;
-        this.genero = genero;
-        this.diretor = diretor;
-        this.sinopse = sinopse;
-        this.duracao = duracao;
-    }
-
     public Filme() {
     }
 
@@ -46,6 +36,14 @@ public class Filme {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getTitulo() {
@@ -62,14 +60,6 @@ public class Filme {
 
     public void setTituloOriginal(String tituloOriginal) {
         this.tituloOriginal = tituloOriginal;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
 
     public String getDiretor() {

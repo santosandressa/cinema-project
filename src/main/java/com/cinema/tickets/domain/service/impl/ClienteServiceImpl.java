@@ -131,19 +131,4 @@ public class ClienteServiceImpl implements ClienteService{
         return this.roleRepository.findByNome(nomeRole);
     }
 
-    @Override
-    public Cliente login(String email, String senha) {
-        log.info("Buscando cliente pelo email " + email);
-        Optional<Cliente> cliente = this.clienteRepository.findByEmail(email);
-
-        if (cliente.isPresent()) {
-            if (passwordEncoder.matches(senha, cliente.get().getSenha())) {
-                return cliente.get();
-            }
-        } else {
-            throw new BusinessException("Cliente não encontrado");
-        }
-
-        return null;
-    }
 }

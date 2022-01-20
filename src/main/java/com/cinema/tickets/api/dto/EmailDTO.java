@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 public class EmailDTO {
 
+    private String id;
+
     @NotEmpty
     private String emailFrom;
 
@@ -20,6 +22,14 @@ public class EmailDTO {
     private LocalDateTime sendDateEmail;
 
     public EmailDTO(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmailFrom() {
         return emailFrom;

@@ -46,7 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/cliente/token/refresh",
             "/api/v1/sala/buscar",
             "/api/v1/sala/buscar/{id}",
-            "/api/v1/send-email"
+            "/api/v1/send-email",
+            "/api/v1/exibicao",
+            "/api/v1/exibicao/**",
     };
 
     private static final String[] PUBLIC_MATCHERS_SWAGGER = {

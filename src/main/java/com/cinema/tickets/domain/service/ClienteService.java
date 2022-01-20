@@ -26,5 +26,4 @@ public interface ClienteService {
 
     Role findRoleByNome(String nomeRole);
 
-    Cliente login(String email, String senha);
 }

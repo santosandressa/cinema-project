@@ -5,12 +5,9 @@ import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.strategy.ClienteStrategy;
 import com.cinema.tickets.domain.collection.Cliente;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -31,18 +28,23 @@ public class ClienteStrategyImpl implements ClienteStrategy {
         Boolean emailExists = this.clienteRepository.existsByEmail(cliente.getEmail());
 
         if (emailExists) {
+            log.info("Email já cadastrado");
             throw new BusinessException("Email já cadastrado");
         }
 
         Boolean cpfExists = this.clienteRepository.existsByCpf(cliente.getCpf());
 
         if (cpfExists) {
+            log.info("CPF já cadastrado");
             throw new BusinessException("CPF já cadastrado");
         }
 
         if (cliente.getEndereco() == null) {
+            log.info("Endereço não informado");
             throw new BusinessException("Endereço não informado");
         }
+
+        log.info("Cliente validado");
     }
 
     @Override
@@ -51,8 +53,11 @@ public class ClienteStrategyImpl implements ClienteStrategy {
         Optional<Cliente> cliente = this.clienteRepository.findById(id);
 
         if (cliente.isEmpty()) {
+            log.info("Cliente não encontrado");
             throw new NotFoundException("Cliente não encontrado");
         }
+
+        log.info("Cliente encontrado");
     }
 
 

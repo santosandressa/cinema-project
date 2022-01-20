@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Logger;
 
 
 @RestController
@@ -24,6 +25,8 @@ public class EmailController {
 
     private final EmailMapper emailMapper;
 
+    final Logger log = Logger.getLogger(EmailController.class.getName());
+
     public EmailController(EmailService emailService, EmailMapper emailMapper) {
         this.emailService = emailService;
         this.emailMapper = emailMapper;
@@ -32,13 +35,14 @@ public class EmailController {
     @Operation(summary = "Envia um email")
     @PostMapping
     public ResponseEntity<EmailDTO> sendEmail(@RequestBody EmailDTO emailDTO) {
-
+        log.info("Enviando email");
         Email entity = emailMapper.toEntity(emailDTO);
 
         entity = emailService.sendEmail(entity);
 
         EmailDTO dto = emailMapper.toDto(entity);
 
+        log.info("Email enviado");
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
 
 

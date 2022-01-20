@@ -6,7 +6,6 @@ import com.cinema.tickets.domain.exception.NotFoundException;
 import com.cinema.tickets.domain.repository.ClienteRepository;
 import com.cinema.tickets.domain.repository.EmailRepository;
 import com.cinema.tickets.domain.service.EmailService;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    private final EmailRepository emailRespository;
+    private final EmailRepository emailRepository;
 
     private final ClienteRepository clienteRepository;
 
@@ -27,12 +26,14 @@ public class EmailServiceImpl implements EmailService {
 
     final Logger log = Logger.getLogger("EmailServiceImpl");
 
-    public EmailServiceImpl(EmailRepository emailRespository, ClienteRepository clienteRepository, JavaMailSender emailSender) {
-        this.emailRespository = emailRespository;
+    public EmailServiceImpl(EmailRepository emailRepository, ClienteRepository clienteRepository, JavaMailSender emailSender) {
+        this.emailRepository = emailRepository;
 
         this.clienteRepository = clienteRepository;
         this.emailSender = emailSender;
     }
+
+
 
     @Override
     public Email sendEmail(Email email) {
@@ -53,7 +54,7 @@ public class EmailServiceImpl implements EmailService {
                 message.setText(email.getText());
                 emailSender.send(message);
                 log.info("Email sent");
-        } return emailRespository.save(email);
+        } return emailRepository.save(email);
 
     }
 }
