@@ -4,38 +4,24 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@3.0.0
 disable_default_path_fixes: true
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+language: java
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-  example-job:  
+  build-and-test:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
     steps:
       - codecov/upload:
-          upload_name: CODECOV_TOKEN 
-            
+          token: CODECOV_TOKEN
       - store_artifacts:
-            path: target
+          path: /target
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
   example-workflow:
     jobs:
-      - example-job
+      - build-and-test
