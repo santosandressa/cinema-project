@@ -14,7 +14,6 @@ jobs:
     steps:
        - codecov/upload:
           token: CODECOV_TOKEN  
-       - run: mvn verify
        - store_artifacts:
             path: /target
 # Invoke jobs via workflows
@@ -23,4 +22,3 @@ workflows:
   example-workflow:
     jobs:
       - build-and-test
-      
