@@ -25,11 +25,13 @@ jobs:
       # replace with your preferred image
       - image: cimg/base:stable
     steps:
+      - run :
+          name: Verify
+          command: mvn verify
       - codecov/upload:
           upload_name: CODECOV_TOKEN 
-            
       - store_artifacts:
-            path: /target
+            path: target
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
