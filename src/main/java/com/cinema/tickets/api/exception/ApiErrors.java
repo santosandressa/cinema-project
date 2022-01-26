@@ -1,7 +1,7 @@
 package com.cinema.tickets.api.exception;
 
 import com.cinema.tickets.domain.exception.BusinessException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cinema.tickets.domain.exception.NotFoundException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class ApiError extends ResponseEntityExceptionHandler {
+public class ApiErrors extends ResponseEntityExceptionHandler {
 
-    @Autowired
-    private MessageSource messageSource;
+    final Mensagem mensagem = new Mensagem();
 
-    Mensagem  mensagem = new Mensagem();
+    private final  MessageSource messageSource;
+
+    public ApiErrors(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -48,6 +51,17 @@ public class ApiError extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleNegocio(BusinessException ex, WebRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        mensagem.setStatus(status.value());
+        mensagem.setDataHora(OffsetDateTime.now());
+        mensagem.setTitulo(ex.getMessage());
+        return handleExceptionInternal(ex, mensagem, new HttpHeaders(), status, request);
+    }
+
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleNotFound(NotFoundException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
         mensagem.setStatus(status.value());
         mensagem.setDataHora(OffsetDateTime.now());

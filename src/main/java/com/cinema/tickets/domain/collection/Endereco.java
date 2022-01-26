@@ -1,32 +1,49 @@
 package com.cinema.tickets.domain.collection;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 public class Endereco {
 
-    @NotEmpty
+    @Schema(description = "Rua do endereço", example = "Rua Rio Jacutinga", required = true)
+    @NotBlank
     private String rua;
 
-    @NotEmpty
+    @Schema(description = "Cep do endereço", example = "87043-643", required = true)
+    @NotBlank
     private String cep;
 
-    @NotEmpty
+    @Schema(description = "Numero do endereço", example = "292", required = true)
+    @NotBlank
     private String numero;
 
+    @Schema(description = "Complemento  do endereço", example = "casa")
     private String complemento;
 
-    @NotEmpty
+    @Schema(description = "Bairro do endereço", example = "Jardim Pinheiros II", required = true)
+    @NotBlank
     private String bairro;
 
-    @NotEmpty
+    @Schema(description = "Cidade do endereço", example = "Maringá", required = true)
+    @NotBlank
     private String cidade;
 
-    @NotEmpty
+    @Schema(description = "Estado do endereço", example = "PR", required = true)
+    @NotBlank
     private String estado;
 
     public Endereco() {
+    }
 
+    public Endereco(String rua, String cep, String numero, String complemento, String bairro, String cidade, String estado) {
+        this.rua = rua;
+        this.cep = cep;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
     }
 
     public String getRua() {
@@ -84,4 +101,5 @@ public class Endereco {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
 }
