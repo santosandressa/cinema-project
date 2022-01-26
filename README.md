@@ -1,6 +1,7 @@
 # Cinema-Project
 API Rest para Compra de ingressos de cinema
 
+[![Build Status](https://app.travis-ci.com/santosandressa/cinema-project.svg?branch=main)](https://app.travis-ci.com/santosandressa/cinema-project)
 
 ## Documentação 
 
