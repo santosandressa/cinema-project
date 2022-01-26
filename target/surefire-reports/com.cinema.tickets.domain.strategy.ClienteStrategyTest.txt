@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.cinema.tickets.domain.strategy.ClienteStrategyTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.091 s - in com.cinema.tickets.domain.strategy.ClienteStrategyTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.963 s - in com.cinema.tickets.domain.strategy.ClienteStrategyTest
