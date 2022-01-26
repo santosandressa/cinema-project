@@ -6,5 +6,7 @@ before_install:
   - chmod +x mvnw
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-- codecov:
-   disable_default_path_fixes: true
+fixes:
+  - "before/::after/"  # move path   e.g., "before/path" => "after/path"
+  - "::after/"         # move root   e.g., "path/" => "after/path/"
+  - "before/::"        # reduce root e.g., "before/path/" => "path/"
