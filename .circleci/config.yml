@@ -25,9 +25,6 @@ jobs:
       # replace with your preferred image
       - image: cimg/base:stable
     steps:
-      - codecov/upload:
-          upload_name: CODECOV_TOKEN 
-            
       - store_artifacts:
             path: target
 # Invoke jobs via workflows
