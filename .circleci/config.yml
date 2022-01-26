@@ -16,7 +16,6 @@ jobs:
        - codecov/upload:
           token: CODECOV_TOKEN  
        - run:
-           name: Test
            command: mvn test
        - store_artifacts:
             path: target
