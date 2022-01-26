@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.cinema.tickets.domain.repository.ClienteRepositoryTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.417 s - in com.cinema.tickets.domain.repository.ClienteRepositoryTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.433 s - in com.cinema.tickets.domain.repository.ClienteRepositoryTest

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.cinema.tickets.api.controller.IngressoControlletTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.349 s - in com.cinema.tickets.api.controller.IngressoControlletTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.251 s - in com.cinema.tickets.api.controller.IngressoControlletTest
