@@ -25,9 +25,6 @@ jobs:
       # replace with your preferred image
       - image: cimg/base:stable
     steps:
-      - run :
-          name: Test
-          command: mvn test
       - store_artifacts:
             path: target
 # Invoke jobs via workflows
