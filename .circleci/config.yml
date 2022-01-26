@@ -7,7 +7,8 @@ disable_default_path_fixes: true
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  example-job:  
+  build-and-test:
+    working_directory: /target
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
@@ -16,10 +17,12 @@ jobs:
           token: CODECOV_TOKEN  
        - run: mvn verify
        - store_artifacts:
-            path: target
+            path: /target
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   example-workflow:
     jobs:
-      - example-job
+      - build-and-test
+
+      
