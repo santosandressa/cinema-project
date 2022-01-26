@@ -28,12 +28,9 @@ public class EmailServiceImpl implements EmailService {
 
     public EmailServiceImpl(EmailRepository emailRepository, ClienteRepository clienteRepository, JavaMailSender emailSender) {
         this.emailRepository = emailRepository;
-
         this.clienteRepository = clienteRepository;
         this.emailSender = emailSender;
     }
-
-
 
     @Override
     public Email sendEmail(Email email) {

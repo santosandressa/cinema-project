@@ -12,7 +12,6 @@ public class ScheduleService  {
 
     private static final String CRON_EXPIRED_SCHEDULE = "0 0 0 ? 1/3 SUN#3";
 
-//    String umMinuto = "0 0/1 * 1/1 * ? ";
     final Logger log = Logger.getLogger(ScheduleService.class.getName());
 
    private final ExibicaoRepository exibicaoRepository;
@@ -29,6 +28,7 @@ public class ScheduleService  {
 
         log.info("Filmes fora de cartaz deletados");
     }
+
 
 }
 

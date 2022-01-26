@@ -1,6 +1,7 @@
 # Cinema-Project
 API Rest para Compra de ingressos de cinema
 
+[![CircleCI](https://circleci.com/gh/santosandressa/cinema-project/tree/main.svg?style=svg)](https://circleci.com/gh/santosandressa/cinema-project/tree/main)
 
 ## Documentação 
 

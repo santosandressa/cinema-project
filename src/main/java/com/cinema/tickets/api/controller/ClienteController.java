@@ -69,6 +69,8 @@ public class ClienteController {
 
         ClienteDTO dto = clienteMapper.toDTO(entity);
 
+
+
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
