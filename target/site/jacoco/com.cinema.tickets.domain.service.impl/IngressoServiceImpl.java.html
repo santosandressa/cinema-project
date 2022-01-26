@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IngressoServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.domain.service.impl</a> &gt; <span class="el_source">IngressoServiceImpl.java</span></div><h1>IngressoServiceImpl.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.domain.service.impl;
+
+import com.cinema.tickets.domain.collection.Exibicao;
+import com.cinema.tickets.domain.collection.Ingresso;
+import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
+import com.cinema.tickets.domain.repository.ExibicaoRepository;
+import com.cinema.tickets.domain.repository.IngressoRepository;
+import com.cinema.tickets.domain.service.IngressoService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+@Service
+public class IngressoServiceImpl implements IngressoService {
+
+    private final  IngressoRepository ingressoRepository;
+
+    private final ExibicaoRepository exibicaoRepository;
+
+<span class="fc" id="L23">    Logger log = Logger.getLogger(IngressoServiceImpl.class.getName());</span>
+
+<span class="fc" id="L25">    public IngressoServiceImpl(IngressoRepository ingressoRepository, ExibicaoRepository exibicaoRepository) {</span>
+<span class="fc" id="L26">        this.ingressoRepository = ingressoRepository;</span>
+<span class="fc" id="L27">        this.exibicaoRepository = exibicaoRepository;</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public Ingresso save(Ingresso ingresso) {
+
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (ingresso.getMeiaEntrada()){</span>
+<span class="nc" id="L34">            log.info(&quot;Meia Entrada&quot;);</span>
+<span class="nc" id="L35">            ingresso.setValor(30.0/2);</span>
+        } else {
+<span class="fc" id="L37">            ingresso.setValor(30.0);</span>
+        }
+
+
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (ingresso.getQuantidade() &gt; 5){</span>
+<span class="fc" id="L42">            log.info(&quot;Quantidade maior que 5, não será possível comprar&quot;);</span>
+<span class="fc" id="L43">            throw new BusinessException(&quot;Quantidade de ingressos não pode ser maior que 5&quot;);</span>
+        } else {
+<span class="fc" id="L45">            ingresso.setValorTotal(ingresso.getValor() * ingresso.getQuantidade());</span>
+        }
+
+
+<span class="fc" id="L49">        Optional&lt;Exibicao&gt; exibicao = exibicaoRepository.findById(ingresso.getExibicao().getId());</span>
+
+<span class="fc" id="L51">        exibicao.ifPresent(ingresso::setExibicao);</span>
+
+<span class="fc" id="L53">        ingresso = ingressoRepository.save(ingresso);</span>
+
+<span class="fc" id="L55">        log.info(&quot;Ingresso salvo com sucesso&quot;);</span>
+
+<span class="fc" id="L57">        return ingresso;</span>
+    }
+
+    @Override
+    public Optional&lt;Ingresso&gt; findById(String id) {
+<span class="fc" id="L62">        Optional&lt;Ingresso&gt; ingresso = ingressoRepository.findById(id);</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (ingresso.isEmpty()) {</span>
+<span class="fc" id="L65">            log.info(&quot;Ingresso não encontrado&quot;);</span>
+<span class="fc" id="L66">            throw new NotFoundException(&quot;Ingresso não encontrado, verifique o id&quot;);</span>
+        } else {
+<span class="fc" id="L68">            log.info(&quot;Ingresso para o filme &quot; + ingresso.get().getExibicao().getFilme().getTitulo() + &quot; encontrado&quot;);</span>
+<span class="fc" id="L69">            ingresso = ingressoRepository.findById(id);</span>
+
+<span class="fc" id="L71">            return ingresso;</span>
+        }
+
+    }
+
+    @Override
+    public void delete(String id) {
+<span class="fc" id="L78">        Optional&lt;Ingresso&gt; ingresso = ingressoRepository.findById(id);</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (ingresso.isEmpty()){</span>
+<span class="fc" id="L81">            log.info(&quot;Ingresso não encontrado&quot;);</span>
+<span class="fc" id="L82">            throw new NotFoundException(&quot;Ingresso não encontrado, verifique o id&quot;);</span>
+        } else {
+<span class="fc" id="L84">            log.info(&quot;Ingresso para o filme &quot; + ingresso.get().getExibicao().getFilme().getTitulo() + &quot; encontrado&quot;);</span>
+<span class="fc" id="L85">            ingressoRepository.deleteById(id);</span>
+<span class="fc" id="L86">            log.info(&quot;Ingresso deletado com sucesso&quot;);</span>
+        }
+<span class="fc" id="L88">    }</span>
+
+    @Override
+    public List&lt;Ingresso&gt; findAll() {
+<span class="fc" id="L92">        return ingressoRepository.findAll();</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

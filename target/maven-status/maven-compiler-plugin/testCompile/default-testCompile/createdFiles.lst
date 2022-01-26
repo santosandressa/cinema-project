@@ -1,0 +1,15 @@
+com\cinema\tickets\domain\repository\PoltronaRepositoryTest.class
+com\cinema\tickets\domain\service\FilmeServiceTest.class
+com\cinema\tickets\annotations\WithMockAdmin.class
+com\cinema\tickets\api\controller\SalaControllerTest.class
+com\cinema\tickets\api\controller\PoltronaControllerTest.class
+com\cinema\tickets\domain\service\SalaServiceTest.class
+com\cinema\tickets\TicketsApplicationTests.class
+com\cinema\tickets\domain\service\IngressoServiceTest.class
+com\cinema\tickets\domain\repository\FilmeRepositoryTest.class
+com\cinema\tickets\domain\repository\SalaRepositoryTest.class
+com\cinema\tickets\api\controller\FilmeControllerTest.class
+com\cinema\tickets\domain\repository\ClienteRepositoryTest.class
+com\cinema\tickets\api\controller\ClienteControllerTest.class
+com\cinema\tickets\domain\service\PoltronaServiceTest.class
+com\cinema\tickets\domain\service\ClienteServiceTest.class

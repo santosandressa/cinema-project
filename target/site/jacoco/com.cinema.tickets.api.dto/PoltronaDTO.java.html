@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PoltronaDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.dto</a> &gt; <span class="el_source">PoltronaDTO.java</span></div><h1>PoltronaDTO.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.validation.constraints.NotEmpty;
+
+public class PoltronaDTO {
+
+    @Schema(description = &quot;Identificador da poltrona&quot;, example = &quot;61d6e4b64027c3715ee97dea&quot;)
+    private String id;
+
+    @Schema(description = &quot;Identificador da cadeira&quot;, example = &quot;A1&quot;)
+    @NotEmpty
+    private String cadeira;
+
+    @Schema(description = &quot;Identificador da fileira&quot;, example = &quot;A&quot;)
+    @NotEmpty
+    private String fileira;
+
+    @Schema(description = &quot;Status da poltrona&quot;, example= &quot;false&quot;)
+    @NotEmpty
+    private boolean reservado;
+
+    @Schema(description = &quot;Poltronara especial&quot;, example = &quot;Normal&quot;)
+    private String especiais;
+
+<span class="fc" id="L27">    public PoltronaDTO() {</span>
+<span class="fc" id="L28">    }</span>
+
+    public String getId() {
+<span class="fc" id="L31">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L35">        this.id = id;</span>
+<span class="fc" id="L36">    }</span>
+
+    public String getCadeira() {
+<span class="fc" id="L39">        return cadeira;</span>
+    }
+
+    public void setCadeira(String cadeira) {
+<span class="fc" id="L43">        this.cadeira = cadeira;</span>
+<span class="fc" id="L44">    }</span>
+
+    public String getFileira() {
+<span class="fc" id="L47">        return fileira;</span>
+    }
+
+    public void setFileira(String fileira) {
+<span class="fc" id="L51">        this.fileira = fileira;</span>
+<span class="fc" id="L52">    }</span>
+
+    public boolean isReservado() {
+<span class="fc" id="L55">        return reservado;</span>
+    }
+
+    public void setReservado(boolean reservado) {
+<span class="fc" id="L59">        this.reservado = reservado;</span>
+<span class="fc" id="L60">    }</span>
+
+    public String getEspeciais() {
+<span class="fc" id="L63">        return especiais;</span>
+    }
+
+    public void setEspeciais(String especiais) {
+<span class="fc" id="L67">        this.especiais = especiais;</span>
+<span class="fc" id="L68">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

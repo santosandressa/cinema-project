@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MongoConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.common.config</a> &gt; <span class="el_source">MongoConfig.java</span></div><h1>MongoConfig.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.common.config;
+
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+
+import java.util.Collection;
+import java.util.Collections;
+
+@Configuration
+<span class="fc" id="L14">public class MongoConfig extends AbstractMongoClientConfiguration {</span>
+
+    @Override
+    public MongoClient mongoClient() {
+<span class="fc" id="L18">        ConnectionString connectionString = new ConnectionString(&quot;mongodb+srv://admin:root@cluster0.dpmet.mongodb.net/cinema&quot;);</span>
+<span class="fc" id="L19">        MongoClientSettings settings = MongoClientSettings.builder()</span>
+<span class="fc" id="L20">                .applyConnectionString(connectionString)</span>
+<span class="fc" id="L21">                .retryWrites(true)</span>
+<span class="fc" id="L22">                .build();</span>
+
+<span class="fc" id="L24">        return MongoClients.create(settings);</span>
+    }
+
+    @Override
+    protected String getDatabaseName() {
+<span class="fc" id="L29">        return &quot;cinema&quot;;</span>
+    }
+
+    @Override
+    protected Collection&lt;String&gt; getMappingBasePackages() {
+<span class="fc" id="L34">        return Collections.singleton(&quot;com.cinema.tickets&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

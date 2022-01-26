@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Mensagem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.exception</a> &gt; <span class="el_source">Mensagem.java</span></div><h1>Mensagem.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.exception;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.time.OffsetDateTime;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Mensagem {
+
+    private Integer status;
+
+    private OffsetDateTime dataHora;
+
+    private String titulo;
+
+    private List&lt;Campo&gt; campos;
+
+<span class="fc" id="L19">    public Mensagem() {</span>
+<span class="fc" id="L20">    }</span>
+
+    public Integer getStatus() {
+<span class="fc" id="L23">        return status;</span>
+    }
+
+    public void setStatus(Integer status) {
+<span class="fc" id="L27">        this.status = status;</span>
+<span class="fc" id="L28">    }</span>
+
+    public OffsetDateTime getDataHora() {
+<span class="fc" id="L31">        return dataHora;</span>
+    }
+
+    public void setDataHora(OffsetDateTime dataHora) {
+<span class="fc" id="L35">        this.dataHora = dataHora;</span>
+<span class="fc" id="L36">    }</span>
+
+    public String getTitulo() {
+<span class="fc" id="L39">        return titulo;</span>
+    }
+
+    public void setTitulo(String titulo) {
+<span class="fc" id="L43">        this.titulo = titulo;</span>
+<span class="fc" id="L44">    }</span>
+
+    public List&lt;Campo&gt; getCampos() {
+<span class="fc" id="L47">        return campos;</span>
+    }
+
+    public void setCampos(List&lt;Campo&gt; campos) {
+<span class="fc" id="L51">        this.campos = campos;</span>
+<span class="fc" id="L52">    }</span>
+
+    public static class Campo {
+        private String nome;
+        private String mensagem;
+
+        public Campo(String nome, String mensagem) {
+<span class="fc" id="L59">            super();</span>
+<span class="fc" id="L60">            this.nome = nome;</span>
+<span class="fc" id="L61">            this.mensagem = mensagem;</span>
+<span class="fc" id="L62">        }</span>
+
+        public String getNome() {
+<span class="fc" id="L65">            return nome;</span>
+        }
+
+        public void setNome(String nome) {
+<span class="nc" id="L69">            this.nome = nome;</span>
+<span class="nc" id="L70">        }</span>
+
+        public String getMensagem() {
+<span class="fc" id="L73">            return mensagem;</span>
+        }
+
+        public void setMensagem(String mensagem) {
+<span class="nc" id="L77">            this.mensagem = mensagem;</span>
+<span class="nc" id="L78">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

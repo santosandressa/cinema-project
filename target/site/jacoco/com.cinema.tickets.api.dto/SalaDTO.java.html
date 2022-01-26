@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SalaDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.dto</a> &gt; <span class="el_source">SalaDTO.java</span></div><h1>SalaDTO.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.validation.constraints.NotNull;
+
+public class SalaDTO {
+
+    @Schema(description = &quot;Identificador da sala&quot;, example = &quot;61d742af8769e66ebac6c293&quot;)
+    private String id;
+
+    @Schema(description = &quot;Numeração da sala&quot;, example = &quot;1&quot;)
+    @NotNull
+    private Integer numSala;
+
+    @Schema(description = &quot;Boolean que indica se a sala tem sessão 3D&quot;, example = &quot;true&quot;)
+    @NotNull
+    private Boolean sala3D;
+
+    @Schema(description = &quot;Capacidade da sala&quot;, example = &quot;216&quot;)
+    @NotNull
+    private Integer capacidade;
+
+<span class="fc" id="L24">    public SalaDTO() {</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getId() {
+<span class="fc" id="L28">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L32">        this.id = id;</span>
+<span class="fc" id="L33">    }</span>
+
+    public Integer getNumSala() {
+<span class="fc" id="L36">        return numSala;</span>
+    }
+
+    public void setNumSala(Integer numSala) {
+<span class="fc" id="L40">        this.numSala = numSala;</span>
+<span class="fc" id="L41">    }</span>
+
+    public Boolean getSala3D() {
+<span class="fc" id="L44">        return sala3D;</span>
+    }
+
+    public void setSala3D(Boolean sala3D) {
+<span class="fc" id="L48">        this.sala3D = sala3D;</span>
+<span class="fc" id="L49">    }</span>
+
+    public Integer getCapacidade() {
+<span class="fc" id="L52">        return capacidade;</span>
+    }
+
+    public void setCapacidade(Integer capacidade) {
+<span class="fc" id="L56">        this.capacidade = capacidade;</span>
+<span class="fc" id="L57">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

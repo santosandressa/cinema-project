@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.security.config</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.security.config;
+
+import com.cinema.tickets.security.filter.CustomAuthenticationFilter;
+import com.cinema.tickets.security.filter.CustomAuthorizationFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
+@Configuration
+@EnableWebSecurity
+@Component
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+<span class="fc" id="L37">    public SecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {</span>
+<span class="fc" id="L38">        this.userDetailsService = userDetailsService;</span>
+<span class="fc" id="L39">        this.bCryptPasswordEncoder = bCryptPasswordEncoder;</span>
+<span class="fc" id="L40">    }</span>
+
+<span class="fc" id="L42">    private static final String[] PUBLIC_MATCHERS = {</span>
+            &quot;/api/v1/cliente/cadastrar&quot;,
+            &quot;/api/v1/cliente/atualizar/{id}&quot;,
+            &quot;/api/v1/login&quot;,
+            &quot;/api/v1/cliente/token/refresh&quot;,
+            &quot;/api/v1/sala/buscar&quot;,
+            &quot;/api/v1/sala/buscar/{id}&quot;,
+            &quot;/api/v1/send-email&quot;,
+            &quot;/api/v1/exibicao&quot;,
+            &quot;/api/v1/exibicao/**&quot;,
+            &quot;/api/v1/ingresso&quot;,
+            &quot;/api/v1/ingresso/**&quot;
+    };
+
+<span class="fc" id="L56">    private static final String[] PUBLIC_MATCHERS_SWAGGER = {</span>
+            &quot;/swagger-ui/**&quot;,
+            &quot;/swagger-ui/index.html#&quot;,
+            &quot;/configuration/ui&quot;,
+            &quot;/swagger-resources/**&quot;,
+            &quot;/configuration/security&quot;,
+            &quot;/swagger-ui.html&quot;,
+            &quot;/webjars/**&quot;,
+            &quot;/v1/api-docs&quot;,
+            &quot;/v1/api-docs/swagger-config&quot;
+    };
+
+<span class="fc" id="L68">    private static final String[] PUBLIC_MATCHERS_GET = {</span>
+            &quot;/api/v1/poltronas/**&quot;,
+            &quot;/api/v1/filmes/**&quot;,
+    };
+
+<span class="fc" id="L73">    private static final String[] PRIVATE_MATCHERS_ADMIN = {</span>
+            &quot;/api/v1/cliente/deletar/{id}&quot;,
+            &quot;/api/v1/cliente/{id}&quot;,
+            &quot;api/v1/cliente/listar&quot;,
+            &quot;api/v1/filme/cadastrar&quot;,
+            &quot;api/v1/filme/deletar/{id}&quot;,
+            &quot;api/v1/filme/atualizar/{id}&quot;,
+            &quot;api/v1/poltrona/cadastrar&quot;,
+            &quot;api/v1/poltrona/atualizar/{id}&quot;,
+            &quot;api/v1/sala/cadastrar&quot;,
+            &quot;api/v1/sala/atualizar/{id}&quot;,
+    };
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+<span class="fc" id="L89">        return super.authenticationManagerBean();</span>
+    }
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+<span class="fc" id="L95">        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);</span>
+<span class="fc" id="L96">    }</span>
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+<span class="fc" id="L102">        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());</span>
+<span class="fc" id="L103">        customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());</span>
+
+<span class="fc" id="L105">        customAuthenticationFilter.setFilterProcessesUrl(&quot;/api/v1/cliente/login&quot;);</span>
+
+<span class="fc" id="L107">        http.authorizeRequests()</span>
+<span class="fc" id="L108">                .antMatchers(GET, PUBLIC_MATCHERS_GET).permitAll()</span>
+<span class="fc" id="L109">                .antMatchers(PUBLIC_MATCHERS).permitAll()</span>
+<span class="fc" id="L110">                .antMatchers(POST, PRIVATE_MATCHERS_ADMIN).hasAnyAuthority(&quot;ROLE_ADMIN&quot;)</span>
+<span class="fc" id="L111">                .anyRequest().authenticated()</span>
+<span class="fc" id="L112">                .and().sessionManagement()</span>
+<span class="fc" id="L113">                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)</span>
+<span class="fc" id="L114">                .and().csrf().disable()</span>
+<span class="fc" id="L115">                .cors().configurationSource(corsConfigurationSource());</span>
+
+<span class="fc" id="L117">        http.addFilter(customAuthenticationFilter);</span>
+<span class="fc" id="L118">        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);</span>
+<span class="fc" id="L119">    }</span>
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+<span class="fc" id="L123">        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
+<span class="fc" id="L124">        source.registerCorsConfiguration(&quot;/**&quot;, new CorsConfiguration().applyPermitDefaultValues());</span>
+<span class="fc" id="L125">        return source;</span>
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+<span class="fc" id="L130">        web.ignoring().antMatchers(PUBLIC_MATCHERS_SWAGGER);</span>
+<span class="fc" id="L131">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

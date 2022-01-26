@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FilmeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.controller</a> &gt; <span class="el_source">FilmeController.java</span></div><h1>FilmeController.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.controller;
+
+import com.cinema.tickets.api.dto.FilmeDTO;
+import com.cinema.tickets.api.mapper.FilmeMapper;
+import com.cinema.tickets.domain.collection.Filme;
+import com.cinema.tickets.domain.service.FilmeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+
+@RestController
+@RequestMapping(&quot;/api/v1/filmes&quot;)
+@CrossOrigin(origins = &quot;*&quot;)
+@Tag(name = &quot;Filme&quot;, description = &quot;Filme Controller&quot;)
+public class FilmeController {
+
+<span class="fc" id="L27">    final Logger logger = Logger.getLogger(ClienteController.class.getName());</span>
+
+    private final FilmeService filmeService;
+
+    private final FilmeMapper filmeMapper;
+
+<span class="fc" id="L33">    public FilmeController(FilmeService filmeService, FilmeMapper filmeMapper) {</span>
+<span class="fc" id="L34">        this.filmeService = filmeService;</span>
+<span class="fc" id="L35">        this.filmeMapper = filmeMapper;</span>
+<span class="fc" id="L36">    }</span>
+
+    @Operation(summary = &quot;Cadastrar filme&quot;, security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+    @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Filme cadastrado com sucesso&quot;)
+    @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Erro ao cadastrar filme&quot;)
+    @PostMapping(&quot;/cadastrar&quot;)
+    public ResponseEntity&lt;FilmeDTO&gt; cadastrarFilme(@Valid @RequestBody FilmeDTO filmeDTO) {
+
+<span class="fc" id="L44">        logger.info(&quot;Cadastrando filme&quot;);</span>
+
+<span class="fc" id="L46">        Filme entity = filmeMapper.toEntity(filmeDTO);</span>
+
+<span class="fc" id="L48">        entity = filmeService.save(entity);</span>
+
+<span class="fc" id="L50">        FilmeDTO dto = filmeMapper.toDTO(entity);</span>
+
+<span class="fc" id="L52">        return new ResponseEntity&lt;&gt;(dto, HttpStatus.CREATED);</span>
+    }
+
+    @Operation(summary = &quot;Buscar filme por id&quot;)
+    @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Filme encontrado&quot;)
+    @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Filme não encontrado&quot;)
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Filme&gt; buscarFilmePorId(@PathVariable String id) {
+
+<span class="fc" id="L61">        logger.info(&quot;Buscando filme por id&quot;);</span>
+
+<span class="fc" id="L63">        Optional&lt;Filme&gt; filme = filmeService.findById(id);</span>
+
+<span class="fc" id="L65">        return filme.map(value -&gt; new ResponseEntity&lt;&gt;(value, HttpStatus.OK)).orElseGet(() -&gt; new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND));</span>
+    }
+
+    @Operation(summary = &quot;Listar todos os filmes&quot;)
+    @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Lista de filmes&quot;)
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Filme&gt;&gt; buscarTodosFilmes() {
+<span class="fc" id="L72">        logger.info(&quot;Buscando todos os filmes&quot;);</span>
+
+<span class="fc" id="L74">        List&lt;Filme&gt; filmes = filmeService.findAll();</span>
+
+<span class="fc" id="L76">        return new ResponseEntity&lt;&gt;(filmes, HttpStatus.OK);</span>
+    }
+
+    @Operation(summary = &quot;Atualizar filme&quot;, security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+    @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Filme atualizado com sucesso&quot;)
+    @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Filme não encontrado, ou dados inválidos&quot;)
+    @PutMapping(&quot;/atualizar/{id}&quot;)
+    public ResponseEntity&lt;FilmeDTO&gt; atualizarFilme(@PathVariable String id, @Valid @RequestBody FilmeDTO filmeDTO) {
+<span class="fc" id="L84">        logger.info(&quot;Atualizando filme&quot;);</span>
+
+<span class="fc" id="L86">        Filme entity = filmeMapper.toEntity(filmeDTO);</span>
+
+<span class="fc" id="L88">        entity.setId(id);</span>
+
+<span class="fc" id="L90">        entity = filmeService.update(entity);</span>
+
+<span class="fc" id="L92">        FilmeDTO dto = filmeMapper.toDTO(entity);</span>
+
+<span class="fc" id="L94">        logger.info(&quot;Filme atualizado com sucesso&quot;);</span>
+
+<span class="fc" id="L96">        return new ResponseEntity&lt;&gt;(dto, HttpStatus.OK);</span>
+    }
+
+
+    @Operation(summary = &quot;Deletar filme&quot;, security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+    @ApiResponse(responseCode = &quot;204&quot;, description = &quot;Filme deletado com sucesso&quot;)
+    @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Filme não encontrado&quot;)
+    @DeleteMapping(&quot;/deletar/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deletarFilme(@PathVariable String id) {
+<span class="fc" id="L105">        logger.info(&quot;Deletando filme&quot;);</span>
+<span class="fc" id="L106">        Optional&lt;Filme&gt; filmeExistente = filmeService.findById(id);</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (filmeExistente.isEmpty()) {</span>
+<span class="fc" id="L109">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+        } else {
+<span class="fc" id="L111">            filmeService.deleteById(id);</span>
+<span class="fc" id="L112">            logger.info(&quot;Filme deletado com sucesso&quot;);</span>
+<span class="fc" id="L113">            return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+        }
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClienteDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.dto</a> &gt; <span class="el_source">ClienteDTO.java</span></div><h1>ClienteDTO.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.dto;
+
+
+import com.cinema.tickets.domain.collection.Endereco;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+public class ClienteDTO {
+
+    @Schema(description = &quot;Identificador único do cliente&quot;)
+    private String id;
+
+    @Schema(description = &quot;Nome do cliente&quot;, example = &quot;Ester Isadora Melissa Gomes&quot;, required = true)
+    @NotEmpty
+    private String nome;
+
+    @Schema(description = &quot;Cpf do cliente&quot;, example = &quot;042.952.896-55&quot;, required = true)
+    @CPF
+    @NotEmpty
+    private String cpf;
+
+    @Schema(description = &quot;Data de nascimento do cliente&quot;, example = &quot;24/05/2001&quot;, required = true)
+    @DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+    @NotEmpty
+    private String dataNascimento;
+
+    @Schema(description = &quot;Celular do cliente&quot;, example = &quot;(44) 98244-7112&quot;, required = true)
+    @NotEmpty
+    private String celular;
+
+    @Schema(description = &quot;Email do cliente&quot;, example = &quot;esterisadoramelissagomess@dprf.gov.br&quot;, required = true)
+    @Email
+    @NotEmpty
+    private String email;
+
+    @Schema(description = &quot;Senha do cliente&quot;, example = &quot;sOu5JTNBQ3&quot;, required = true)
+    @NotEmpty
+    @Size(min = 6, max = 12)
+    private String senha;
+
+    @Schema(description = &quot;Endereço do cliente&quot;)
+    @Valid
+    private Endereco endereco;
+
+<span class="fc" id="L51">    public ClienteDTO() {</span>
+<span class="fc" id="L52">    }</span>
+
+    public String getId() {
+<span class="fc" id="L55">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L59">        this.id = id;</span>
+<span class="fc" id="L60">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L63">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L67">        this.nome = nome;</span>
+<span class="fc" id="L68">    }</span>
+
+    public String getCpf() {
+<span class="fc" id="L71">        return cpf;</span>
+    }
+
+    public void setCpf(String cpf) {
+<span class="fc" id="L75">        this.cpf = cpf;</span>
+<span class="fc" id="L76">    }</span>
+
+    public String getDataNascimento() {
+<span class="fc" id="L79">        return dataNascimento;</span>
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+<span class="fc" id="L83">        this.dataNascimento = dataNascimento;</span>
+<span class="fc" id="L84">    }</span>
+
+    public String getCelular() {
+<span class="fc" id="L87">        return celular;</span>
+    }
+
+    public void setCelular(String celular) {
+<span class="fc" id="L91">        this.celular = celular;</span>
+<span class="fc" id="L92">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L95">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L99">        this.email = email;</span>
+<span class="fc" id="L100">    }</span>
+
+    public String getSenha() {
+<span class="fc" id="L103">        return senha;</span>
+    }
+
+    public void setSenha(String senha) {
+<span class="fc" id="L107">        this.senha = senha;</span>
+<span class="fc" id="L108">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L111">        return endereco;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="fc" id="L115">        this.endereco = endereco;</span>
+<span class="fc" id="L116">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

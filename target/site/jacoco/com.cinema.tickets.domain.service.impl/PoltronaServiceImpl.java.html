@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PoltronaServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.domain.service.impl</a> &gt; <span class="el_source">PoltronaServiceImpl.java</span></div><h1>PoltronaServiceImpl.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.domain.service.impl;
+
+import com.cinema.tickets.domain.collection.Poltrona;
+import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
+import com.cinema.tickets.domain.repository.PoltronaRepository;
+import com.cinema.tickets.domain.service.PoltronaService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+@Service
+public class PoltronaServiceImpl implements PoltronaService {
+
+    private final PoltronaRepository poltronaRepository;
+
+<span class="fc" id="L19">    final  Logger log= Logger.getLogger(PoltronaServiceImpl.class.getName());</span>
+
+<span class="fc" id="L21">    public PoltronaServiceImpl(PoltronaRepository poltronaRepository) {</span>
+<span class="fc" id="L22">        this.poltronaRepository = poltronaRepository;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Override
+    public Poltrona save(Poltrona poltrona) {
+
+<span class="fc" id="L28">        log.info(&quot;Salvando poltrona&quot;);</span>
+<span class="fc" id="L29">        Boolean cadeiraAndFileira = this.poltronaRepository.existsByFileiraAndCadeira(poltrona.getFileira(), poltrona.getCadeira());</span>
+
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if(poltrona.getCadeira() == null &amp;&amp; poltrona.getFileira() == null){</span>
+<span class="fc" id="L32">            throw new BusinessException(&quot;Cadeira não pode ser nula&quot;);</span>
+        }
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if(cadeiraAndFileira){</span>
+<span class="fc" id="L36">            throw new BusinessException(&quot;Cadeira e fileira já existem&quot;);</span>
+        }
+
+<span class="fc" id="L39">        log.info(&quot;Poltrona da fileira: &quot; + poltrona.getFileira() + &quot; e cadeira: &quot; + poltrona.getCadeira() + &quot; salva&quot;);</span>
+
+<span class="fc" id="L41">        return this.poltronaRepository.save(poltrona);</span>
+    }
+
+    @Override
+    public Optional&lt;Poltrona&gt; findById(String id) {
+
+<span class="fc" id="L47">        log.info(&quot;Buscando poltrona pelo id: &quot; + id);</span>
+
+<span class="fc" id="L49">        return this.poltronaRepository.findById(id);</span>
+    }
+
+    @Override
+    public List&lt;Poltrona&gt; findAll() {
+
+<span class="fc" id="L55">        log.info(&quot;Buscando todas as poltronas&quot;);</span>
+
+<span class="fc" id="L57">        return this.poltronaRepository.findAll();</span>
+    }
+
+
+    @Override
+    public Poltrona update(Poltrona poltrona) {
+
+<span class="fc" id="L64">        log.info(&quot;Atualizando poltrona&quot;);</span>
+
+<span class="fc" id="L66">        Optional&lt;Poltrona&gt; poltronaOptional = this.poltronaRepository.findById(poltrona.getId());</span>
+
+<span class="pc bpc" id="L68" title="1 of 4 branches missed.">        if(poltronaOptional.isEmpty() || poltronaOptional.get().getId() == null){</span>
+<span class="fc" id="L69">            throw new NotFoundException(&quot;Poltrona não encontrada&quot;);</span>
+        }
+
+<span class="fc" id="L72">        log.info(&quot;Poltrona da fileira: &quot; + poltrona.getFileira() + &quot; e cadeira &quot; + poltrona.getCadeira() + &quot; atualizada&quot;);</span>
+<span class="fc" id="L73">        return this.poltronaRepository.save(poltrona);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

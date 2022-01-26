@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiErrors.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.api.exception</a> &gt; <span class="el_source">ApiErrors.java</span></div><h1>ApiErrors.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.api.exception;
+
+import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.exception.NotFoundException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@ControllerAdvice
+public class ApiErrors extends ResponseEntityExceptionHandler {
+
+<span class="fc" id="L25">    final Mensagem mensagem = new Mensagem();</span>
+
+    private final  MessageSource messageSource;
+
+<span class="fc" id="L29">    public ApiErrors(MessageSource messageSource) {</span>
+<span class="fc" id="L30">        this.messageSource = messageSource;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    protected ResponseEntity&lt;Object&gt; handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+<span class="fc" id="L35">        List&lt;Mensagem.Campo&gt; campos = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (ObjectError error : ex.getBindingResult().getAllErrors()) {</span>
+<span class="fc" id="L38">            String nome = ((FieldError) error).getField();</span>
+<span class="fc" id="L39">            String mensagem = messageSource.getMessage(error, LocaleContextHolder.getLocale());</span>
+
+<span class="fc" id="L41">            campos.add(new Mensagem.Campo(nome, mensagem));</span>
+<span class="fc" id="L42">        }</span>
+
+<span class="fc" id="L44">        mensagem.setStatus(status.value());</span>
+<span class="fc" id="L45">        mensagem.setDataHora(OffsetDateTime.now());</span>
+<span class="fc" id="L46">        mensagem.setTitulo(&quot;Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente&quot;);</span>
+<span class="fc" id="L47">        mensagem.setCampos(campos);</span>
+<span class="fc" id="L48">        return handleExceptionInternal(ex, mensagem, headers, status, request);</span>
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity&lt;Object&gt; handleNegocio(BusinessException ex, WebRequest request) {
+<span class="fc" id="L53">        HttpStatus status = HttpStatus.BAD_REQUEST;</span>
+
+<span class="fc" id="L55">        mensagem.setStatus(status.value());</span>
+<span class="fc" id="L56">        mensagem.setDataHora(OffsetDateTime.now());</span>
+<span class="fc" id="L57">        mensagem.setTitulo(ex.getMessage());</span>
+<span class="fc" id="L58">        return handleExceptionInternal(ex, mensagem, new HttpHeaders(), status, request);</span>
+    }
+
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity&lt;Object&gt; handleNotFound(NotFoundException ex, WebRequest request) {
+<span class="fc" id="L64">        HttpStatus status = HttpStatus.NOT_FOUND;</span>
+
+<span class="fc" id="L66">        mensagem.setStatus(status.value());</span>
+<span class="fc" id="L67">        mensagem.setDataHora(OffsetDateTime.now());</span>
+<span class="fc" id="L68">        mensagem.setTitulo(ex.getMessage());</span>
+<span class="fc" id="L69">        return handleExceptionInternal(ex, mensagem, new HttpHeaders(), status, request);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

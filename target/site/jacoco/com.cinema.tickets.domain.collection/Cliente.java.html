@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cliente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tickets</a> &gt; <a href="index.source.html" class="el_package">com.cinema.tickets.domain.collection</a> &gt; <span class="el_source">Cliente.java</span></div><h1>Cliente.java</h1><pre class="source lang-java linenums">package com.cinema.tickets.domain.collection;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.data.annotation.Id;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+
+
+@Document(collection = &quot;cliente&quot;)
+public class Cliente {
+
+    @Schema(description = &quot;Identificador único do cliente&quot;)
+    @Id
+    private String id;
+
+    @Schema(description = &quot;Nome do cliente&quot;, example = &quot;Ester Isadora Melissa Gomes&quot;, required = true)
+    @NotEmpty
+    private String nome;
+
+    @Schema(description = &quot;Cpf do cliente&quot;, example = &quot;042.952.896-55&quot;, required = true)
+    @CPF
+    @NotEmpty
+    private String cpf;
+
+    @Schema(description = &quot;Data de nascimento do cliente&quot;, example = &quot;24/05/2001&quot;, required = true)
+    @DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+    @NotEmpty
+    private String dataNascimento;
+
+    @Schema(description = &quot;Celular do cliente&quot;, example = &quot;(44) 98244-7112&quot;, required = true)
+    @NotEmpty
+    private String celular;
+
+    @Schema(description = &quot;Email do cliente&quot;, example = &quot;esterisadoramelissagomess@dprf.gov.br&quot;, required = true)
+    @Email
+    @NotEmpty
+    private String email;
+
+    @Schema(description= &quot;Senha do cliente&quot;, example = &quot;sOu5JTNBQ3&quot;, required = true)
+    @NotEmpty
+    @Size(min = 6, max = 12)
+    @JsonIgnore
+    private String senha;
+
+    @Schema(description = &quot;Endereço do cliente&quot;)
+    @Valid
+    private Endereco endereco;
+
+<span class="pc" id="L59">    private Collection&lt;Role&gt; roles = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L61">    public Cliente() {</span>
+
+<span class="fc" id="L63">    }</span>
+
+<span class="nc" id="L65">    public Cliente(String id, String nome, String cpf, String dataNascimento, String celular, String email, String senha, Endereco endereco, Collection&lt;Role&gt; roles) {</span>
+<span class="nc" id="L66">        this.id = id;</span>
+<span class="nc" id="L67">        this.nome = nome;</span>
+<span class="nc" id="L68">        this.cpf = cpf;</span>
+<span class="nc" id="L69">        this.dataNascimento = dataNascimento;</span>
+<span class="nc" id="L70">        this.celular = celular;</span>
+<span class="nc" id="L71">        this.email = email;</span>
+<span class="nc" id="L72">        this.senha = senha;</span>
+<span class="nc" id="L73">        this.endereco = endereco;</span>
+<span class="nc" id="L74">        this.roles = roles;</span>
+<span class="nc" id="L75">    }</span>
+
+    public String getId() {
+<span class="fc" id="L78">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L82">        this.id = id;</span>
+<span class="fc" id="L83">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L86">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L90">        this.nome = nome;</span>
+<span class="fc" id="L91">    }</span>
+
+    public String getCpf() {
+<span class="fc" id="L94">        return cpf;</span>
+    }
+
+    public void setCpf(String cpf) {
+<span class="fc" id="L98">        this.cpf = cpf;</span>
+<span class="fc" id="L99">    }</span>
+
+    public String getDataNascimento() {
+<span class="fc" id="L102">        return dataNascimento;</span>
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+<span class="fc" id="L106">        this.dataNascimento = dataNascimento;</span>
+<span class="fc" id="L107">    }</span>
+
+    public String getCelular() {
+<span class="fc" id="L110">        return celular;</span>
+    }
+
+    public void setCelular(String celular) {
+<span class="fc" id="L114">        this.celular = celular;</span>
+<span class="fc" id="L115">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L118">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L122">        this.email = email;</span>
+<span class="fc" id="L123">    }</span>
+
+    public String getSenha() {
+<span class="fc" id="L126">        return senha;</span>
+    }
+
+    public void setSenha(String senha) {
+<span class="fc" id="L130">        this.senha = senha;</span>
+<span class="fc" id="L131">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L134">        return endereco;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="fc" id="L138">        this.endereco = endereco;</span>
+<span class="fc" id="L139">    }</span>
+
+    public Collection&lt;Role&gt; getRoles() {
+<span class="fc" id="L142">        return roles;</span>
+    }
+
+    public void setRoles(Collection&lt;Role&gt; roles) {
+<span class="nc" id="L146">        this.roles = roles;</span>
+<span class="nc" id="L147">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
