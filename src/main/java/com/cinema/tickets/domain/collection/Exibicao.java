@@ -8,12 +8,18 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Document
-public class Exibicao {
+public class Exibicao implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
@@ -23,7 +29,11 @@ public class Exibicao {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataExibicao;
 
-    private List<Filme> filmes = new ArrayList<>();
+    private Filme filme;
+
+    private Sala sala;
+
+    private List<Horarios> horarios;
 
     public Exibicao() {
     }
@@ -44,12 +54,27 @@ public class Exibicao {
         this.dataExibicao = dataExibicao;
     }
 
-    public List<Filme> getFilmes() {
-        return filmes;
+    public Filme getFilme() {
+        return filme;
     }
 
-    public void setFilmes(List<Filme> filmes) {
-        this.filmes = filmes;
+    public void setFilme(Filme filme) {
+        this.filme = filme;
     }
 
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
+
+    public List<Horarios> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<Horarios> horarios) {
+        this.horarios = horarios;
+    }
 }

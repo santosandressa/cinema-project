@@ -242,6 +242,24 @@ public class ClienteServiceTest {
     }
 
 
+    @Test
+    @DisplayName("Deve achar role pelo nome")
+    public void shouldFindRoleByName() {
+        Role role = new Role();
+        role.setId("1");
+        role.setNome("ROLE_ADMIN");
+
+        when(roleRepository.findByNome(Mockito.anyString())).thenReturn(role);
+
+        Role roleEncontrada = clienteService.findRoleByNome(role.getNome());
+
+
+        assertThat(roleEncontrada).isNotNull();
+        assertThat(roleEncontrada.getNome()).isEqualTo(role.getNome());
+
+    }
+
+
 
 
 

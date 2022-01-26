@@ -1,10 +1,10 @@
 package com.cinema.tickets.domain.service.impl;
 
-import com.cinema.tickets.domain.collection.Poltrona;
+
 import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.exception.NotFoundException;
-import com.cinema.tickets.domain.repository.PoltronaRepository;
+
 import com.cinema.tickets.domain.repository.SalaRepository;
 import com.cinema.tickets.domain.service.SalaService;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,10 @@ public class SalaServiceImpl implements SalaService {
 
     private  final SalaRepository salaRepository;
 
-    private  final PoltronaRepository poltronaRepository;
 
-    public SalaServiceImpl(SalaRepository salaRepository, PoltronaRepository poltronaRepository) {
+    public SalaServiceImpl(SalaRepository salaRepository) {
         this.salaRepository = salaRepository;
-        this.poltronaRepository = poltronaRepository;
+
     }
 
     @Override
@@ -36,8 +35,7 @@ public class SalaServiceImpl implements SalaService {
             throw new BusinessException("Sala já cadastrada");
         }
 
-        List<Poltrona> poltrona =  poltronaRepository.findAll();
-        sala.setPoltrona(poltrona);
+
         return salaRepository.save(sala);
     }
 
@@ -69,8 +67,7 @@ public class SalaServiceImpl implements SalaService {
             log.info("Sala não encontrada");
             throw new BusinessException("Sala não encontrada, ou dados inválidos");
         } else {
-            List<Poltrona> poltrona =  poltronaRepository.findAll();
-            sala.setPoltrona(poltrona);
+
             sala.setId(salaId.get().getId());
             return salaRepository.save(sala);
         }

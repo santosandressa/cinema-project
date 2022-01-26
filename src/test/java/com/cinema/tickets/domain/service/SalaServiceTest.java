@@ -3,7 +3,6 @@ package com.cinema.tickets.domain.service;
 import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.exception.NotFoundException;
-import com.cinema.tickets.domain.repository.PoltronaRepository;
 import com.cinema.tickets.domain.repository.SalaRepository;
 import com.cinema.tickets.domain.service.impl.SalaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,12 +30,11 @@ public class SalaServiceTest {
     @MockBean
     SalaRepository salaRepository;
 
-    @MockBean
-    PoltronaRepository poltronaRepository;
+
 
     @BeforeEach
     public void setUp() {
-        salaService = new SalaServiceImpl(salaRepository, poltronaRepository);
+        salaService = new SalaServiceImpl(salaRepository);
     }
 
     private Sala createSala(){
@@ -46,7 +44,7 @@ public class SalaServiceTest {
         sala.setSala3D(true);
         sala.setCapacidade(216);
 
-        sala.setPoltrona(sala.getPoltrona());
+
         return sala;
     }
 
@@ -56,10 +54,6 @@ public class SalaServiceTest {
         Sala sala = createSala();
 
         when(salaRepository.findByNumSala(sala.getNumSala())).thenReturn(Optional.empty());
-
-        when(poltronaRepository.findAll()).thenReturn(sala.getPoltrona());
-
-        sala.setPoltrona(sala.getPoltrona());
 
         when(salaRepository.save(sala)).thenReturn(sala);
 
@@ -79,7 +73,6 @@ public class SalaServiceTest {
         when(salaRepository.existsByNumSala(sala.getNumSala())).thenReturn(true);
 
         assertThrows(BusinessException.class, () -> salaService.save(sala));
-
     }
 
     @Test

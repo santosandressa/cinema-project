@@ -1,7 +1,12 @@
 package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.api.dto.ExibicaoDTO;
+import com.cinema.tickets.api.dto.FilmeDTO;
+import com.cinema.tickets.api.dto.SalaDTO;
 import com.cinema.tickets.domain.collection.Exibicao;
+import com.cinema.tickets.domain.collection.Filme;
+import com.cinema.tickets.domain.collection.Horarios;
+import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.service.ExibicaoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +50,27 @@ public class ExibicaoControllerTest {
     private ExibicaoDTO createExibicaoDto(){
         ExibicaoDTO exibicaoDTO = new ExibicaoDTO();
         exibicaoDTO.setDataExibicao(LocalDate.of(2022, 1, 22));
-        exibicaoDTO.setFilmes(exibicaoDTO.getFilmes());
+
+
+        FilmeDTO filmeDTO = new FilmeDTO();
+        filmeDTO.setTitulo("Titulo");
+        filmeDTO.setTituloOriginal("Titulo Original");
+        filmeDTO.setDiretor("Diretor");
+        filmeDTO.setDuracao("120");
+        filmeDTO.setGenero("Ação");
+        filmeDTO.setSinopse("Sinopse do filme 1");
+
+
+        SalaDTO salaDTO = new SalaDTO();
+        salaDTO.setNumSala(1);
+        salaDTO.setCapacidade(216);
+        salaDTO.setSala3D(true);
+
+        exibicaoDTO.setFilme(exibicaoDTO.getFilme());
+
+        Horarios horarios = new Horarios();
+        horarios.setHorario(LocalTime.of(14,30));
+        exibicaoDTO.setHorarios(exibicaoDTO.getHorarios());
         return exibicaoDTO;
     }
 
@@ -53,7 +79,32 @@ public class ExibicaoControllerTest {
         Exibicao exibicao = new Exibicao();
         exibicao.setId("1");
         exibicao.setDataExibicao(LocalDate.of(2022, 1, 22));
-        exibicao.setFilmes(exibicao.getFilmes());
+
+
+        Filme filme = new Filme();
+        filme.setId("1");
+        filme.setTitulo("Titulo");
+        filme.setTituloOriginal("Titulo Original");
+        filme.setDiretor("Diretor");
+        filme.setDuracao("120");
+        filme.setGenero("Ação");
+        filme.setSinopse("Sinopse do filme 1");
+
+
+        Sala sala = new Sala();
+        sala.setId("1");
+        sala.setNumSala(1);
+        sala.setCapacidade(216);
+        sala.setSala3D(true);
+
+
+        exibicao.setFilme(exibicao.getFilme());
+
+        Horarios horarios = new Horarios();
+        horarios.setHorario(LocalTime.of(14,30));
+
+        exibicao.setHorarios(exibicao.getHorarios());
+
         return exibicao;
     }
 
@@ -78,7 +129,7 @@ public class ExibicaoControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("dataExibicao").value(exibicao.getDataExibicao().toString()))
-                .andExpect(jsonPath("filmes").value(exibicao.getFilmes()));
+                .andExpect(jsonPath("horarios").value(exibicao.getHorarios()));
     }
 
     @Test

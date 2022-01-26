@@ -41,7 +41,8 @@ public class PoltronaServiceTest {
         poltrona.setId("1");
         poltrona.setCadeira("A1");
         poltrona.setFileira("A");
-        poltrona.setStatus("DISPONIVEL");
+        poltrona.setEspeciais("Normal");
+        poltrona.setReservado(false);
         return poltrona;
     }
 
@@ -59,7 +60,8 @@ public class PoltronaServiceTest {
         assertThat(poltrona.getId()).isNotNull();
         assertThat(poltrona.getFileira()).isEqualTo(poltrona.getFileira());
         assertThat(poltrona.getCadeira()).isEqualTo(poltrona.getCadeira());
-        assertThat(poltrona.getStatus()).isEqualTo(poltrona.getStatus());
+        assertThat(poltrona.getEspeciais()).isEqualTo(poltrona.getEspeciais());
+        assertThat(poltrona.isReservado()).isEqualTo(poltrona.isReservado());
     }
 
     @Test
@@ -98,7 +100,7 @@ public class PoltronaServiceTest {
         assertThat(poltronaId.get().getId()).isNotNull();
         assertThat(poltronaId.get().getFileira()).isEqualTo(poltrona.getFileira());
         assertThat(poltronaId.get().getCadeira()).isEqualTo(poltrona.getCadeira());
-        assertThat(poltronaId.get().getStatus()).isEqualTo(poltrona.getStatus());
+        assertThat(poltronaId.get().getEspeciais()).isEqualTo(poltrona.getEspeciais());
     }
 
     @Test
@@ -131,7 +133,7 @@ public class PoltronaServiceTest {
         assertThat(poltrona.getId()).isNotNull();
         assertThat(poltrona.getFileira()).isEqualTo(poltrona.getFileira());
         assertThat(poltrona.getCadeira()).isEqualTo(poltrona.getCadeira());
-        assertThat(poltrona.getStatus()).isEqualTo(poltrona.getStatus());
+        assertThat(poltrona.getEspeciais()).isEqualTo(poltrona.getEspeciais());
     }
 
     @Test

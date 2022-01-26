@@ -50,7 +50,6 @@ public class SalaControllerTest {
         salaDTO.setSala3D(true);
         salaDTO.setCapacidade(216);
 
-        salaDTO.setPoltrona(salaDTO.getPoltrona());
         return salaDTO;
     }
 
@@ -61,7 +60,6 @@ public class SalaControllerTest {
         sala.setSala3D(true);
         sala.setCapacidade(216);
 
-        sala.setPoltrona(sala.getPoltrona());
         return sala;
     }
 
@@ -88,8 +86,7 @@ public class SalaControllerTest {
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("$.numSala").value(salaDTO.getNumSala()))
                 .andExpect(jsonPath("$.sala3D").value(salaDTO.getSala3D()))
-                .andExpect(jsonPath("$.capacidade").value(salaDTO.getCapacidade()))
-                .andExpect(jsonPath("$.poltrona").value(sala.getPoltrona()));
+                .andExpect(jsonPath("$.capacidade").value(salaDTO.getCapacidade())).andReturn();
     }
 
     @Test

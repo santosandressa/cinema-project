@@ -24,7 +24,8 @@ public class PoltronaRepositoryTest {
         poltrona.setId("1");
         poltrona.setCadeira("A1");
         poltrona.setFileira("A");
-        poltrona.setStatus("DISPONIVEL");
+        poltrona.setReservado(false);
+        poltrona.setEspeciais("Normal");
         return poltrona;
     }
 

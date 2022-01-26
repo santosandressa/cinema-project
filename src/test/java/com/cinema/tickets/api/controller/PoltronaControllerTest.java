@@ -50,7 +50,9 @@ public class PoltronaControllerTest {
         PoltronaDTO poltronaDTO = new PoltronaDTO();
         poltronaDTO.setCadeira("A1");
         poltronaDTO.setFileira("A");
-        poltronaDTO.setStatus("DISPONIVEL");
+        poltronaDTO.setReservado(false);
+        poltronaDTO.setEspeciais("Normal");
+
         return poltronaDTO;
     }
 
@@ -59,68 +61,10 @@ public class PoltronaControllerTest {
         poltrona.setId("1");
         poltrona.setCadeira("A1");
         poltrona.setFileira("A");
-        poltrona.setStatus("DISPONIVEL");
-
+        poltrona.setEspeciais("Normal");
+        poltrona.setReservado(false);
 
         return poltrona;
-    }
-
-    @Test
-    @WithMockAdmin
-    @DisplayName("Deve cadastrar uma poltrona")
-    public void shoudCreatePoltrona() throws Exception{
-
-        PoltronaDTO poltronaDTO = createPoltronaDTO();
-
-        Poltrona poltrona = createPoltrona();
-
-        BDDMockito.given(service.save(Mockito.any(Poltrona.class))).willReturn(poltrona);
-
-       String json =  new ObjectMapper().writeValueAsString(poltronaDTO);
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(json));
-
-        mvc.perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("cadeira").value(poltrona.getCadeira()))
-                .andExpect(jsonPath("fileira").value(poltronaDTO.getFileira()))
-                .andExpect(jsonPath("status").value(poltronaDTO.getStatus()));
-    }
-
-    @Test
-    @DisplayName("Deve retornar bad request ao tentar cadastrar uma poltrona com dados inválidos")
-    @WithMockAdmin
-    public void shouldReturnBadRequestWhenCreatePoltronaWithInvalidData() throws Exception{
-        String json = new ObjectMapper().writeValueAsString(new PoltronaDTO());
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("campos", hasSize(3)));
-    }
-
-    @Test
-    @WithMockAdmin
-    @DisplayName("Deve retornar bad request ao tentar cadastrar uma poltrona com dados inválidos")
-    public void shouldReturnBadRequestWhenCreatePoltronaWithInvalidData2() throws Exception{
-        String json = new ObjectMapper().writeValueAsString(new PoltronaDTO());
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(POLTRONA_URL.concat("/cadastrar"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("campos", hasSize(3)));
     }
 
     @Test

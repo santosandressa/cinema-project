@@ -3,7 +3,6 @@ package com.cinema.tickets.api.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class SalaDTO {
 
@@ -22,10 +21,7 @@ public class SalaDTO {
     @NotNull
     private Integer capacidade;
 
-    private List<PoltronaDTO> poltrona;
-
     public SalaDTO() {
-
     }
 
     public String getId() {
@@ -58,14 +54,6 @@ public class SalaDTO {
 
     public void setCapacidade(Integer capacidade) {
         this.capacidade = capacidade;
-    }
-
-    public List<PoltronaDTO> getPoltrona() {
-        return poltrona;
-    }
-
-    public void setPoltrona(List<PoltronaDTO> poltrona) {
-        this.poltrona = poltrona;
     }
 
 }

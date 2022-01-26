@@ -18,12 +18,11 @@ public class Poltrona {
     private String fileira;
 
     @NotEmpty
-    private String status;
+    private boolean reservado;
 
     @NotEmpty
     private String especiais;
 
-    public Poltrona(){}
 
     public String getId() {
         return id;
@@ -49,12 +48,12 @@ public class Poltrona {
         this.fileira = fileira;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isReservado() {
+        return reservado;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setReservado(boolean reservado) {
+        this.reservado = reservado;
     }
 
     public String getEspeciais() {

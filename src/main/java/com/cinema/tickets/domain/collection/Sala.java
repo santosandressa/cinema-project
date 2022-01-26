@@ -5,8 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Document
 public class Sala {
@@ -22,8 +20,6 @@ public class Sala {
 
     @NotNull
     private Integer capacidade;
-
-    private List<Poltrona> poltrona = new ArrayList<>();
 
     public Sala() {
     }
@@ -60,11 +56,4 @@ public class Sala {
         this.capacidade = capacidade;
     }
 
-    public List<Poltrona> getPoltrona() {
-        return poltrona;
-    }
-
-    public void setPoltrona(List<Poltrona> poltrona) {
-        this.poltrona = poltrona;
-    }
 }

@@ -26,7 +26,6 @@ public class SalaRepositoryTest {
         sala.setSala3D(true);
         sala.setCapacidade(216);
 
-        sala.setPoltrona(sala.getPoltrona());
         return sala;
     }
 

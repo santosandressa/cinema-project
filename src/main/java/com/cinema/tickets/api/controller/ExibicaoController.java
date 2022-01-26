@@ -1,6 +1,7 @@
 package com.cinema.tickets.api.controller;
 
 import com.cinema.tickets.api.dto.ExibicaoDTO;
+
 import com.cinema.tickets.api.mapper.ExibicaoMapper;
 import com.cinema.tickets.domain.collection.Exibicao;
 import com.cinema.tickets.domain.service.ExibicaoService;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 @RestController
 @RequestMapping("/api/v1/exibicao")
@@ -27,11 +33,12 @@ public class ExibicaoController {
     public ExibicaoController(ExibicaoService exibicaoService, ExibicaoMapper exibicaoMapper) {
         this.exibicaoService = exibicaoService;
         this.exibicaoMapper = exibicaoMapper;
+
     }
 
     @PostMapping
-    public ResponseEntity<ExibicaoDTO> salvar(@RequestBody ExibicaoDTO exibicaoDTO) {
-        log.info("Salvando Exibicao");
+    public ResponseEntity<ExibicaoDTO> salvar(@RequestBody ExibicaoDTO exibicaoDTO){
+        log.info("Requisição de Post - Exibição");
 
         Exibicao entity = exibicaoMapper.toEntity(exibicaoDTO);
 
@@ -39,29 +46,46 @@ public class ExibicaoController {
 
         ExibicaoDTO dto = exibicaoMapper.toDTO(entity);
 
+        log.info("Requisição de Exibicao salva com sucesso");
+
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Exibicao>> findAll(){
+    public ResponseEntity<List<ExibicaoDTO>> findAll(){
         log.info("Listando todas as Exibicoes");
 
         List<Exibicao> exibicoes = this.exibicaoService.getAll();
 
-        return new ResponseEntity<>(exibicoes, HttpStatus.OK);
+        List<ExibicaoDTO> dtos = exibicoes.stream().map(exibicaoMapper::toDTO).collect(Collectors.toList());
+
+
+        if (exibicoes.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            for (ExibicaoDTO dto : dtos) {
+                dto.add(linkTo(methodOn(ExibicaoController.class).findById(dto.getId())).withSelfRel());
+            }
+        }
+
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @GetMapping("/listar/{id}")
-    public ResponseEntity<Exibicao> findById(@PathVariable String id){
+    public ResponseEntity<ExibicaoDTO> findById(@PathVariable String id){
         log.info("Listando Exibicao por id");
 
         Optional<Exibicao> exibicao = this.exibicaoService.getById(id);
 
+        Optional<ExibicaoDTO> dto = exibicao.map(exibicaoMapper::toDTO);
+
         if (exibicao.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            dto.get().add(linkTo(methodOn(ExibicaoController.class).findAll()).withRel("Lista de exibições"));
         }
 
-        return new ResponseEntity<>(exibicao.get(), HttpStatus.OK);
+        return new ResponseEntity<>(dto.get(), HttpStatus.OK);
     }
 
     @DeleteMapping("/deletar/{id}")

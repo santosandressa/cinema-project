@@ -17,9 +17,9 @@ public class PoltronaDTO {
     @NotEmpty
     private String fileira;
 
-    @Schema(description = "Status da poltrona", example = "DISPONIVEL")
+    @Schema(description = "Status da poltrona", example= "false")
     @NotEmpty
-    private String status;
+    private boolean reservado;
 
     @Schema(description = "Poltronara especial", example = "Normal")
     private String especiais;
@@ -51,12 +51,12 @@ public class PoltronaDTO {
         this.fileira = fileira;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isReservado() {
+        return reservado;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setReservado(boolean reservado) {
+        this.reservado = reservado;
     }
 
     public String getEspeciais() {

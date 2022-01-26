@@ -1,28 +1,32 @@
-package com.cinema.tickets.domain.collection;
+package com.cinema.tickets.api.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.Size;
 
-@Document
-public class Ingresso {
+public class IngressoDTO {
 
-    @Id
+
     private String id;
 
+    @Schema(example = "30.00")
     private Double valor;
 
+    @Schema(example = "true")
     private Boolean meiaEntrada;
 
-    @Size(min= 1, max = 5)
+    @Schema(description = "Quantidade de 1 a 5", example = "3")
+    @Size(max = 5)
     private Integer quantidade;
 
-    private Exibicao exibicao;
+    @Schema(example = "61eeaaa52ac9a562141577d7")
+    private ExibicaoDTO exibicao;
 
     private Double valorTotal;
 
-    public Ingresso(){}
+
+    public IngressoDTO() {
+    }
 
     public String getId() {
         return id;
@@ -40,14 +44,6 @@ public class Ingresso {
         this.valor = valor;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
     public Boolean getMeiaEntrada() {
         return meiaEntrada;
     }
@@ -56,11 +52,19 @@ public class Ingresso {
         this.meiaEntrada = meiaEntrada;
     }
 
-    public Exibicao getExibicao() {
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public ExibicaoDTO getExibicao() {
         return exibicao;
     }
 
-    public void setExibicao(Exibicao exibicao) {
+    public void setExibicao(ExibicaoDTO exibicao) {
         this.exibicao = exibicao;
     }
 
