@@ -23,4 +23,6 @@ O primeiro acesso pode demorar alguns segundos
 - Spring Security 
 - JWT
 - JUnit5
+- Spring HATEOAS
+- Spring Mail
 
