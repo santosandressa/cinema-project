@@ -26,8 +26,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - run :
-          name: Verify
-          command: mvn verify
+          name: Test
+          command: mvn test
       - codecov/upload:
           upload_name: CODECOV_TOKEN 
       - store_artifacts:
