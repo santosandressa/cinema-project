@@ -20,7 +20,7 @@ public class IngressoServiceImpl implements IngressoService {
 
     private final ExibicaoRepository exibicaoRepository;
 
-    Logger log = Logger.getLogger(IngressoServiceImpl.class.getName());
+    final Logger log = Logger.getLogger(IngressoServiceImpl.class.getName());
 
     public IngressoServiceImpl(IngressoRepository ingressoRepository, ExibicaoRepository exibicaoRepository) {
         this.ingressoRepository = ingressoRepository;

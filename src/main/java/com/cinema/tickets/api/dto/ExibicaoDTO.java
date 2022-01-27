@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.hateoas.RepresentationModel;
 
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 import java.util.List;
@@ -22,15 +23,19 @@ public class ExibicaoDTO extends RepresentationModel<ExibicaoDTO> {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Schema(example = "2020-01-01")
+    @NotEmpty
     private LocalDate dataExibicao;
 
     @Schema(example = "14:00")
+    @NotEmpty
     private List<Horarios> horarios;
 
     @Schema(example = "Percy Jackson e o mar de monstros")
+    @NotEmpty
     private FilmeDTO filme;
 
     @Schema(example = "1")
+    @NotEmpty
     private SalaDTO sala;
 
 

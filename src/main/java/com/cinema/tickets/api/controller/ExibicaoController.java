@@ -6,6 +6,9 @@ import com.cinema.tickets.api.mapper.ExibicaoMapper;
 import com.cinema.tickets.domain.collection.Exibicao;
 import com.cinema.tickets.domain.service.ExibicaoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1/exibicao")
+@Tag(name = "Exibicao")
 public class ExibicaoController {
 
     private final ExibicaoService exibicaoService;
@@ -36,6 +40,8 @@ public class ExibicaoController {
 
     }
 
+    @Operation(summary = "Cria uma nova Exibicao")
+    @ApiResponse(responseCode = "201", description = "Exibicao criada com sucesso")
     @PostMapping
     public ResponseEntity<ExibicaoDTO> salvar(@RequestBody ExibicaoDTO exibicaoDTO){
         log.info("Requisição de Post - Exibição");
@@ -51,6 +57,8 @@ public class ExibicaoController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Lista todas as Exibicao")
+    @ApiResponse(responseCode = "200", description = "Lista de Exibicao OK")
     @GetMapping("/listar")
     public ResponseEntity<List<ExibicaoDTO>> findAll(){
         log.info("Listando todas as Exibicoes");
@@ -71,6 +79,8 @@ public class ExibicaoController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    @Operation(summary = "Busca uma Exibicao por id")
+    @ApiResponse(responseCode = "200", description = "Exibicao encontrada")
     @GetMapping("/listar/{id}")
     public ResponseEntity<ExibicaoDTO> findById(@PathVariable String id){
         log.info("Listando Exibicao por id");
@@ -88,6 +98,8 @@ public class ExibicaoController {
         return new ResponseEntity<>(dto.get(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Deleta uma Exibicao")
+    @ApiResponse(responseCode = "204", description = "Exibicao deletada")
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id){
         log.info("Deletando Exibicao por id");
@@ -104,6 +116,8 @@ public class ExibicaoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Atualiza uma Exibicao")
+    @ApiResponse(responseCode = "200", description = "Exibicao atualizada")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<ExibicaoDTO> update(@PathVariable String id, @RequestBody ExibicaoDTO exibicaoDTO){
         log.info("Atualizando Exibicao por id");

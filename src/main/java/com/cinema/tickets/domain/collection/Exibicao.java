@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-
+import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -27,12 +27,16 @@ public class Exibicao implements Serializable {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @NotEmpty
     private LocalDate dataExibicao;
 
+    @NotEmpty
     private Filme filme;
 
+    @NotEmpty
     private Sala sala;
 
+    @NotEmpty
     private List<Horarios> horarios;
 
     public Exibicao() {

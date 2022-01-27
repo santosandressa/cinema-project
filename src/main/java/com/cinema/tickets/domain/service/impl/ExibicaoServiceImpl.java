@@ -2,7 +2,6 @@ package com.cinema.tickets.domain.service.impl;
 
 import com.cinema.tickets.domain.collection.Exibicao;
 import com.cinema.tickets.domain.collection.Filme;
-import com.cinema.tickets.domain.collection.Horarios;
 import com.cinema.tickets.domain.collection.Sala;
 import com.cinema.tickets.domain.exception.BusinessException;
 import com.cinema.tickets.domain.exception.NotFoundException;
@@ -12,7 +11,6 @@ import com.cinema.tickets.domain.repository.SalaRepository;
 import com.cinema.tickets.domain.service.ExibicaoService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;

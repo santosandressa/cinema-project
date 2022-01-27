@@ -5,6 +5,7 @@ import com.cinema.tickets.api.mapper.EmailMapper;
 import com.cinema.tickets.domain.collection.Email;
 import com.cinema.tickets.domain.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class EmailController {
     }
 
     @Operation(summary = "Envia um email")
+    @ApiResponse(responseCode = "201", description = "Email enviado com sucesso")
     @PostMapping
     public ResponseEntity<EmailDTO> sendEmail(@RequestBody EmailDTO emailDTO) {
         log.info("Enviando email");
@@ -44,7 +46,5 @@ public class EmailController {
 
         log.info("Email enviado");
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
-
-
     }
 }
