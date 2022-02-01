@@ -16,7 +16,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1/filmes")
@@ -52,29 +55,48 @@ public class FilmeController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Listar todos os filmes")
+    @ApiResponse(responseCode = "200", description = "Lista de filmes")
+    @GetMapping
+    public ResponseEntity<List<FilmeDTO>> buscarTodosFilmes() {
+        logger.info("Buscando todos os filmes");
+
+        List<Filme> filmes = this.filmeService.findAll();
+
+        List<FilmeDTO> dtos = filmes.stream().map(filmeMapper::toDTO).collect(Collectors.toList());
+
+        if (filmes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            for (FilmeDTO dto : dtos) {
+                dto.add(linkTo(methodOn(FilmeController.class).buscarFilmePorId(dto.getId())).withSelfRel());
+            }
+        }
+
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+
     @Operation(summary = "Buscar filme por id")
     @ApiResponse(responseCode = "200", description = "Filme encontrado")
     @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     @GetMapping("/{id}")
-    public ResponseEntity<Filme> buscarFilmePorId(@PathVariable String id) {
+    public ResponseEntity<FilmeDTO> buscarFilmePorId(@PathVariable String id) {
 
         logger.info("Buscando filme por id");
 
         Optional<Filme> filme = filmeService.findById(id);
 
-        return filme.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<FilmeDTO> dto = filme.map(filmeMapper::toDTO);
+
+        if(dto.isPresent()) {
+            dto.get().add(linkTo(methodOn(FilmeController.class).buscarFilmePorId(id)).withRel("filme"));
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return  new ResponseEntity<>(dto.orElse(null), HttpStatus.OK);
     }
 
-    @Operation(summary = "Listar todos os filmes")
-    @ApiResponse(responseCode = "200", description = "Lista de filmes")
-    @GetMapping
-    public ResponseEntity<List<Filme>> buscarTodosFilmes() {
-        logger.info("Buscando todos os filmes");
-
-        List<Filme> filmes = filmeService.findAll();
-
-        return new ResponseEntity<>(filmes, HttpStatus.OK);
-    }
 
     @Operation(summary = "Atualizar filme", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso")

@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain.service;
 
+
 import com.cinema.tickets.domain.repository.ExibicaoRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -16,8 +17,10 @@ public class ScheduleService  {
 
    private final ExibicaoRepository exibicaoRepository;
 
+
     public ScheduleService(ExibicaoRepository exibicaoRepository) {
         this.exibicaoRepository = exibicaoRepository;
+
     }
 
     @Scheduled(cron = CRON_EXPIRED_SCHEDULE)
@@ -28,7 +31,5 @@ public class ScheduleService  {
 
         log.info("Filmes fora de cartaz deletados");
     }
-
-
 }
 

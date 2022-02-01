@@ -11,6 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ExibicaoDTO extends RepresentationModel<ExibicaoDTO> {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Schema(example = "2020-01-01")
-    @NotEmpty
+    @NotNull
     private LocalDate dataExibicao;
 
     @Schema(example = "14:00")

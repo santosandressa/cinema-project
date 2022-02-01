@@ -1,9 +1,10 @@
 package com.cinema.tickets.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.hateoas.RepresentationModel;
 
 
-public class FilmeDTO {
+public class FilmeDTO extends RepresentationModel<FilmeDTO> {
 
     @Schema(description = "Identificador único do filme")
     private String id;

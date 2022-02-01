@@ -20,10 +20,8 @@ public class SalaServiceImpl implements SalaService {
 
     private  final SalaRepository salaRepository;
 
-
     public SalaServiceImpl(SalaRepository salaRepository) {
         this.salaRepository = salaRepository;
-
     }
 
     @Override
@@ -34,7 +32,6 @@ public class SalaServiceImpl implements SalaService {
         if (salaNumero) {
             throw new BusinessException("Sala já cadastrada");
         }
-
 
         return salaRepository.save(sala);
     }

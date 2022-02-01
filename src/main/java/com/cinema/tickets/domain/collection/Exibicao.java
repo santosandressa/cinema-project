@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class Exibicao implements Serializable {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @NotEmpty
+    @NotNull
     private LocalDate dataExibicao;
 
     @NotEmpty

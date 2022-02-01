@@ -6,52 +6,37 @@ import javax.validation.constraints.NotBlank;
 
 public class Endereco {
 
-    @Schema(description = "Rua do endereço", example = "Rua Rio Jacutinga", required = true)
-    @NotBlank
-    private String rua;
-
     @Schema(description = "Cep do endereço", example = "87043-643", required = true)
     @NotBlank
     private String cep;
 
-    @Schema(description = "Numero do endereço", example = "292", required = true)
+
+    @Schema(description = "Rua do endereço", example = "Rua Rio Jacutinga")
+    private String logradouro;
+
+    @Schema(description = "Numero do endereço", example = "292")
     @NotBlank
     private String numero;
 
-    @Schema(description = "Complemento  do endereço", example = "casa")
+    @Schema(description = "Complemento  do endereço")
+    @NotBlank
     private String complemento;
 
-    @Schema(description = "Bairro do endereço", example = "Jardim Pinheiros II", required = true)
-    @NotBlank
+    @Schema(description = "Bairro do endereço", example = "Jardim Pinheiros II")
     private String bairro;
 
-    @Schema(description = "Cidade do endereço", example = "Maringá", required = true)
-    @NotBlank
-    private String cidade;
+    @Schema(description = "Cidade do endereço", example = "Maringá")
+    private String localidade;
 
-    @Schema(description = "Estado do endereço", example = "PR", required = true)
-    @NotBlank
-    private String estado;
+    @Schema(description = "Estado do endereço", example = "PR")
+    private String uf;
 
-    public Endereco() {
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public Endereco(String rua, String cep, String numero, String complemento, String bairro, String cidade, String estado) {
-        this.rua = rua;
-        this.cep = cep;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-    }
-
-    public String getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getCep() {
@@ -86,20 +71,19 @@ public class Endereco {
         this.bairro = bairro;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getUf() {
+        return uf;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
-
 }

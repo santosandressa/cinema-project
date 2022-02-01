@@ -29,13 +29,13 @@ public class ClienteRepositoryTest {
         clienteSalvo.setSenha("4hj1L0NkbJ");
 
         Endereco endereco = new Endereco();
-        endereco.setRua("Rua dos Gaviões");
+        endereco.setLogradouro("Rua dos Gaviões");
         endereco.setCep("85800-000");
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
         endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setCidade("Palhoça");
-        endereco.setEstado("Santa Catarina");
+        endereco.setLocalidade("Palhoça");
+        endereco.setUf("Santa Catarina");
 
         clienteSalvo.setEndereco(endereco);
 

@@ -8,8 +8,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
 import com.cinema.tickets.domain.collection.Cliente;
+import com.cinema.tickets.domain.collection.Endereco;
 import com.cinema.tickets.domain.collection.Role;
 import com.cinema.tickets.domain.exception.BusinessException;
+import com.cinema.tickets.domain.service.CepService;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -49,9 +52,12 @@ public class ClienteController {
 
     private final ClienteMapper clienteMapper;
 
-    public ClienteController(ClienteService clienteService, ClienteMapper clienteMapper) {
+    private final CepService cepService;
+
+    public ClienteController(ClienteService clienteService, ClienteMapper clienteMapper, CepService cepService) {
         this.clienteService = clienteService;
         this.clienteMapper = clienteMapper;
+        this.cepService = cepService;
     }
 
     @Operation(summary = "Cadastrar um cliente")
@@ -61,6 +67,11 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> create(@RequestBody @Valid ClienteDTO clienteDTO) {
         log.info("Criando um novo cliente");
 
+            Endereco endereco = cepService.buscaEnderecoPorCep(clienteDTO.getEndereco().getCep());
+            endereco.setNumero(clienteDTO.getEndereco().getNumero());
+            endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+            clienteDTO.setEndereco(endereco);
+
         Cliente entity = clienteMapper.toEntity(clienteDTO);
 
         entity = this.clienteService.save(entity);
@@ -68,8 +79,6 @@ public class ClienteController {
         clienteService.addRole(entity.getEmail(), "ROLE_USER");
 
         ClienteDTO dto = clienteMapper.toDTO(entity);
-
-
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }

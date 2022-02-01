@@ -60,13 +60,13 @@ public class ClienteControllerTest {
         clienteDTO.setSenha("4hj1L0NkbJ");
 
         Endereco endereco = new Endereco();
-        endereco.setRua("Rua dos Gaviões");
+        endereco.setLogradouro("Rua dos Gaviões");
         endereco.setCep("85800-000");
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
         endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setCidade("Palhoça");
-        endereco.setEstado("Santa Catarina");
+        endereco.setLocalidade("Palhoça");
+        endereco.setUf("Santa Catarina");
 
         clienteDTO.setEndereco(endereco);
 
@@ -84,13 +84,13 @@ public class ClienteControllerTest {
         clienteSalvo.setSenha("4hj1L0NkbJ");
 
         Endereco endereco = new Endereco();
-        endereco.setRua("Rua dos Gaviões");
+        endereco.setLogradouro("Rua dos Gaviões");
         endereco.setCep("85800-000");
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
         endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setCidade("Palhoça");
-        endereco.setEstado("Santa Catarina");
+        endereco.setLocalidade("Palhoça");
+        endereco.setUf("Santa Catarina");
 
         clienteSalvo.setEndereco(endereco);
 
@@ -132,13 +132,13 @@ public class ClienteControllerTest {
                 .andExpect(jsonPath("celular").value(clienteDTO.getCelular()))
                 .andExpect(jsonPath("email").value(clienteDTO.getEmail()))
                 .andExpect(jsonPath("senha").value(clienteDTO.getSenha()))
-                .andExpect(jsonPath("endereco.rua").value(clienteDTO.getEndereco().getRua()))
+                .andExpect(jsonPath("endereco.rua").value(clienteDTO.getEndereco().getLogradouro()))
                 .andExpect(jsonPath("endereco.cep").value(clienteDTO.getEndereco().getCep()))
                 .andExpect(jsonPath("endereco.numero").value(clienteDTO.getEndereco().getNumero()))
                 .andExpect(jsonPath("endereco.complemento").value(clienteDTO.getEndereco().getComplemento()))
                 .andExpect(jsonPath("endereco.bairro").value(clienteDTO.getEndereco().getBairro()))
-                .andExpect(jsonPath("endereco.cidade").value(clienteDTO.getEndereco().getCidade()))
-                .andExpect(jsonPath("endereco.estado").value(clienteDTO.getEndereco().getEstado()));
+                .andExpect(jsonPath("endereco.cidade").value(clienteDTO.getEndereco().getLocalidade()))
+                .andExpect(jsonPath("endereco.estado").value(clienteDTO.getEndereco().getUf()));
     }
 
     @Test

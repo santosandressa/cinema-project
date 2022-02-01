@@ -47,6 +47,10 @@ public class ExibicaoServiceImpl implements ExibicaoService {
 
         Optional<Filme> filme = filmeRepository.findByTitulo(exibicao.getFilme().getTitulo());
 
+        if (exibicao.getDataExibicao() == null) {
+            throw new BusinessException("Data de exibição não pode ser nula");
+        }
+
         if (filme.isEmpty()) {
             log.info("Filme não encontrado");
             throw new NotFoundException("Filme não encontrado");
@@ -69,7 +73,6 @@ public class ExibicaoServiceImpl implements ExibicaoService {
         } else {
             exibicao.setSala(sala.get());
         }
-
 
         return exibicaoRepository.save(exibicao);
     }

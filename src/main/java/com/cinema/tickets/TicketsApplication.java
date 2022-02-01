@@ -3,6 +3,7 @@ package com.cinema.tickets;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ComponentScan({"com.cinema.tickets", "com.cinema.tickets.common.config"})
 @EnableMongoRepositories("com.cinema.tickets.domain.repository")
 @SpringBootApplication
+@EnableFeignClients
 public class TicketsApplication {
 
     public static void main(String[] args) {
