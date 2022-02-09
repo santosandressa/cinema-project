@@ -8,7 +8,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -19,16 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
+@ImportAutoConfiguration( FeignAutoConfiguration.class)
+@ActiveProfiles("test")
 public class ExibicaoRepositoryTest {
 
     @Autowired
     private ExibicaoRepository exibicaoRepository;
-
-    @Autowired
-    private FilmeRepository filmeRepository;
-
-    @Autowired
-    private SalaRepository salaRepository;
 
     private Exibicao createExibicao() {
         Exibicao exibicao = new Exibicao();

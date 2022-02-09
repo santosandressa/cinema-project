@@ -7,8 +7,16 @@ import com.cinema.tickets.domain.collection.Cliente;
 import com.cinema.tickets.domain.collection.Endereco;
 import com.cinema.tickets.domain.collection.Role;
 import com.cinema.tickets.domain.exception.BusinessException;
+
+import com.cinema.tickets.proxy.model.Cep;
+import com.cinema.tickets.proxy.service.CepService;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+import com.google.gson.Gson;
+
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +25,11 @@ import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.MediaType;
+
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,14 +37,17 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -50,6 +64,9 @@ public class ClienteControllerTest {
     @MockBean
     ClienteService service;
 
+    @MockBean
+    CepService cepService;
+
     private ClienteDTO createClienteDTO() {
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setNome("Luana Antonella Santos");
@@ -60,13 +77,9 @@ public class ClienteControllerTest {
         clienteDTO.setSenha("4hj1L0NkbJ");
 
         Endereco endereco = new Endereco();
-        endereco.setLogradouro("Rua dos Gaviões");
-        endereco.setCep("85800-000");
+        endereco.setCep("58010-760");
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
-        endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setLocalidade("Palhoça");
-        endereco.setUf("Santa Catarina");
 
         clienteDTO.setEndereco(endereco);
 
@@ -84,13 +97,9 @@ public class ClienteControllerTest {
         clienteSalvo.setSenha("4hj1L0NkbJ");
 
         Endereco endereco = new Endereco();
-        endereco.setLogradouro("Rua dos Gaviões");
-        endereco.setCep("85800-000");
+        endereco.setCep("58010-760");
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
-        endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setLocalidade("Palhoça");
-        endereco.setUf("Santa Catarina");
 
         clienteSalvo.setEndereco(endereco);
 
@@ -101,9 +110,43 @@ public class ClienteControllerTest {
         Role role = new Role();
         role.setId("1");
         role.setNome("ROLE_ADMIN");
-
         return role;
     }
+
+    public Cep createCep(){
+        Cep cep = new Cep();
+        cep.setCep("58010-760");
+        cep.setLogradouro("Praça Barão do Rio Branco");
+        cep.setBairro("Centro");
+        cep.setLocalidade("João Pessoa");
+        cep.setUf("PB");
+
+        return cep;
+    }
+
+    @Test
+    @DisplayName("teste cep")
+    public void testeCep() throws Exception {
+
+        Cep cep = createCep();
+
+        BDDMockito.given(cepService.buscaEnderecoPorCep(anyString())).willReturn(cep);
+
+        Gson gson = new Gson();
+        gson.toJson(cep);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API + "/cep/94960-847")
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cep").value("58010-760"))
+                .andExpect(jsonPath("$.logradouro").value("Praça Barão do Rio Branco"))
+                .andExpect(jsonPath("$.bairro").value("Centro"))
+                .andExpect(jsonPath("$.localidade").value("João Pessoa"))
+                .andExpect(jsonPath("$.uf").value("PB"));
+    }
+
 
     @Test
     @DisplayName("Deve cadastrar um cliente")
@@ -117,12 +160,25 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.save(any(Cliente.class))).willReturn(cliente);
 
-        String json = new ObjectMapper().writeValueAsString(clienteDTO);
+        Cep cep = createCep();
+
+        BDDMockito.given(cepService.buscaEnderecoPorCep(anyString())).willReturn(cep);
+
+        Endereco endereco = new Endereco();
+        endereco.setCep(cep.getCep());
+        endereco.setNumero(clienteDTO.getEndereco().getNumero());
+        endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+        endereco.setLogradouro(cep.getLogradouro());
+        endereco.setBairro(cep.getBairro());
+        endereco.setLocalidade(cep.getLocalidade());
+        endereco.setUf(cep.getUf());
+
+        Gson gson = new Gson();
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+                .content(gson.toJson(clienteDTO));
 
         mockMvc.perform(request).andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value("1"))
@@ -132,23 +188,22 @@ public class ClienteControllerTest {
                 .andExpect(jsonPath("celular").value(clienteDTO.getCelular()))
                 .andExpect(jsonPath("email").value(clienteDTO.getEmail()))
                 .andExpect(jsonPath("senha").value(clienteDTO.getSenha()))
-                .andExpect(jsonPath("endereco.rua").value(clienteDTO.getEndereco().getLogradouro()))
+                .andExpect(jsonPath("endereco.logradouro").value(clienteDTO.getEndereco().getLogradouro()))
                 .andExpect(jsonPath("endereco.cep").value(clienteDTO.getEndereco().getCep()))
                 .andExpect(jsonPath("endereco.numero").value(clienteDTO.getEndereco().getNumero()))
                 .andExpect(jsonPath("endereco.complemento").value(clienteDTO.getEndereco().getComplemento()))
                 .andExpect(jsonPath("endereco.bairro").value(clienteDTO.getEndereco().getBairro()))
-                .andExpect(jsonPath("endereco.cidade").value(clienteDTO.getEndereco().getLocalidade()))
-                .andExpect(jsonPath("endereco.estado").value(clienteDTO.getEndereco().getUf()));
+                .andExpect(jsonPath("endereco.localidade").value(clienteDTO.getEndereco().getLocalidade()))
+                .andExpect(jsonPath("endereco.uf").value(clienteDTO.getEndereco().getUf()));
     }
+
 
     @Test
     @DisplayName("Deve lançar erro ao cadastrar um cliente com dados insuficientes")
     public void createInvalidCliente() throws Exception {
         String json = new ObjectMapper().writeValueAsString(new Cliente());
 
-
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
-
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("campos", hasSize(6)));
     }
@@ -159,15 +214,26 @@ public class ClienteControllerTest {
 
         ClienteDTO clienteDTO = createClienteDTO();
 
+        Cep cep = createCep();
 
-        String json = new ObjectMapper().writeValueAsString(clienteDTO);
+        BDDMockito.given(cepService.buscaEnderecoPorCep(anyString())).willReturn(cep);
+
+        Endereco endereco = new Endereco();
+        endereco.setCep(cep.getCep());
+        endereco.setNumero(clienteDTO.getEndereco().getNumero());
+        endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+        endereco.setLogradouro(cep.getLogradouro());
+        endereco.setBairro(cep.getBairro());
+        endereco.setLocalidade(cep.getLocalidade());
+        endereco.setUf(cep.getUf());
+
+        Gson gson = new Gson();
 
         String message = "Email já cadastrado";
 
         BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(gson.toJson(clienteDTO));
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
@@ -177,14 +243,26 @@ public class ClienteControllerTest {
     public void createClienteWithExistingCpf() throws Exception {
         ClienteDTO clienteDTO = createClienteDTO();
 
-        String json = new ObjectMapper().writeValueAsString(clienteDTO);
+        Cep cep = createCep();
+
+        BDDMockito.given(cepService.buscaEnderecoPorCep(anyString())).willReturn(cep);
+
+        Endereco endereco = new Endereco();
+        endereco.setCep(cep.getCep());
+        endereco.setNumero(clienteDTO.getEndereco().getNumero());
+        endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+        endereco.setLogradouro(cep.getLogradouro());
+        endereco.setBairro(cep.getBairro());
+        endereco.setLocalidade(cep.getLocalidade());
+        endereco.setUf(cep.getUf());
+
+        Gson gson = new Gson();
 
         String message = "CPF já cadastrado";
 
         BDDMockito.given(service.save(any(Cliente.class))).willThrow(new BusinessException(message));
 
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/cadastrar")).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(gson.toJson(clienteDTO));
 
         mockMvc.perform(request).andExpect(status().isBadRequest()).andExpect(jsonPath("titulo").value(message));
     }
@@ -277,7 +355,7 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.of(cliente));
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
@@ -289,7 +367,7 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.findById(anyString())).willReturn(Optional.empty());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = get(CLIENTE_API.concat("/" + "1")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNotFound());
     }
@@ -303,7 +381,7 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.findAll()).willReturn(clientes);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CLIENTE_API.concat("/listar")).accept(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = get(CLIENTE_API.concat("/listar")).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isOk()).andReturn();
     }
@@ -317,12 +395,12 @@ public class ClienteControllerTest {
 
         BDDMockito.given(service.saveRole(any(Role.class))).willReturn(role);
 
-        String json = new ObjectMapper().writeValueAsString(role);
+        Gson gson = new Gson();
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(CLIENTE_API.concat("/role/salvar"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(json);
+                .content(gson.toJson(role));
 
         mockMvc.perform(request).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(role.getId()))

@@ -66,8 +66,7 @@ public class ClienteServiceTest {
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
         endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setLocalidade("Palhoça");
-        endereco.setUf("Santa Catarina");
+
 
         clienteSalvo.setEndereco(endereco);
 
@@ -99,8 +98,7 @@ public class ClienteServiceTest {
         assertThat(cliente.getEndereco().getNumero()).isEqualTo(cliente.getEndereco().getNumero());
         assertThat(cliente.getEndereco().getComplemento()).isEqualTo(cliente.getEndereco().getComplemento());
         assertThat(cliente.getEndereco().getBairro()).isEqualTo(cliente.getEndereco().getBairro());
-        assertThat(cliente.getEndereco().getLocalidade()).isEqualTo(cliente.getEndereco().getLocalidade());
-        assertThat(cliente.getEndereco().getUf()).isEqualTo(cliente.getEndereco().getUf());
+
     }
 
     @Test
@@ -124,8 +122,6 @@ public class ClienteServiceTest {
         assertThat(clienteEncontrado.get().getEndereco().getNumero()).isEqualTo(clienteEncontrado.get().getEndereco().getNumero());
         assertThat(clienteEncontrado.get().getEndereco().getComplemento()).isEqualTo(clienteEncontrado.get().getEndereco().getComplemento());
         assertThat(clienteEncontrado.get().getEndereco().getBairro()).isEqualTo(clienteEncontrado.get().getEndereco().getBairro());
-        assertThat(clienteEncontrado.get().getEndereco().getLocalidade()).isEqualTo(clienteEncontrado.get().getEndereco().getLogradouro());
-        assertThat(clienteEncontrado.get().getEndereco().getUf()).isEqualTo(clienteEncontrado.get().getEndereco().getUf());
     }
 
     @Test
@@ -172,8 +168,7 @@ public class ClienteServiceTest {
         assertThat(clienteAtualizado.getEndereco().getNumero()).isEqualTo(clienteAtualizado.getEndereco().getNumero());
         assertThat(clienteAtualizado.getEndereco().getComplemento()).isEqualTo(clienteAtualizado.getEndereco().getComplemento());
         assertThat(clienteAtualizado.getEndereco().getBairro()).isEqualTo(clienteAtualizado.getEndereco().getBairro());
-        assertThat(clienteAtualizado.getEndereco().getLocalidade()).isEqualTo(clienteAtualizado.getEndereco().getLocalidade());
-        assertThat(clienteAtualizado.getEndereco().getUf()).isEqualTo(clienteAtualizado.getEndereco().getUf());
+
     }
 
     @Test

@@ -2,12 +2,16 @@ package com.cinema.tickets.domain.collection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class Endereco {
 
+
     @Schema(description = "Cep do endereço", example = "87043-643", required = true)
     @NotBlank
+    @NotNull
     private String cep;
 
 
@@ -31,20 +35,20 @@ public class Endereco {
     @Schema(description = "Estado do endereço", example = "PR")
     private String uf;
 
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
     public String getCep() {
         return cep;
     }
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getNumero() {
@@ -87,3 +91,5 @@ public class Endereco {
         this.uf = uf;
     }
 }
+
+

@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -53,7 +52,6 @@ public class Cliente {
     private String senha;
 
     @Schema(description = "Endereço do cliente")
-    @Valid
     private Endereco endereco;
 
     private Collection<Role> roles = new ArrayList<>();

@@ -7,11 +7,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cinema.tickets.api.dto.ClienteDTO;
 import com.cinema.tickets.api.mapper.ClienteMapper;
+
 import com.cinema.tickets.domain.collection.Cliente;
+
 import com.cinema.tickets.domain.collection.Endereco;
 import com.cinema.tickets.domain.collection.Role;
 import com.cinema.tickets.domain.exception.BusinessException;
-import com.cinema.tickets.domain.service.CepService;
+import com.cinema.tickets.proxy.model.Cep;
+import com.cinema.tickets.proxy.service.CepService;
 import com.cinema.tickets.domain.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,10 +23,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -60,6 +63,16 @@ public class ClienteController {
         this.cepService = cepService;
     }
 
+    @GetMapping("/cep/{cep}")
+    public ResponseEntity<Cep> getEndereco(@PathVariable String cep) {
+        log.info("Buscando endereço pelo cep " + cep);
+
+        if (cep.isEmpty()){
+            throw new BusinessException("CEP não informado");
+        }
+        return new ResponseEntity<>(cepService.buscaEnderecoPorCep(cep), HttpStatus.OK);
+    }
+
     @Operation(summary = "Cadastrar um cliente")
     @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")
     @ApiResponse(responseCode = "400", description = "Cliente com dados inválidos")
@@ -67,10 +80,21 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> create(@RequestBody @Valid ClienteDTO clienteDTO) {
         log.info("Criando um novo cliente");
 
-            Endereco endereco = cepService.buscaEnderecoPorCep(clienteDTO.getEndereco().getCep());
-            endereco.setNumero(clienteDTO.getEndereco().getNumero());
-            endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
-            clienteDTO.setEndereco(endereco);
+        log.info("buscando endereço pelo cep " + clienteDTO.getEndereco().getCep());
+
+        Cep cep = cepService.buscaEnderecoPorCep(clienteDTO.getEndereco().getCep());
+
+        Endereco endereco = new Endereco();
+        endereco.setCep(cep.getCep());
+        endereco.setLogradouro(cep.getLogradouro());
+        endereco.setBairro(cep.getBairro());
+        endereco.setLocalidade(cep.getLocalidade());
+        endereco.setUf(cep.getUf());
+        endereco.setNumero(clienteDTO.getEndereco().getNumero());
+        endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+
+        clienteDTO.setEndereco(endereco);
+        log.info("Endereço encontrado ");
 
         Cliente entity = clienteMapper.toEntity(clienteDTO);
 
@@ -133,16 +157,16 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> update(@PathVariable String id, @Valid @RequestBody ClienteDTO clienteDTO) {
         log.info("Atualizando um cliente pelo id" + id);
 
-            Cliente entity = clienteMapper.toEntity(clienteDTO);
+        Cliente entity = clienteMapper.toEntity(clienteDTO);
 
-            entity.setId(id);
+        entity.setId(id);
 
-            entity = clienteService.update(entity);
+        entity = clienteService.update(entity);
 
-            ClienteDTO dto = clienteMapper.toDTO(entity);
+        ClienteDTO dto = clienteMapper.toDTO(entity);
 
-            log.info("Usuario atualizado com sucesso");
-            return new ResponseEntity<>(dto, HttpStatus.OK);
+        log.info("Usuario atualizado com sucesso");
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
 

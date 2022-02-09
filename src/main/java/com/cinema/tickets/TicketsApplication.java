@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,8 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableMongoAuditing
 @ComponentScan({"com.cinema.tickets", "com.cinema.tickets.common.config"})
 @EnableMongoRepositories("com.cinema.tickets.domain.repository")
-@SpringBootApplication
 @EnableFeignClients
+@SpringBootApplication
 public class TicketsApplication {
 
     public static void main(String[] args) {

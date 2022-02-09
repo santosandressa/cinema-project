@@ -1,6 +1,7 @@
-package com.cinema.tickets.domain.service;
+package com.cinema.tickets.proxy.service;
 
-import com.cinema.tickets.domain.collection.Endereco;
+import com.cinema.tickets.proxy.model.Cep;
+import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,5 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CepService {
 
     @GetMapping("{cep}/json")
-    Endereco buscaEnderecoPorCep(@PathVariable("cep") String cep);
+    @Headers("Content-Type: application/json")
+    Cep buscaEnderecoPorCep(@PathVariable("cep") String cep);
 }

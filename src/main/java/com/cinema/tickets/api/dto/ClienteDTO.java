@@ -1,12 +1,10 @@
 package com.cinema.tickets.api.dto;
 
-
 import com.cinema.tickets.domain.collection.Endereco;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -45,11 +43,11 @@ public class ClienteDTO {
     private String senha;
 
     @Schema(description = "Endereço do cliente")
-    @Valid
     private Endereco endereco;
 
     public ClienteDTO() {
     }
+
 
     public String getId() {
         return id;

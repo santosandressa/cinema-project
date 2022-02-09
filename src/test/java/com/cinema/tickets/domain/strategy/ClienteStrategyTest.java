@@ -56,8 +56,6 @@ public class ClienteStrategyTest {
         endereco.setNumero("585");
         endereco.setComplemento("Apto. 5");
         endereco.setBairro("Cidade Universitária Pedra Branca");
-        endereco.setLocalidade("Palhoça");
-        endereco.setUf("Santa Catarina");
 
         clienteSalvo.setEndereco(endereco);
 

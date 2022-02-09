@@ -51,8 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/exibicao/**",
             "/api/v1/ingresso",
             "/api/v1/ingresso/**",
-            "/api/v1/cep/**",
-            "/"
+            "/api/v1/cliente/cep/**",
     };
 
     private static final String[] PUBLIC_MATCHERS_SWAGGER = {
